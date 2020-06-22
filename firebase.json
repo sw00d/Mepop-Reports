@@ -1,0 +1,35 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": "packages/mepop-frontend/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "predeploy": [
+      "npm --prefix ./packages/mepop-frontend run build"
+    ],
+    "headers":
+      [ {
+        "source": "**/*.@(js|ts)",
+        "headers": [ 
+            {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+            }
+          ]
+        }
+      ]
+  },
+  "emulators": {
+    "functions": {
+      "port": "4001"
+    },
+    "hosting": {
+      "port": "4002"
+    }
+  }
+}

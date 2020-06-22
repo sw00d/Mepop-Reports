@@ -1,0 +1,21 @@
+{
+  "name": "mepop-firebase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "react-cookie-consent": "^5.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^2.0.4",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "start": "cd packages/mepop-frontend && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
