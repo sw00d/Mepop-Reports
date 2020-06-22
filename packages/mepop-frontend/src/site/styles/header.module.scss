@@ -1,6 +1,23 @@
 @import '../../styles/colors.module.scss';
 @import '../../styles/global.module.scss';
 
+
+@mixin nav {
+  cursor:pointer;
+  margin-right: 80px;
+  margin-top: 10px;
+  background:transparent;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: $primary-bg-color;
+  transition: .2s;
+  padding: 0px 4px;
+  color: $secondary-bg-color;
+  text-decoration: none;
+  text-align:center;
+  padding-bottom: 10px;
+  border: 2px solid transparent;
+}
 .container {
   width: 100%;
   height: 100px;
@@ -33,27 +50,16 @@
   right: 100px;
   height: 100%;
 }
+.activeNavBtn{
+  @include nav;
+  border-bottom: 2px solid $secondary-bg-color;
+}
 
 .navBtn {
-  cursor:pointer;
-  border: 2px solid transparent;
-  border-bottom: 2px solid $secondary-bg-color;
-  margin-right: 80px;
-  margin-top: 10px;
-  background:transparent;
-  font-size: 20px;
-  letter-spacing: 2px;
-  color: $text-subtle;
-  transition: .2s;
-  padding: 0px 4px;
-  color: $secondary-bg-color;
-  text-decoration: none;
-  text-align:center;
+  @include nav;
 }
 
 .navBtn:hover {
-  // letter-spacing: 3px;
-  color: $primary-bg-color;
   border-bottom-color: $primary-bg-color;
 }
 
