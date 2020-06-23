@@ -10,9 +10,11 @@ firebase-debug.log*
 # Firebase cache
 
 .firebase/
-#builds
+#build folders
 
-bulid/
+# /build/
+packages/mepop-frontend/build/*
+build/*
 
 # Firebase config
 
