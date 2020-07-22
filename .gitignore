@@ -52,6 +52,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+.next/
 
 # Optional npm cache directory
 .npm
@@ -70,3 +71,9 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# # Build output
+# **/**/build/
+
+# # next
+# **/**/old-mepop-frontend
