@@ -10,17 +10,10 @@ export const fetchFiles = (user, { firebase, dispatch }, resolve) => {
       dispatch({ type: UPDATE_DATA, payload: processedFiles })
 
       if (processedFiles) {
-        // Handles getting geopoints from files
-        const callback = (newGeopoints) => {
-          resolve()
-          dispatch({ type: SET_GEO_DATA, payload: newGeopoints })
-        }
-        firebase.getGeopoints(processedFiles, dispatch, callback)
+        resolve()
       }
     }
-    // if (resolve) {
-    //   resolve(files)
-    // }
+
     dispatch({ type: UPDATE_FILES, payload: files })
     setupLocationKeys({ firebase, dispatch })
   })

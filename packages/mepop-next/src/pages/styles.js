@@ -40,7 +40,7 @@ export default (props) => {
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]} />
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
         <Card
-          headerText='Form'
+          headerContent='Form'
           m='20px'
           justifyContent='space-around'
           alignItems='center'
@@ -83,7 +83,7 @@ export default (props) => {
       </Flex>
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
         <Table
-          headerText='Table'
+          headerContent='Table'
           data={data}
           columnLabels={['time', 'sales']}
           p='0px'
@@ -92,10 +92,10 @@ export default (props) => {
         />
       </Flex>
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
-        <Linechart headerText='Line Chart' data={data} xdataKey='time' lineDataKey='sales' />
+        <Linechart headerContent='Line Chart' data={data} xdataKey='time' lineDataKey='sales' />
       </Flex>
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
-        <Barchart headerText='Bar Chart' data={data} xdataKey='time' barDataKey='sales' color='purple' />
+        <Barchart headerContent='Bar Chart' data={data} xdataKey='time' barDataKey='sales' color='purple' />
       </Flex>
       <Flex flexWrap='wrap' justifyContent='space-around' alignItems='center' width={[1, 1, 1, 1]}>
         <ValueBox
@@ -127,16 +127,16 @@ export default (props) => {
 
       </Flex>
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
-        <Card headerText='Hello World'>
+        <Card headerContent='Hello World'>
           <Button background='warning' size='lg'>Click Me</Button>
         </Card>
       </Flex>
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
-        <Card headerText='Loading...' isLoading />
+        <Card headerContent='Loading...' isLoading />
       </Flex>
       <Flex justifyContent='space-around' alignItems='center' width={[1, 1, 1 / 2]}>
         <Spinner color='primary' background='mainBg' />
-        <Spinner color='sunset' />
+        <Spinner color='pastelRose' />
         <Spinner color='yellowDark' background='mainBg' />
       </Flex>
       <Flex justifyContent='space-between' alignItems='center' width={[1, 1, 1 / 2]}>

@@ -18,13 +18,13 @@ const spin = keyframes`
 `
 const Loader = styled(Flex)`
     font-size: 10px;
-    width: 4em;
-    height: 4em;
+    width: ${({ width }) => width || '4em'};
+    height: ${({ width }) => width || '4em'};
     border-radius: 50%;
     position: relative;
     animation: ${spin} 1.4s infinite linear;
     transform: translateZ(0);  
-    border: 4px solid ${props => props.theme.colors[props.color] || props.theme.colors.primary};
+    border: ${({ size }) => size || 4}px solid ${props => props.theme.colors[props.color] || props.theme.colors.primary};
     border-right-color: transparent;
 
 `

@@ -3,6 +3,7 @@ import Tooltip from '../../elements/Tooltip'
 import Card from '../../elements/Card'
 import theme from '../../../theme'
 import styled from 'styled-components'
+import { transparentize } from 'polished'
 
 const BubbleChart = ({ height, color, data, xLabels, yLabels, tooltipContent, onClick, ...props }) => {
   return (
@@ -11,7 +12,8 @@ const BubbleChart = ({ height, color, data, xLabels, yLabels, tooltipContent, on
       <ChartWrap height={height}>
 
         <HeatMap
-          background={color || theme.colors.pastelTeal}
+          cellStyle={getStyle}
+          background={color || theme.colors.teal}
           xLabels={xLabels}
           yLabels={yLabels}
           xLabelsLocation='bottom'
@@ -40,7 +42,14 @@ const BubbleChart = ({ height, color, data, xLabels, yLabels, tooltipContent, on
 }
 export default BubbleChart
 
-export const ChartWrap = styled.div`
+const getStyle = (bg, value, min, max) => {
+  const opacity = (max - value) / (max - min)
+  return {
+    background: transparentize(opacity < 1 ? opacity : 0.94, theme.colors.teal)
+
+  }
+}
+const ChartWrap = styled.div`
   display:flex;
   flex-wrap:wrap;
 

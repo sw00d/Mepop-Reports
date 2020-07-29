@@ -3,7 +3,7 @@ import Hr from '../../../styles/elements/Hr'
 
 const RoadToVerified = () => {
   return (
-    <Card headerText='Progress to verified badge'>
+    <Card headerContent='Progress to verified badge'>
       <div>Method 1</div>
       <Hr />
       <div>Method 2</div>

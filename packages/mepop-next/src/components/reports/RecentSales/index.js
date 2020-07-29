@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { getRecentSales } from '../util/tables'
 import Table from '../../../styles/elements/Table'
@@ -10,6 +10,11 @@ const RecentSales = ({ data }) => {
   const tableData = getRecentSales(data)
   const [activeRow, activateRow] = useState(tableData[0])
   const [idx, activateIdx] = useState(0)
+  useEffect(() => {
+    if (JSON.stringify(activeRow) !== JSON.stringify(tableData[0])) {
+      activateRow(tableData[0])
+    }
+  }, [tableData])
   return (
     <Flex flexWrap='wrap'>
 
@@ -17,11 +22,11 @@ const RecentSales = ({ data }) => {
         background='mainBg'
         minWidth='300px'
         tableHeight={380}
-        headerText='Recent Sales'
+        headerContent='Recent Sales'
         data={tableData}
         activeRow={idx}
         handleRowClick={(row) => {
-          activateRow(row.rowData)
+          activateRow(tableData[row.index])
           activateIdx(row.index)
         }}
         columnLabels={
@@ -32,10 +37,7 @@ const RecentSales = ({ data }) => {
       {activeRow
         ? (
           <SaleDetails
-            row={activeRow} getUrl={data.getUrl} onClose={() => {
-              activateIdx(null)
-              activateRow(null)
-            }}
+            row={activeRow} getUrl={data.getUrl} currencyType={data.currency_type}
           />
         )
         : null}

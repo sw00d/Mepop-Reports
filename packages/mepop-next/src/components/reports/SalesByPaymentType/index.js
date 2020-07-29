@@ -10,23 +10,33 @@ import styled from 'styled-components'
 const SalesByPaymentType = ({ data }) => {
   const [chartType, toggleChartType] = useState(false)
   const chartData = groupByPaymentType(data)
-
   return (
-    <Card flexDirection='row'>
-
-      <PieChart
-        boxShadow='none'
-        data={chartData}
-        dataKey={chartType ? 'sold' : 'gross'}
-        currencyType={data.currency_type}
-        switchLabel='Show # of Items'
-        switchCheck={chartType}
-        switchEvent={() => {
-          toggleChartType(!chartType)
+    <Card
+      minHeight='420px'
+      flexDirection='row-reverse'
+      flexWrap='wrap'
+      sx={{
+        '@media only screen and (max-width: 1200px)': {
+          flexDirection: 'column'
+        }
+      }}
+    >
+      <Flex
+        height='40%'
+        flexDirection='column'
+        mr={5}
+        justifyContent='flex-start'
+        alignItems='center'
+        sx={{
+          '@media only screen and (max-width: 1200px)': {
+            paddingTop: '40px',
+            margin: 0
+          }
         }}
-      />
-      <Flex height='40%' flexDirection='column' pr={5} justifyContent='flex-start' alignItems='center'>
-        <Title color='primary' fontSize={25} mb='10px'>Payment Types</Title>
+      >
+        <Title color='primary' fontSize={25} mb='10px'>
+          Total: {formatNum(data.currency_type, data.total_earnings)}
+        </Title>
         {
           chartData.map(({ name, gross, color }, i) => {
             return (
@@ -37,6 +47,25 @@ const SalesByPaymentType = ({ data }) => {
           })
         }
       </Flex>
+      <PieChart
+        m={0}
+        justifyContent='center'
+        sx={{
+          '@media only screen and (max-width: 1200px)': {
+            marginBottom: '20px'
+          }
+        }}
+        boxShadow='none'
+        data={chartData}
+        dataKey={chartType ? 'sold' : 'gross'}
+        currencyType={data.currency_type}
+        switchLabel='Show # of Items'
+        switchCheck={chartType}
+        switchEvent={() => {
+          toggleChartType(!chartType)
+        }}
+      />
+
     </Card>
 
   )
@@ -45,7 +74,7 @@ const SalesByPaymentType = ({ data }) => {
 export default (SalesByPaymentType)
 
 const formatNum = (type, num) => {
-  return type + num.toLocaleString(undefined, {
+  return type + parseFloat(num).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })

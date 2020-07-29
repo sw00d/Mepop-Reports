@@ -9,11 +9,11 @@ Label.propTypes = {
   color: PropTypes.string
 }
 
-function Label (props) {
+function Label ({ label, children, ...rest }) {
   return (
-    <LabelComponent htmlFor={props.htmlfor} color={props.color}>
-      {props.label}
-      {props.children}
+    <LabelComponent {...rest}>
+      {label}
+      {children}
     </LabelComponent>
   )
 }

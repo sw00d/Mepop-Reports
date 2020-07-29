@@ -4,14 +4,28 @@ import currency from 'currency.js'
 export const getProfitsByMonth = (data) => {
   const months = {}
   const monthArray = []
-  data.sales.forEach(({ date_of_sale, item_price, depop_fee, depop_payments_fee }) => {
+  data.sales.forEach(({ date_of_sale, item_price, depop_fee, depop_payments_fee, usps_cost }) => {
     const month = moment(date_of_sale).format('MMM')
     const date = moment(date_of_sale).format('MM/DD/yyyy')
-    // gets net profit
-    const netProfit = currency(cleanNumber(item_price) - cleanNumber(depop_fee) - cleanNumber(depop_payments_fee)).value
+
+    const fees = cleanNumber(depop_fee) + cleanNumber(depop_payments_fee)
+    const sellerPaidShipping = cleanNumber(usps_cost)
+    const netProfit = currency(cleanNumber(item_price) - fees - sellerPaidShipping).value
+
     if (months[month]) {
-      months[month] = { ...months[month], value: currency(netProfit + months[month].value).value }
-    } else months[month] = { value: netProfit || 0 }
+      months[month] = {
+        ...months[month],
+        net: currency(netProfit + months[month].net).value,
+        depop_fees: currency(fees + months[month].depop_fees).value,
+        sellerPaidShipping: currency(sellerPaidShipping + months[month].sellerPaidShipping).value
+      }
+    } else {
+      months[month] = {
+        net: netProfit || 0,
+        depop_fees: fees || 0,
+        sellerPaidShipping: sellerPaidShipping || 0
+      }
+    }
 
     // sets start dates
     if (months[month].start) {
@@ -28,19 +42,24 @@ export const getProfitsByMonth = (data) => {
     months[month].end = date
   })
   Object.keys(months).forEach((key) => {
-    monthArray.push({ month: key, profit: months[key].value })
+    monthArray.push({
+      month: key,
+      'Net Profit': months[key].net,
+      'Depop Fees': months[key].depop_fees,
+      'Seller-Paid-Shipping': months[key].sellerPaidShipping
+    })
   })
   return monthArray
 }
 
 // Value Box 1
 export const getAvgProfits = (data) => {
-  const montlyProfit = getProfitsByMonth(data)
+  const monthlyProfit = getProfitsByMonth(data)
   let avg = 0
-  montlyProfit.forEach(({ profit }) => {
-    avg += profit
+  monthlyProfit.forEach((data) => {
+    avg += data['Net Profit']
   })
-  avg = avg / montlyProfit.length
+  avg = avg / monthlyProfit.length
   return { monthly: currency(avg).value, weekly: currency(avg / 4).value }
 }
 
@@ -124,20 +143,20 @@ export const avgItemsPerDay = data => {
 // }
 
 // utils
-const sort = (sales) => {
-  return sales.sort((a, b) => {
-    const date1 = new Date(a['date sold'])
-    const date2 = new Date(b['date listing'])
-    return date1 - date2
-  })
-}
+// const sort = (sales) => {
+//   return sales.sort((a, b) => {
+//     const date1 = new Date(a['date sold'])
+//     const date2 = new Date(b['date listing'])
+//     return date1 - date2
+//   })
+// }
 
-const formatDescription = (text) => {
-  const tagStart = text.lastIndexOf('{')
+// const formatDescription = (text) => {
+//   const tagStart = text.lastIndexOf('{')
 
-  const withoutTags = tagStart !== -1 ? text.substring(0, tagStart) : text
-  return withoutTags
-}
+//   const withoutTags = tagStart !== -1 ? text.substring(0, tagStart) : text
+//   return withoutTags
+// }
 
 const cleanNumber = (num) => {
   if (!num || num === '-') return 0

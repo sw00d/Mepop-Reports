@@ -6,6 +6,10 @@ import 'react-virtualized/styles.css'
 import '../globalStyle.css'
 import 'react-tippy/dist/tippy.css'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
+// Initialize Date Picker
+import 'react-dates/initialize'
+import 'react-dates/lib/css/_datepicker.css'
+import '../styles/datePicker.css'
 
 import Firebase, { FirebaseContext, withFirebase } from '../firebase'
 import Layout from '../components/Layout'
@@ -15,7 +19,6 @@ import Loading from '../styles/elements/Loading'
 import store from '../store'
 import { UPDATE_USER } from '../store/generalReducer'
 import { fetchFiles } from '../store/actions/files'
-import { setupLocationKey } from '../store/actions/keySetup'
 // import { processFiles } from '../dataProcessing'
 
 export const MyApp = (props) => {

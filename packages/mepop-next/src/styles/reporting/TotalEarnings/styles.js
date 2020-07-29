@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Card from '../../../styles/elements/Card'
+import Card from '../../elements/Card'
 
 const label = ({ theme }) => (
   `

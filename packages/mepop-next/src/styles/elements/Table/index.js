@@ -66,7 +66,7 @@ const rowStyle = (props, activeRow) => {
       color: activeRow === props.index && props.index !== -1 ? theme.colors.mainBg
         : theme.colors.textGrey,
       background:
-        activeRow === props.index && props.index !== -1 ? theme.colors.pastelTeal
+        activeRow === props.index && props.index !== -1 ? theme.colors.teal
           : props.index % 2 === 0
             ? theme.colors.greyLight2
             : theme.colors.mainBg

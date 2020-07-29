@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router'
+
 import Flex from '../styles/layout/Flex'
 import styled from 'styled-components'
 import Sidebar from './Sidebar'
-import { useRouter } from 'next/router'
+import DateContainer from './DateContainer'
 
-const getHeaderText = pathname => {
+const getheaderContent = pathname => {
   switch (pathname) {
     case '/dashboard':
       return 'Dashboard'
@@ -13,13 +15,15 @@ const getHeaderText = pathname => {
       return 'Files'
     case '/settings':
       return 'Settings'
+    case '/fees-calculator':
+      return 'Fees Calculator'
     default:
       return 'Mepop'
   }
 }
-export default (props) => {
+const Layout = (props) => {
   const router = useRouter()
-  const heading = getHeaderText(router.pathname)
+  const heading = getheaderContent(router.pathname)
   return (
     <Flex
       justifyContent='center'
@@ -35,6 +39,9 @@ export default (props) => {
 
         <Header>
           {heading}
+          {(heading === 'Reports' || heading === 'Dashboard') ? (
+            <DateContainer page={heading} />
+          ) : null}
         </Header>
         <Body>
           {props.children}
@@ -45,18 +52,17 @@ export default (props) => {
   )
 }
 
+export default Layout
+
 const Body = styled.div`
     overflow: auto;
     height:calc(100vh - 45px);
     width:100vw;
-    /* align-items: center;
-    justify-content: center;
-    display: flex; */
 `
 const Header = styled.div`
     background: white;
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     border-bottom: 1px solid ${({ theme }) => theme.colors.mainBg};
     display: flex;
     align-items:center;
@@ -65,4 +71,5 @@ const Header = styled.div`
     color: ${({ theme }) => theme.colors.primary};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     font-size: 20px;
+    justify-content: space-between;
 `

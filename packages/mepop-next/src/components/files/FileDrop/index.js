@@ -10,21 +10,26 @@ import Tooltip from '../../../styles/elements/Tooltip'
 import Text from '../../../styles/elements/Text'
 import { fetchFiles } from '../../../store/actions/files'
 import { useSelector, useDispatch } from 'react-redux'
+import Spinner from '../../../styles/elements/Loading/Spinner'
 
 const Dropzone = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
   const { files, user } = useSelector(state => state.generalReducer)
   const [loading, setLoading] = useState(files.length)
   const [buttonDisable, disableBtns] = useState(false)
+  const [activeBtn, activateBtn] = useState(null)
   const startFetch = useCallback(() => {
     disableBtns(true)
-    setLoading(true)
     fetchFiles(user, { firebase, dispatch }, () => {
       setLoading(false)
       disableBtns(false)
+      activateBtn(null)
     })
   }, [])
-  useEffect(() => startFetch(), [startFetch])
+  useEffect(() => {
+    setLoading(true)
+    startFetch()
+  }, [startFetch])
 
   const onDrop = useCallback(acceptedFiles => {
     setLoading(true)
@@ -58,7 +63,7 @@ const Dropzone = withFirebase(({ firebase }) => {
         <p>Files must be from Depop to be valid</p>
       </DropZone>
       {
-        <Card headerText='Current Files' isLoading={loading}>
+        <Card headerContent='Uploaded Files' isLoading={loading} minHeight='200px'>
           {
             files.length
               ? (
@@ -72,11 +77,21 @@ const Dropzone = withFirebase(({ firebase }) => {
                       <DeleteBtn
                         disabled={buttonDisable}
                         aria-label={`Click to delete ${filename}`}
-                        onClick={() => deleteFile(filename)}
+                        onClick={() => {
+                          console.log(i)
+                          deleteFile(filename)
+                          activateBtn(i)
+                        }}
                       >
-                        <i
-                          className='fa fa-close'
-                        />
+                        {
+                          buttonDisable && activeBtn === i ? (
+                            <Spinner width='9px' color='red' size='2' />
+                          ) : (
+                            <i
+                              className='fa fa-close'
+                            />
+                          )
+                        }
                       </DeleteBtn>
                     </Tooltip>
                     {filename}
@@ -120,17 +135,25 @@ const H2 = styled.h2`
     font-weight: ${({ theme }) => theme.fontWeights.regular};
 `
 const Row = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
-  padding: 3px 0px 0px 5px;
+  padding: 3px 0px 3px 5px;
   border-bottom: ${({ theme, key }) => theme.colors.mainBg} 1px solid;
-  background: ${({ theme, index }) => index % 2 === 0 ? theme.colors.mainBg : theme.colors.greyLighter};
+  /* background: ${({ theme, index }) => index % 2 === 0 ? theme.colors.mainBg : theme.colors.greyLighter}; */
 `
 const DeleteBtn = styled.button`
   margin-right: 5px;
   cursor: pointer;
-    color: ${({ theme }) => theme.colors.red};
+  color: ${({ theme }) => theme.colors.red};
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction
   &:hover {
-  color: ${({ theme }) => theme.colors.redDark};
+    color: ${({ theme }) => theme.colors.redDark};
   }
 `
 const Table = styled.div`

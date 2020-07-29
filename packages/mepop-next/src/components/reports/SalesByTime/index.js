@@ -3,15 +3,12 @@ import moment from 'moment'
 
 // Utils
 import { groupByTime } from '../util/grouping'
-import { formatSalesTable } from '../util/tables'
 
 // Components
 import BubbleChart from '../../../styles/reporting/BubbleChart'
 import Flex from '../../../styles/layout/Flex'
 import styled from 'styled-components'
-import Text from '../../../styles/elements/Text'
-import Card from '../../../styles/elements/Card'
-import Table from '../../../styles/elements/Table'
+
 import SalesTable from '../../general/SalesTable'
 
 const xLabels = [
@@ -29,9 +26,9 @@ const SalesByDate = ({ data }) => {
     <Flex flexWrap='wrap'>
 
       <BubbleChart
-        minWidth='880px'
+        minWidth='850px'
         isLoading={!data.sales}
-        headerText='Sales By time'
+        headerContent='Sales By time'
         data={chartData.arr}
         tooltipContent={tooltipContent}
         xLabels={xLabels}
@@ -64,12 +61,12 @@ const PopOut = ({ data, xLabels, yLabels, coords: { x, y }, onClose }) => {
   const time = moment(xLabels[x], 'h a').format('H')
   const day = yLabels[y].toLowerCase()
   const sales = data[day][parseInt(time)] || []
-  // const formattedSales = formatSalesTable({ sales })
   return (
     <SalesTable
+      minWidth='400px'
       data={sales}
       onClose={onClose}
-      headerText={`${day} - ${xLabels[x]}`}
+      headerContent={`${day} - ${xLabels[x]}`}
       columnLabels={
         ['date sold', 'username', 'item price']
       }

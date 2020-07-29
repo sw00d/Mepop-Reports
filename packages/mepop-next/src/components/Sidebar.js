@@ -63,6 +63,25 @@ const Sidebar = (props) => {
           </Link>
         </Tooltip>
         <Tooltip
+          title='Fee Calculator'
+          disabled={!isMini}
+          distance={0}
+          position='top-start'
+          arrow={false}
+        >
+
+          <Link href='/fees-calculator'>
+            <Row
+              isMini={isMini}
+              onClick={() => updateRoute('/fees-calculator')}
+              isActive={activeRoute === '/fees-calculator'}
+            >
+              <I className='fa fa-calculator' />
+              <RowText isMini={isMini}>Fees Calculator</RowText>
+            </Row>
+          </Link>
+        </Tooltip>
+        <Tooltip
           title='Files'
           disabled={!isMini}
           distance={0}

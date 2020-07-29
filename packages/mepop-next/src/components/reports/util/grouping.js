@@ -121,7 +121,7 @@ export const groupByTime = (data) => {
   return { arr: newData, obj }
 }
 
-export const groupByCategory = (data) => {
+export const groupByCategory = (data, gross) => {
   const newData = []
   const allCategories = {}
   if (data.sales) {
@@ -133,32 +133,18 @@ export const groupByCategory = (data) => {
       } else allCategories[category] = { sold: 1, gross: totalNum }
     })
   }
-  const other = { sold: 0, gross: 0 }
-  Object.keys(allCategories).forEach((key) => {
-    if (allCategories[key].sold === 1) {
-      other.sold += 1
-      other.gross += allCategories[key].gross
-    }
-  })
-  Object.keys(allCategories).forEach((key) => {
-    if (allCategories[key].sold > 1) {
-      newData.push({
-        Category: key,
-        'Items Sold': allCategories[key].sold,
-        'Gross Earnings': allCategories[key].gross
-      })
-    }
-  })
-  newData.push({
-    Category: 'Other',
-    'Items Sold': other.sold,
-    'Gross Earnings': other.gross
-  })
 
+  Object.keys(allCategories).forEach((key) => {
+    newData.push({
+      Category: capitalize(key),
+      'Items Sold': allCategories[key].sold,
+      'Gross Earnings': allCategories[key].gross
+    })
+  })
   newData.sort((a, b) => {
     return b['Items Sold'] - a['Items Sold']
   })
-  return newData
+  return newData.slice(0, 15)
 }
 
 export const groupByPaymentType = (data) => {
@@ -173,7 +159,7 @@ export const groupByPaymentType = (data) => {
       } else paymentTypes[payment_type] = { sold: 1, gross: totalNum }
     })
   }
-  const colors = [theme.colors.pastelOrange, theme.colors.sunset, theme.colors.greenSoft, theme.colors.pastelBlueLight]
+  const colors = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.primary, theme.colors.pastelBlueLight]
 
   Object.keys(paymentTypes).forEach((key, i) => {
     newData.push({
@@ -214,4 +200,13 @@ function getDateInfo (date) {
   var nthOfMoth = Math.ceil(moment(date).date() / 7)
   if (nthOfMoth >= 5) return { week: 4, month }
   else return { week: nthOfMoth, month }
+}
+
+function capitalize (str) {
+  str = str.split(' ')
+  for (let i = 0; i < str.length; i++) {
+    str[i] = str[i][0].toUpperCase() + str[i].substr(1)
+  }
+
+  return str.join(' ')
 }

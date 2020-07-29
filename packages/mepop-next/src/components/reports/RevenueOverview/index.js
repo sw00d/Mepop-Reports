@@ -7,6 +7,7 @@ import Text from '../../../styles/elements/Text'
 import Flex from '../../../styles/layout/Flex'
 import Areachart from '../../../styles/reporting/AreaChart'
 import styled from 'styled-components'
+import theme from '../../../theme'
 
 const RevenueOverview = ({ data }) => {
   const chartData = groupByWeek(data)
@@ -27,7 +28,13 @@ const RevenueOverview = ({ data }) => {
     }
   }
   return (
-    <Card sx={{ overflow: 'hidden' }}>
+    <Card
+      sx={{ overflow: 'hidden', boxShadow: theme.shadows.normal }}
+      proOnly={{
+        component: 'Revenue Overview',
+        img: 'revenue-overview.png'
+      }}
+    >
       <Flex flexDirection='column' width={[1]} p={50}>
 
         <Title color='primary' fontSize={25}>{week}</Title>

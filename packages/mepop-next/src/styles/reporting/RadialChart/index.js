@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Card from '../../elements/Card'
 import { useSelector } from 'react-redux'
 
-const COLORS = [theme.colors.warning, theme.colors.sunset, theme.colors.greenSoft, theme.colors.pastelBlueLight]
+const COLORS = [theme.colors.warning, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.pastelBlueLight]
 
 const RadialGraph = ({
   float,
@@ -18,7 +18,7 @@ const RadialGraph = ({
   const [index, setIndex] = useState(0)
   const { allData: { currency_type } } = useSelector(state => state.generalReducer)
   return (
-    <ChartContainer>
+    <ChartContainer {...rest}>
       <ResponsiveContainer width='100%' height='100%'>
         <PieChart>
           <Pie
@@ -83,9 +83,9 @@ const ActiveShape = (props) => {
 }
 
 export const ChartContainer = styled.div`
-  min-width: 250px;
+  min-height: ${({ height }) => height || 250}px;
   height: 100px;
-  min-height: 250px;
+  min-width: 250px;
   display: flex;
   align-items:center;
 `

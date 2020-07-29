@@ -7,19 +7,20 @@ import { useMemo, useState } from 'react'
 
 const SalesByDate = ({ data }) => {
   const [revenue, showRevenue] = useState(false)
-  const chartData = useMemo(() => groupByCategory(data), [data])
-  let max = chartData[0]
+  const chartData = useMemo(() => groupByCategory(data, revenue), [revenue, data])
+  const max = { gross: chartData[0], sold: chartData[0] }
   chartData.forEach((current, i) => {
-    if (current['Gross Earnings'] > max['Gross Earnings']) max = current
+    if (current['Gross Earnings'] > max.gross['Gross Earnings']) max.gross = current
+    if (current['Items Sold'] > max.sold['Items Sold']) max.sold = current
   })
-
+  if (!chartData.length) return null
   return (
     <Flex flexWrap='wrap'>
 
       <VertComposedChart
         minWidth='400px'
         maxWidtdh='100%'
-        headerText='Sales By Category'
+        headerContent={`Sales By Category${chartData.length < 15 ? '' : ' - ( Top 15 )'}`}
         data={chartData}
         xdataKey={revenue ? 'Gross Earnings' : 'Items Sold'}
         ydataKey='Category'
@@ -32,20 +33,27 @@ const SalesByDate = ({ data }) => {
         }}
       />
       <Flex justifyContent='space-between' flexWrap='wrap' alignItems='stretch' maxWidth='50%'>
-        <ValueBox
-          minWidth='31%'
-          title='Highest Earning Category'
-          string
-          smallText
-          value={`${max.Category} - ${data.currency_type}${max['Gross Earnings']} Gross Profit`}
-        />
-        <ValueBox
-          minWidth='31%'
-          title='Most Sold Category'
-          string
-          smallText
-          value={`${chartData[0].Category} - ${chartData[0]['Items Sold']} Items Sold`}
-        />
+        {
+          max
+            ? (
+              <>
+                <ValueBox
+                  minWidth='31%'
+                  title='Highest Earning Category'
+                  string
+                  smallText
+                  value={`${max.gross.Category} - ${data.currency_type}${max.gross['Gross Earnings']} Gross Profit`}
+                />
+                <ValueBox
+                  minWidth='31%'
+                  title='Most Sold Category'
+                  string
+                  smallText
+                  value={`${max.sold.Category} - ${max.sold['Items Sold']} Items Sold`}
+                />
+              </>
+            ) : null
+        }
         <ValueBox
           minWidth='31%'
           value={data.sales ? data.sales.length : 0}

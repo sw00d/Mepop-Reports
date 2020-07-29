@@ -7,23 +7,27 @@ import RadialChart from '../../styles/reporting/RadialChart'
 import Flex from '../../styles/layout/Flex'
 import styled from 'styled-components'
 
-const SaleDetails = ({ row, getUrl, onClose }) => {
+const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props }) => {
   const chartData = [
     {
       name: 'Sale Price', value: currency(row['item price']).value, fill: 'green'
     },
     {
-      name: 'Shipping', value: currency(row['buyer-paid-shipping']).value, fill: 'blueLight'
+      name: 'Buyer Shipping', value: currency(row['buyer-paid shipping']).value, fill: 'blueLight'
     },
     {
-      name: 'Fees', value: currency(row.fees).value, fill: 'red'
+      name: 'Seller Shipping', value: currency(row['seller-paid shipping']).value, fill: 'bluePastel'
+    },
+    {
+      name: 'Depop Fees', value: currency(row['depop fees']).value, fill: 'red'
     }
   ]
   return (
     <Card
       minWidth='500px'
       defaultTooltip={`Sale card - @${row.username}`}
-      headerText={<CardTitle getUrl={getUrl} row={row} onClose={onClose} />}
+      headerContent={<CardTitle getUrl={getUrl} row={row} onClose={onClose} />}
+      {...props}
     >
       <Flex justifyContent='space-between' width={[1]} flexWrap='wrap'>
 
@@ -49,13 +53,26 @@ const SaleDetails = ({ row, getUrl, onClose }) => {
         <Flex alignItems='center' width={[1]} justifyContent='center'>
 
           <RadialChart
+            radius={60}
             data={chartData}
+            height={chartHeight}
           />
           <ValueBox
-            ml='0px'
+            m='0px'
+            mr='4px'
             title='Item Description'
             string
-            value={<Description>{row['item description']}</Description>}
+            value={(
+              <Description>
+                {row['item description']}<br /><br />
+                <strong>Buyer:</strong> {row.name}<br />
+                <strong>Sale Price:</strong> {currencyType}{currency(row['itme price']).value}<br />
+                <strong>Buyer-Paid Shipping:</strong> {currencyType}{currency(row['buyer-paid shipping']).value}<br />
+                <strong>Seller-Paid Shipping:</strong> {currencyType}{currency(row['seller-paid shipping']).value}<br />
+                <strong>Depop Fees:</strong> {currencyType}{currency(row['depop fees']).value}<br />
+                <strong>Address:</strong> {row.address}<br />
+              </Description>
+            )}
             value2='-'
           />
         </Flex>

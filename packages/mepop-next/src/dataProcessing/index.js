@@ -3,18 +3,6 @@ import { readString } from 'react-papaparse'
 import currency from 'currency.js'
 import moment from 'moment'
 import { headers } from '../assets/exampleBuyers'
-// export const filterData = (data, { start, end }) => {
-//   const filteredData = []
-//   data.sales.forEach((file) => {
-//     if (
-//       new Date(moment(file.date_of_sale, 'MM-DD-YYYY').format()) >= start &&
-//       new Date(moment(file.date_of_sale, 'MM-DD-YYYY').format()) <= end
-//     ) {
-//       filteredData.push(file)
-//     }
-//   })
-//   return setUpState(filteredData, data.currency_type)
-// }
 
 // Reads CSV Content
 export const processFiles = (files, setState, err) => {
@@ -57,7 +45,7 @@ export const initState = (originalFiles, err) => {
   const sorted = sort(files)
   return setUpState(sorted)
 }
-const setUpState = (files, currencyType) => {
+export const setUpState = (files, currencyType) => {
   const data = {}
   data.sales = files
   data.total_earnings = 0

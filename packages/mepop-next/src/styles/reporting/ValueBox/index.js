@@ -64,7 +64,7 @@ const ValueBox = ({
                 decimals={float ? 2 : 0}
                 start={noAnimate ? value : 0}
                 end={float ? parseFloat(value) : typeof value === 'number' ? value : 0}
-              />
+                />
 
           }
         </Value>
@@ -129,7 +129,7 @@ const Container = styled(Flex)`
     flex: 1 1;
     box-shadow: ${props => props.theme.shadows.normal};
     border-radius: ${props => props.theme.borderRadius.normal};
-    min-height: 108px;
+    min-height: 92px;
     flex-direction:column;
 `
 const Content = styled.div`

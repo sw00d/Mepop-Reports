@@ -1,27 +1,37 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import _ from 'lodash'
 import { useSelector } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
+import styled from 'styled-components'
 
 import Card from '../../../styles/elements/Card'
 import Tooltip from '../../../styles/elements/Tooltip'
-import styled from 'styled-components'
 import SalesTable from '../../general/SalesTable'
+import SaleDetails from '../../general/SaleDetails'
 import Flex from '../../../styles/layout/Flex'
+import { getGeopoints } from '../util/geopoints'
 
 const SalesMap = ({ data, styles }) => {
   const [salesToMap, setSalesToMap] = useState([])
   const [salesToShow, setSalesToShow] = useState({})
-  const { mapQuestKey, googleMapsKey, geocodes } = useSelector(state => state.generalReducer)
+  const [activeSale, activateSale] = useState(null)
+  const { googleMapsKey } = useSelector(state => state.generalReducer)
+  const [geocodes, setGeocodes] = useState([])
+
+  useEffect(() => {
+    getGeopoints(data, (res) => {
+      setGeocodes(res)
+    })
+  }, [data])
 
   useEffect(() => {
     return setSalesToMap(_.values(geocodes))
-  }, [mapQuestKey, geocodes])
+  }, [geocodes])
 
   if (!googleMapsKey) return null
 
   return (
-    <Card headerText='Map of Sales (US ONLY)'>
+    <Card headerContent='Map of Sales (US ONLY)'>
       <Flex width={[1, 1, 1, 1]}>
         <MapContainer mini={salesToShow.sales}>
           <GoogleMapReact
@@ -29,6 +39,8 @@ const SalesMap = ({ data, styles }) => {
             defaultCenter={{ lat: 39, lng: -98 }}
             defaultZoom={0}
             yesIWantToUseGoogleMapApiInternals
+            gestureHandling='cooperative'
+            options={{ gestureHandling: 'cooperative' }}
             minWidth='500px'
           >
             {salesToMap.length
@@ -36,34 +48,47 @@ const SalesMap = ({ data, styles }) => {
                 const { geopoint: { lat, lng } } = zip
                 if (getTitle(zip).includes('undefined')) return null // this weeds out other countries
                 return (
-                  <Tooltip
-                    offset={40}
-                    title={getTitle(zip)}
-                    hideOnClick={false}
+                  <Marker
+                    setSalesToShow={setSalesToShow}
+                    activateSale={activateSale}
+                    zip={zip}
                     key={i}
                     lat={lat}
                     lng={lng}
-                  >
-                    <I className='fa fa-map-marker' onClick={() => setSalesToShow(zip)} />
-                  </Tooltip>
+                  />
                 )
               })
               : null}
 
           </GoogleMapReact>
-          {salesToShow.sales
-            ? (
-              <SalesTable
-                m='0'
-                minWidth='500px'
-                data={salesToShow.sales}
-                boxShadow='none'
-                headerText={getTitle(salesToShow)}
-                onClose={() => setSalesToShow({})}
-              />
-            )
-            : null}
         </MapContainer>
+        {salesToShow.sales && !activeSale
+          ? (
+            <SalesTable
+              boxShadow='none'
+              m='0'
+              minWidth='50%'
+              data={salesToShow}
+              currencyType={data.currency_type}
+              headerContent={getTitle(salesToShow)}
+              handleRowClick={(row, i) => {
+                activateSale(row.rowData)
+              }}
+              onClose={() => setSalesToShow({})}
+            />
+          ) : activeSale ? (
+            <SaleDetails
+              chartHeight={200}
+              currencyType={data.currency_type}
+              boxShadow='none'
+              m='0'
+              minWidth='50%'
+              onClose={() => activateSale(null)}
+              row={activeSale}
+              getUrl={data.getUrl}
+            />
+          )
+            : null}
       </Flex>
     </Card>
   )
@@ -71,9 +96,25 @@ const SalesMap = ({ data, styles }) => {
 
 export default SalesMap
 
+const Marker = memo(({ zip, setSalesToShow, activateSale }) => {
+  return (
+    <Tooltip
+      offset={40}
+      title={getTitle(zip)}
+      hideOnClick={false}
+    >
+      <I
+        className='fa fa-map-marker' onClick={() => {
+          activateSale(null)
+          setSalesToShow(zip)
+        }}
+      />
+    </Tooltip>)
+})
+
 // utils
-function getTitle ({ location }) {
-  const title = `${location.city}, ${location.state} ${location.zip}`
+function getTitle ({ location, sales }) {
+  const title = `${location.city}, ${location.state} ${location.zip} - ${sales.length}`
   return title
 }
 
@@ -86,9 +127,9 @@ const MapContainer = styled.div`
   display: flex;
 `
 const I = styled.i`
-  font-size: 40px;
+  font-size: 25px;
   cursor: pointer;
-  color: ${({ theme }) => theme.colors.sunset};
+  color: ${({ theme }) => theme.colors.pastelRose};
 
   &:hover {
     color: ${({ theme }) => theme.colors.red}

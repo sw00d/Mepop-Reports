@@ -8,13 +8,14 @@ const SalesAndListingsByDay = ({ data }) => {
 
   return (
     <Barchart
-      headerText='Sales and Listings by day'
-      color='pastelGreen'
-      color2='pastelBlue'
+      headerBorder='none'
+      headerContent='Sales and Listings by day'
       data={chartData}
       xdataKey='Day'
-      barDataKey='Items Sold'
-      barDataKey2='Items Listed'
+      bars={[
+        { dataKey: 'Items Sold', size: 20, color: 'pastelRose' },
+        { dataKey: 'Items Listed', size: 20, color: 'pastelBlue' }
+      ]}
     />
   )
 }

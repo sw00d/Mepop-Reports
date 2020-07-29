@@ -25,6 +25,7 @@ const space = [0, 4, 8, 16, 32, 64, 128, 256, 512]
 // color values
 let colors = {
   white: '#fff',
+  whiteDark: '#f3f3f3',
   black: '#000',
   textGrey: '#585858',
   greyDarker: '#585853',
@@ -47,13 +48,14 @@ let colors = {
   yellowDark: '#bb6124',
   yellow: '#FFBB2a',
   yellowLight: '#FFC39B',
-  sunset: '#E56469',
   red: '#CD0019',
+  depopRed: '#FF2300',
   redDark: '#9C0013',
   redLight: '#FDC0C7',
   redDisabled: '#C19C9C',
   green: '#069f06',
   purple: '#86529A',
+  teal: '#24867A',
 
   // Pastel Colors
   pastelPurple: '#8884d8',
@@ -61,11 +63,11 @@ let colors = {
   pastelBlueLight: '#8dd1e1',
   pastelGreen: '#82ca9d',
   pastelGreenLight: '#a4de6c',
-  pastelTeal: '#24867A',
   pastelGreenLighter: '#d0ed57',
-  pastelYellow: '#FDFD96',
+  pastelYellow: '#FFF933',
   pastelOrange: '#ffc658',
-  pastelPink: '#ffd1dc'
+  pastelPink: '#ffd1dc',
+  pastelRose: '#fc746d'
 }
 
 // color aliases
@@ -87,11 +89,11 @@ colors = {
     colors.pastelBlueLight,
     colors.pastelGreen,
     colors.pastelGreenLight,
-    colors.pastelTeal,
     colors.pastelGreenLighter,
     colors.pastelYellow,
     colors.pastelOrange,
-    colors.pastelPink
+    colors.pastelPink,
+    colors.pastelRose
   ]
 }
 

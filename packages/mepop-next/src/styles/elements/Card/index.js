@@ -3,8 +3,16 @@ import styled from 'styled-components'
 import Flex from '../../layout/Flex'
 import Switch from '../Switch'
 import Spinner from '../Loading/Spinner'
-
-const Card = ({ onClose, switchLabel, switchCheck, switchEvent, ...props }) => {
+import BlurShield from '../BlurShield'
+const Card = ({
+  onClose,
+  headerBorder,
+  switchLabel,
+  switchCheck,
+  switchEvent,
+  proOnly,
+  ...props
+}) => {
   return (
     <Container
       m='10px'
@@ -12,44 +20,52 @@ const Card = ({ onClose, switchLabel, switchCheck, switchEvent, ...props }) => {
       alignItems='center'
       {...props}
     >
-      {props.headerText ? (
-        <Header boxShadow={props.boxShadow}>
-          {props.headerText}
-          {
-
-            switchLabel || onClose ? (
-              <Flex alignItems='center'>
-                {
-                  switchLabel
-                    ? (
-                      <Switch
-                        label={switchLabel}
-                        checked={switchCheck}
-                        onChange={switchEvent}
-                      />) : null
-                }
-                {
-                  onClose ? (
-                    <Button onClick={onClose}>
-                      <i className='fa fa-close' />
-                    </Button>
-                  ) : null
-                }
-              </Flex>
-            )
-              : null
-          }
-        </Header>
-      ) : null}
       {
-        props.isLoading
-          ? (
-            <LoadingContainer>
-              <Spinner />
-            </LoadingContainer>)
-          : (
-            <>{props.children}</>
-          )
+        proOnly ? (
+          <BlurShield {...proOnly} />
+        ) : (
+          <>
+            {props.headerContent ? (
+              <Header boxShadow={props.boxShadow} border={headerBorder}>
+                {props.headerContent}
+                {
+
+                  switchLabel || onClose ? (
+                    <Flex alignItems='center'>
+                      {
+                        switchLabel
+                          ? (
+                            <Switch
+                              label={switchLabel}
+                              checked={switchCheck}
+                              onChange={switchEvent}
+                            />) : null
+                      }
+                      {
+                        onClose ? (
+                          <Button onClick={onClose}>
+                            <i className='fa fa-close' />
+                          </Button>
+                        ) : null
+                      }
+                    </Flex>
+                  )
+                    : null
+                }
+              </Header>
+            ) : null}
+            {
+              props.isLoading
+                ? (
+                  <LoadingContainer>
+                    <Spinner />
+                  </LoadingContainer>)
+                : (
+                  <>{props.children}</>
+                )
+            }
+          </>
+        )
       }
 
     </Container>
@@ -102,15 +118,16 @@ const Header = styled.div`
   text-transform: uppercase;
   position: relative;
   display:flex;
-  height:40px;
+  min-height:40px;
   display:flex;
   align-items: center;
   justify-content: space-between;
   width:100%;
-  border: ${({ boxShadow, theme }) => boxShadow === 'none'
+  border: ${({ boxShadow, theme, border }) =>
+                              border || (boxShadow === 'none'
                               ? theme.colors.greyLightest
-                              : 'transparent'} 1px solid;
-  border-bottom: 1px solid ${props => props.theme.colors.greyLightest};
+                              : 'transparent')} 1px solid;
+  border-bottom: ${({ border, theme }) => border || `1px solid ${theme.colors.greyLightest}`};
   background-color: ${props => props.theme.colors.white};
   border-top-right-radius: ${props => props.theme.borderRadius.normal};
   border-top-left-radius: ${props => props.theme.borderRadius.normal};

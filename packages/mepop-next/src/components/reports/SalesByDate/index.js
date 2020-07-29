@@ -11,11 +11,12 @@ const SalesByDate = ({ data }) => {
 
   return (
     <Barchart
-      headerText='Sales by date'
-      color='pastelTeal'
+      headerContent='Sales by date'
       data={chartData}
       xdataKey='Date Sold'
-      barDataKey='Items Sold'
+      bars={[
+        { dataKey: 'Items Sold', size: 70, color: 'pastelGreen' }
+      ]}
       tickFormatter={formatXAxis}
       labelFormatter={formatTooltip}
       switchLabel='Show dates with no sales'

@@ -6,7 +6,7 @@ import Box from '../../layout/Box'
 import styled from 'styled-components'
 
 const Input = ({ htmlfor, label, ...rest }) => {
-  const [labelIsShown, showLabel] = useState(false)
+  const [labelIsShown, showLabel] = useState(!!rest.value)
   const handleFocus = (e) => {
     if (e.target.value && !labelIsShown) showLabel(true)
     else if (!e.target.value && labelIsShown) showLabel(false)
@@ -15,11 +15,16 @@ const Input = ({ htmlfor, label, ...rest }) => {
   }
   return (
     <Box>
-      <Label
-        htmlfor={htmlfor}
-        label={label}
-        color={!labelIsShown ? 'transparent' : null}
-      />
+      {
+        label
+          ? (
+            <Label
+              htmlfor={htmlfor}
+              label={label}
+              fontWeight={500}
+              color={!labelIsShown ? 'transparent' : null}
+            />) : null
+      }
       <StyleInput
         {...rest}
         onChange={handleFocus}
@@ -45,5 +50,9 @@ const StyleInput = styled(RebassInput)`
     padding-left: 15px;
     color: ${({ theme }) => theme.colors.primary};
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
+    border-radius: ${({ theme }) => theme.borderRadius.normal};
+    &::placeholder {
+      font-weight: ${({ theme }) => theme.fontWeights.regular};
+    }
 `

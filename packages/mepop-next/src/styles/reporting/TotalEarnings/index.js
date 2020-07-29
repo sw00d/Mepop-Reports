@@ -3,7 +3,7 @@ import CountUp from 'react-countup'
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Sector
 } from 'recharts'
-import Switch from '../../../styles/elements/Switch'
+import Switch from '../../elements/Switch'
 import theme from '../../../theme'
 
 import {
@@ -15,7 +15,7 @@ import {
   BoxValue
 } from './styles'
 
-const COLORS = [theme.colors.warning, theme.colors.sunset, theme.colors.greenSoft, theme.colors.pastelBlueLight]
+const COLORS = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.pastelBlueLight]
 
 const RadialGraph = ({
   title,
@@ -33,7 +33,6 @@ const RadialGraph = ({
   useEffect(() => {
     setActiveVal(value)
   }, [value])
-
   return (
     <Container flexDirection='row' justifyContent='space-evenly' {...rest}>
       {

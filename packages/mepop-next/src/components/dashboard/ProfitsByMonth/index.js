@@ -1,61 +1,33 @@
 import React from 'react'
-import {
-  BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell, YAxis
-} from 'recharts'
+import BarChart from '../../../styles/reporting/BarChart'
 import styled from 'styled-components'
+import { getProfitsByMonth } from '../util'
 
 // styles
-import Card from '../../../styles/elements/Card'
-import theme from '../../../theme'
 
 const Barchart = ({
   color,
   data,
   xdataKey,
   barDataKey,
-  highlight,
   barGap,
   barSize,
   ...props
 }) => {
-  const getColor = (entry, i) => {
-    if (highlight) {
-      if (highlight.condition(entry, i)) {
-        return theme.colors[highlight.color]
-      } else {
-        return theme.colors[color] || theme.colors.primary
-      }
-    } else {
-      return theme.colors[color] || theme.colors.primary
-    }
-  }
+  const monthlyNetProfit = getProfitsByMonth(data)
 
   return (
-    <Card {...props}>
-      <Title>Net Profit by month</Title>
-      <ChartWrap>
-        <ResponsiveContainer width='100%' height='100%'>
-          <BarChart data={data} barCategoryGap={barGap} barSize='10px'>
-            <XAxis dataKey={xdataKey} />
-            {/* <YAxis dataKey='sales' /> */}
-            <Tooltip formatter={formatTooltip} label='Net Profit' />
-            <Bar
-              dataKey={barDataKey}
-              type='monotone'
-            >
-              {
-                data.map((entry, index) => {
-                  const currentColor = getColor(entry, index)
-                  return (<Cell key={index} fill={currentColor} />)
-                })
-              }
-            </Bar>
-
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartWrap>
-
-    </Card>
+    <BarChart
+      headerBorder='none'
+      boxShadow='none'
+      headerContent='Net Earnings By Month'
+      data={monthlyNetProfit}
+      formatTooltip={(t, l) => formatTooltip(t, l, data)}
+      xdataKey='month'
+      bars={[
+        { dataKey: 'Net Profit', size: 50, color: 'pastelPurple' }
+      ]}
+    />
   )
 }
 
