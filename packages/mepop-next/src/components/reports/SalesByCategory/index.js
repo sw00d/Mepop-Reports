@@ -3,23 +3,23 @@ import { groupByCategory } from '../util/grouping'
 import VertComposedChart from '../../../styles/reporting/VertBarChart'
 import Flex from '../../../styles/layout/Flex'
 import ValueBox from '../../../styles/reporting/ValueBox'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, memo } from 'react'
 
-const SalesByDate = ({ data }) => {
+const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
   const [revenue, showRevenue] = useState(false)
   const chartData = useMemo(() => groupByCategory(data, revenue), [revenue, data])
   const max = { gross: chartData[0], sold: chartData[0] }
+  const min = { gross: chartData[0], sold: chartData[0] }
   chartData.forEach((current, i) => {
     if (current['Gross Earnings'] > max.gross['Gross Earnings']) max.gross = current
     if (current['Items Sold'] > max.sold['Items Sold']) max.sold = current
+    if (current['Gross Earnings'] < min.gross['Gross Earnings']) min.gross = current
+    if (current['Items Sold'] < min.sold['Items Sold']) min.sold = current
   })
   if (!chartData.length) return null
-  return (
-    <Flex flexWrap='wrap'>
-
+  if (halfSize) {
+    return (
       <VertComposedChart
-        minWidth='400px'
-        maxWidtdh='100%'
         headerContent={`Sales By Category${chartData.length < 15 ? '' : ' - ( Top 15 )'}`}
         data={chartData}
         xdataKey={revenue ? 'Gross Earnings' : 'Items Sold'}
@@ -32,57 +32,71 @@ const SalesByDate = ({ data }) => {
           showRevenue(!revenue)
         }}
       />
-      <Flex justifyContent='space-between' flexWrap='wrap' alignItems='stretch' maxWidth='50%'>
-        {
-          max
-            ? (
-              <>
-                <ValueBox
-                  minWidth='31%'
-                  title='Highest Earning Category'
-                  string
-                  smallText
-                  value={`${max.gross.Category} - ${data.currency_type}${max.gross['Gross Earnings']} Gross Profit`}
-                />
-                <ValueBox
-                  minWidth='31%'
-                  title='Most Sold Category'
-                  string
-                  smallText
-                  value={`${max.sold.Category} - ${max.sold['Items Sold']} Items Sold`}
-                />
-              </>
-            ) : null
-        }
-        <ValueBox
-          minWidth='31%'
-          value={data.sales ? data.sales.length : 0}
-          title='Items Sold'
-        />
-        <ValueBox
-          minWidth='31%'
-          float
-          currencyType={data.currency_type}
-          value={data.avg_price}
-          title='Average Item Price'
-        />
-        <ValueBox
-          minWidth='31%'
-          value={data.avg_time_listed}
-          title='Average Days Listed'
-        />
-        <ValueBox
-          minWidth='31%'
-          value={data.free_shipping}
-          title='Items Offered with Free Shipping'
-        />
+    )
+  }
+  return (
+    <Flex flexWrap='wrap'>
 
-      </Flex>
+      <VertComposedChart
+        headerContent={`Sales By Category${chartData.length < 15 ? '' : ' - ( Top 15 )'}`}
+        data={chartData}
+        xdataKey={revenue ? 'Gross Earnings' : 'Items Sold'}
+        ydataKey='Category'
+        height={500}
+        formatTooltip={(t, l) => formatTooltip(t, l, data)}
+        switchLabel='Show Earnings'
+        switchCheck={revenue}
+        switchEvent={() => {
+          showRevenue(!revenue)
+        }}
+      />
+      {
+        !hideBoxes ? (
+          <Flex justifyContent='space-between' flexWrap='wrap' alignItems='stretch' maxWidth='50%' flexDirection='column'>
+            {
+              max
+                ? (
+                  <>
+                    <ValueBox
+                      minWidth='50px'
+                      title='Highest Earning Category'
+                      string
+                      smallText
+                      value={`${max.gross.Category} - ${data.currency_type}${max.gross['Gross Earnings']} Gross Profit`}
+                    />
+                    <ValueBox
+                      minWidth='50px'
+                      title='Most Sold Category'
+                      string
+                      smallText
+                      value={`${max.sold.Category} - ${max.sold['Items Sold']} Items Sold`}
+                    />
+                    <ValueBox
+                      minWidth='50px'
+                      title='Lowest Earning Category'
+                      string
+                      smallText
+                      value={`${min.gross.Category} - ${data.currency_type}${min.gross['Gross Earnings']} Gross Profit`}
+                    />
+                    <ValueBox
+                      minWidth='50px'
+                      title='Least Sold Category'
+                      string
+                      smallText
+                      value={`${min.sold.Category} - ${min.sold['Items Sold']} Items Sold`}
+                    />
+                  </>
+                ) : null
+            }
+          </Flex>
+        ) : null
+      }
+
     </Flex>
   )
-}
+})
 
-export default (SalesByDate)
+export default (SalesByCategory)
 
 const formatTooltip = (tickItem, label, data) => {
   if (label === 'Gross Earnings') {

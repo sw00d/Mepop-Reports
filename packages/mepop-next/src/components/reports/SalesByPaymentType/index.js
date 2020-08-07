@@ -1,13 +1,13 @@
+import { useState, memo } from 'react'
+import styled from 'styled-components'
 
 import { groupByPaymentType } from '../util/grouping'
 import Flex from '../../../styles/layout/Flex'
 import Text from '../../../styles/elements/Text'
 import PieChart from '../../../styles/reporting/PieChart'
-import { useState } from 'react'
 import Card from '../../../styles/elements/Card'
-import styled from 'styled-components'
 
-const SalesByPaymentType = ({ data }) => {
+const SalesByPaymentType = memo(({ data }) => {
   const [chartType, toggleChartType] = useState(false)
   const chartData = groupByPaymentType(data)
   return (
@@ -69,7 +69,7 @@ const SalesByPaymentType = ({ data }) => {
     </Card>
 
   )
-}
+})
 
 export default (SalesByPaymentType)
 

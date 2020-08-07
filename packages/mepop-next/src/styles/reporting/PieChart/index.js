@@ -10,6 +10,7 @@ import styled from 'styled-components'
 const Piechart = ({
   data,
   dataKey,
+  disableAnimation,
   ...props
 }) => {
   return (
@@ -24,6 +25,7 @@ const Piechart = ({
               outerRadius={120}
               innerRadius={10}
               dataKey={dataKey}
+              isAnimationActive={typeof disableAnimation !== 'boolean'}
 
             >
               {

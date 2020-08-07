@@ -82,7 +82,10 @@ function FeeCalculator (props) {
               type='number'
               min='0'
               max='1000'
-              mb='3px'
+              mb='4px'
+              borderColor='greyDisabled'
+              pl='10px'
+              borderRadius
             />
             <Input
               label='Listing Price'
@@ -92,7 +95,10 @@ function FeeCalculator (props) {
               type='number'
               min='0'
               max='1000'
-              mb='3px'
+              mb='4px'
+              borderColor='greyDisabled'
+              pl='10px'
+              borderRadius
             />
 
             <Input
@@ -103,7 +109,10 @@ function FeeCalculator (props) {
               type='number'
               min='0'
               max='1000'
-              mb='3px'
+              mb='4px'
+              borderColor='greyDisabled'
+              pl='10px'
+              borderRadius
             />
 
             <Input
@@ -112,7 +121,7 @@ function FeeCalculator (props) {
               type='number'
               value='10'
               disabled
-              mb='3px'
+              mb='4px'
             />
             <Select
               rebass
@@ -120,6 +129,7 @@ function FeeCalculator (props) {
               name='currency'
               options={currencies}
               onChange={handleSelect}
+              mb='4px'
             />
             <Select
               rebass
@@ -127,6 +137,7 @@ function FeeCalculator (props) {
               name='sellerCountry'
               options={countries}
               onChange={handleSelect}
+              mb='4px'
 
             />
             <Select
@@ -135,6 +146,7 @@ function FeeCalculator (props) {
               name='buyerCountry'
               options={countries}
               onChange={handleSelect}
+              mb='4px'
 
             />
 

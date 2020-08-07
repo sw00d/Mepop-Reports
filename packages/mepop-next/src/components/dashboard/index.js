@@ -13,19 +13,13 @@ import { useSelector } from 'react-redux'
 
 // utils
 import { getAvgProfits, bestTimeToList, avgItemsPerDay } from './util'
-import Spinner from '../../styles/elements/Loading/Spinner'
 
 const Dashboard = (props) => {
   const { allData } = useSelector(state => state.generalReducer)
   const data = allData
 
   if (!data) return null
-  if (JSON.stringify(data) === '{}' || !data) {
-    return (
-      <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg'>
-        <Spinner />
-      </Flex>)
-  }
+
   const avgNetProfit = getAvgProfits(data)
   const whenToList = bestTimeToList(data)
   const itemsSoldPerDay = avgItemsPerDay(data)

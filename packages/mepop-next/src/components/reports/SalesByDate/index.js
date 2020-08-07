@@ -1,32 +1,31 @@
-import { useState } from 'react'
+import { memo, useState, useMemo } from 'react'
 import moment from 'moment'
 
 import Barchart from '../../../styles/reporting/BarChart'
 
 import { groupByDate } from '../util/grouping'
 
-const SalesByDate = ({ data }) => {
+const SalesByDate = memo(({ data }) => {
   const [allDates, showAllDates] = useState(false)
-  const chartData = groupByDate(data, allDates)
-
+  const soldDatesData = useMemo(() => groupByDate(data), [data])
+  const allDatesData = useMemo(() => groupByDate(data, true), [data])
+  const switchDisable = soldDatesData.length === allDatesData.length
   return (
     <Barchart
       headerContent='Sales by date'
-      data={chartData}
+      data={allDates ? allDatesData : soldDatesData}
       xdataKey='Date Sold'
       bars={[
         { dataKey: 'Items Sold', size: 70, color: 'pastelGreen' }
       ]}
       tickFormatter={formatXAxis}
       labelFormatter={formatTooltip}
-      switchLabel='Show dates with no sales'
+      switchLabel={switchDisable ? null : 'Show dates with no sales'}
       switchCheck={allDates}
-      switchEvent={() => {
-        showAllDates(!allDates)
-      }}
+      switchEvent={() => showAllDates(!allDates)}
     />
   )
-}
+})
 
 export default (SalesByDate)
 

@@ -197,9 +197,9 @@ export const groupByWeek = (data, showEmptyDates) => {
 
 function getDateInfo (date) {
   const month = moment(date).format('MMM YYYY')
-  var nthOfMoth = Math.ceil(moment(date).date() / 7)
-  if (nthOfMoth >= 5) return { week: 4, month }
-  else return { week: nthOfMoth, month }
+  var nthOfMonth = Math.ceil(moment(date).date() / 7)
+  if (nthOfMonth >= 5) return { week: 4, month }
+  else return { week: nthOfMonth, month }
 }
 
 function capitalize (str) {

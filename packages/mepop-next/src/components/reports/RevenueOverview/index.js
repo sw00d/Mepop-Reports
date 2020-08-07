@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 import { groupByWeek } from '../util/grouping'
 
@@ -9,7 +9,7 @@ import Areachart from '../../../styles/reporting/AreaChart'
 import styled from 'styled-components'
 import theme from '../../../theme'
 
-const RevenueOverview = ({ data }) => {
+const RevenueOverview = memo(({ data }) => {
   const chartData = groupByWeek(data)
   const [week, setWeek] = useState(chartData[chartData.length - 1].week)
   const [revenue, setRevenue] = useState({ gross: chartData[chartData.length - 1].Gross, net: chartData[chartData.length - 1].Net })
@@ -30,10 +30,12 @@ const RevenueOverview = ({ data }) => {
   return (
     <Card
       sx={{ overflow: 'hidden', boxShadow: theme.shadows.normal }}
-      proOnly={{
-        component: 'Revenue Overview',
-        img: 'revenue-overview.png'
-      }}
+      minHeight='420px'
+
+      // proOnly={{
+      //   component: 'Revenue Overview',
+      //   img: 'revenue-overview.png'
+      // }}
     >
       <Flex flexDirection='column' width={[1]} p={50}>
 
@@ -58,7 +60,7 @@ const RevenueOverview = ({ data }) => {
     </Card>
 
   )
-}
+})
 
 export default RevenueOverview
 

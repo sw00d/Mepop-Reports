@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, memo } from 'react'
 import moment from 'moment'
 
 // Utils
@@ -19,7 +19,7 @@ const xLabels = [
 ]
 const yLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-const SalesByDate = ({ data }) => {
+const SalesByDate = memo(({ data }) => {
   const [coords, activateCoords] = useState(null)
   const chartData = useMemo(() => groupByTime(data), [data])
   return (
@@ -53,7 +53,7 @@ const SalesByDate = ({ data }) => {
 
     </Flex>
   )
-}
+})
 
 export default (SalesByDate)
 

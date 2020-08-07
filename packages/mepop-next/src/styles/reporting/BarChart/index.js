@@ -13,6 +13,7 @@ const Barchart = ({
   tickFormatter,
   labelFormatter,
   formatTooltip,
+  disableAnimation,
   bars = [],
   ...props
 }) => {
@@ -27,6 +28,7 @@ const Barchart = ({
               bars.map(({ size, dataKey, color }, i) => {
                 return (
                   <Bar
+                    isAnimationActive={typeof disableAnimation !== 'boolean'}
                     key={i}
                     barSize={size}
                     dataKey={dataKey}

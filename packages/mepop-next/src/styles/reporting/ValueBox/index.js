@@ -64,7 +64,7 @@ const ValueBox = ({
                 decimals={float ? 2 : 0}
                 start={noAnimate ? value : 0}
                 end={float ? parseFloat(value) : typeof value === 'number' ? value : 0}
-                />
+              />
 
           }
         </Value>
@@ -133,8 +133,7 @@ const Container = styled(Flex)`
     flex-direction:column;
 `
 const Content = styled.div`
-  padding:5px;
-  padding-left: 10px;
+  padding:5px 10px;
   text-align: left;
   font-size: 20px;
   font-weight: ${props => props.theme.fontWeights.bold};

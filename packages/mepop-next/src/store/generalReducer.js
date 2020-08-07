@@ -6,6 +6,7 @@ export const SET_LOCATION_KEYS = 'SET_LOCATION_KEYS'
 export const SET_GEO_DATA = 'SET_GEO_DATA'
 export const UPDATE_RANGED_DATA = 'UPDATE_RANGED_DATA'
 export const UPDATE_COMPARE_DATA = 'UPDATE_COMPARE_DATA'
+export const TOGGLE_LOADING = 'TOGGLE_LOADING'
 
 const initialState = {
   user: {},
@@ -14,12 +15,15 @@ const initialState = {
   rangedData: {},
   compareData: {},
   geocodes: {},
-  mapQuestKey: null,
-  googleMapsKey: null
+  googleMapsKey: null,
+  loading: true
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case TOGGLE_LOADING: {
+      return { ...state, loading: typeof action.payload === 'boolean' ? action.payload : !state.loading }
+    }
     case UPDATE_USER: {
       return { ...state, user: action.payload }
     }
@@ -36,7 +40,7 @@ export default (state = initialState, action) => {
       return { ...state, files: action.payload }
     }
     case UPDATE_DATA: {
-      return { ...state, allData: action.payload, rangedData: action.payload }
+      return { ...state, allData: action.payload || {}, rangedData: action.payload || {} }
     }
     case SET_GEO_DATA: {
       return { ...state, geocodes: action.payload }
@@ -44,7 +48,6 @@ export default (state = initialState, action) => {
     case SET_LOCATION_KEYS: {
       return {
         ...state,
-        mapQuestKey: action.payload.mapQuestKey,
         googleMapsKey: action.payload.googleKey
       }
     }

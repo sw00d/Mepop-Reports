@@ -1,20 +1,23 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Input as RebassInput } from '@rebass/forms'
-import Label from '../Form/Label'
-import Box from '../../layout/Box'
 import styled from 'styled-components'
 
-const Input = ({ htmlfor, label, ...rest }) => {
-  const [labelIsShown, showLabel] = useState(!!rest.value)
+import { Input as RebassInput } from '@rebass/forms'
+import Label from '../Form/Label'
+import Flex from '../../layout/Flex'
+
+const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, ...rest }) => {
+  const [labelIsShown, showLabel] = useState(!!rest.value || !!rest.defaultValue || alwaysShowLabel)
   const handleFocus = (e) => {
-    if (e.target.value && !labelIsShown) showLabel(true)
-    else if (!e.target.value && labelIsShown) showLabel(false)
+    if (!alwaysShowLabel) {
+      if (e.target.value && !labelIsShown) showLabel(true)
+      else if (!e.target.value && labelIsShown) showLabel(false)
+    }
 
     if (rest.onChange) rest.onChange(e)
   }
   return (
-    <Box>
+    <Flex flexDirection='column' width={[1]} m='2px'>
       {
         label
           ? (
@@ -26,14 +29,16 @@ const Input = ({ htmlfor, label, ...rest }) => {
             />) : null
       }
       <StyleInput
+        pl={rest.bg ? '5px' : !rest.disabled ? '0px' : null}
         {...rest}
         onChange={handleFocus}
       />
-    </Box>
+    </Flex>
   )
 }
 
 export default Input
+
 Input.propTypes = {
   label: PropTypes.string,
   htmlfor: PropTypes.string,
@@ -44,15 +49,25 @@ Input.propTypes = {
 }
 
 const StyleInput = styled(RebassInput)`
-    background: ${({ theme }) => theme.colors.greyDisabled};
-    border: none;
+    background: ${({ theme, disabled, bg }) => (
+      disabled ? theme.colors.greyDisabled : theme.colors[bg || 'white']
+    )} !important;
+
+    transition: ${({ theme }) => theme.transitionDurations[1]};
     height: 35px;
     padding-left: 15px;
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme, disabled }) => disabled ? null : theme.colors.primary} !important;
     font-size: 15px;
     font-weight: 500;
-    border-radius: ${({ theme }) => theme.borderRadius.normal};
+    border-radius: ${({ theme, disabled, borderRadius }) => disabled || borderRadius ? theme.borderRadius.normal : 0};
+    /* border-width: 0px !important; */
+    border: 1px solid ${({ borderColor, theme }) => borderColor ? theme.colors[borderColor] : 'transparent'} !important;
+    border-bottom: 1px solid ${({ theme, disabled, bg, borderColor }) =>
+    disabled ? theme.colors[bg || 'white'] : theme.colors[borderColor || 'greyDisabled']
+    } !important;
+    outline: none;
     &::placeholder {
       font-weight: ${({ theme }) => theme.fontWeights.regular};
+      /* color: #aab7c4; */
     }
 `

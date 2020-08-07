@@ -2,12 +2,14 @@
 import Barchart from '../../../styles/reporting/BarChart'
 
 import { groupByDay } from '../util/grouping'
+import { memo } from 'react'
 
-const SalesAndListingsByDay = ({ data }) => {
+const SalesAndListingsByDay = memo(({ data }) => {
   const chartData = groupByDay(data)
 
   return (
     <Barchart
+      disableAnimation
       headerBorder='none'
       headerContent='Sales and Listings by day'
       data={chartData}
@@ -18,6 +20,6 @@ const SalesAndListingsByDay = ({ data }) => {
       ]}
     />
   )
-}
+})
 
 export default (SalesAndListingsByDay)

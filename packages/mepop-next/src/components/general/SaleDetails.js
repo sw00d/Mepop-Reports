@@ -27,6 +27,7 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
       minWidth='500px'
       defaultTooltip={`Sale card - @${row.username}`}
       headerContent={<CardTitle getUrl={getUrl} row={row} onClose={onClose} />}
+      headerBorder='none'
       {...props}
     >
       <Flex justifyContent='space-between' width={[1]} flexWrap='wrap'>
@@ -66,7 +67,7 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
               <Description>
                 {row['item description']}<br /><br />
                 <strong>Buyer:</strong> {row.name}<br />
-                <strong>Sale Price:</strong> {currencyType}{currency(row['itme price']).value}<br />
+                <strong>Sale Price:</strong> {currencyType}{currency(row['item price']).value}<br />
                 <strong>Buyer-Paid Shipping:</strong> {currencyType}{currency(row['buyer-paid shipping']).value}<br />
                 <strong>Seller-Paid Shipping:</strong> {currencyType}{currency(row['seller-paid shipping']).value}<br />
                 <strong>Depop Fees:</strong> {currencyType}{currency(row['depop fees']).value}<br />
@@ -99,9 +100,13 @@ const CardTitle = ({ row, getUrl, onClose }) => {
           </A>
         </Tooltip>
       </Text>
-      <Button onClick={onClose}>
-        <i className='fa fa-close' />
-      </Button>
+      {
+        onClose ? (
+          <Button onClick={onClose}>
+            <i className='fa fa-close' />
+          </Button>
+        ) : null
+      }
     </Flex>
   )
 }

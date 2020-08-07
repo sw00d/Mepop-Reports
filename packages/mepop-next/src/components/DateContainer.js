@@ -8,11 +8,12 @@ import DateRangePicker from '../styles/elements/DateRangePicker'
 import Select from '../styles/elements/Select'
 
 import { getRangedData } from '../dataProcessing/utils'
-import { UPDATE_RANGED_DATA, UPDATE_COMPARE_DATA } from '../store/generalReducer'
+import { UPDATE_RANGED_DATA, UPDATE_COMPARE_DATA, TOGGLE_LOADING } from '../store/generalReducer'
 import Text from '../styles/elements/Text'
+import Spinner from '../styles/elements/Loading/Spinner'
 
 const DateContainer = ({ page }) => {
-  const { allData } = useSelector(state => state.generalReducer)
+  const { allData, loading } = useSelector(state => state.generalReducer)
   const fixedFullRange = page === 'Dashboard'
   const dispatch = useDispatch()
 
@@ -21,7 +22,9 @@ const DateContainer = ({ page }) => {
   const [dateRange, setDates] = useState({ startDate: min, endDate: max }) // stored in MM-DD-YYYY format
   const [compareDateRange, setCompareDates] = useState({ startDate: min, endDate: max }) // stored in MM-DD-YYYY format
   const [preset, setPreset] = useState({ label: 'Full Range', value: 'full' })
+  const [comparePreset, setComparePreset] = useState({ label: 'Full Range', value: 'full' })
   const [showCompareDate, toggleCompare] = useState(false)
+  // const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     if (dateRange.startDate === null || dateRange.endDate === null) {
@@ -34,35 +37,43 @@ const DateContainer = ({ page }) => {
       }
     }
   }, [min, max])
+  useEffect(() => {
+    setTimeout(() => {
+      if (allData.sales && dateRange.startDate && dateRange.endDate) {
+        const rangedData = getRangedData(allData, {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate
+        })
+        dispatch({
+          type: UPDATE_RANGED_DATA,
+          payload: rangedData
+        })
+      }
+    })
+  }, [allData, dateRange])
 
   useEffect(() => {
-    // console.log(dateRange)
-    if (allData.sales && dateRange.startDate && dateRange.endDate) {
-      const rangedData = getRangedData(allData, {
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate
-      })
-      // console.log(rangedData)
-      dispatch({
-        type: UPDATE_RANGED_DATA,
-        payload: rangedData
-      })
-    }
-  }, [allData, dateRange])
-  useEffect(() => {
-    // console.log(dateRange)
-    if (allData.sales && compareDateRange.startDate && compareDateRange.endDate) {
-      const rangedData = getRangedData(allData, {
-        startDate: compareDateRange.startDate,
-        endDate: compareDateRange.endDate
-      })
-      // console.log(rangedData)
-      dispatch({
-        type: UPDATE_COMPARE_DATA,
-        payload: rangedData
-      })
-    }
-  }, [allData, compareDateRange])
+    // const shouldBeLoading = (compareDateRange.startDate !== null && compareDateRange.endDate !== null)
+    setTimeout(() => {
+      if (allData.sales && compareDateRange.startDate && compareDateRange.endDate) {
+        const rangedData = getRangedData(allData, {
+          startDate: compareDateRange.startDate,
+          endDate: compareDateRange.endDate
+        })
+        // console.log(rangedData)
+        dispatch({
+          type: UPDATE_COMPARE_DATA,
+          payload: rangedData
+        })
+      }
+      if (!showCompareDate) {
+        dispatch({
+          type: UPDATE_COMPARE_DATA,
+          payload: {}
+        })
+      }
+    })
+  }, [allData, compareDateRange, showCompareDate])
 
   useEffect(() => {
     const { startDate, endDate } = getDatePreset(preset, min, max)
@@ -71,26 +82,48 @@ const DateContainer = ({ page }) => {
     }
   }, [preset])
 
+  useEffect(() => {
+    const { startDate, endDate } = getDatePreset(comparePreset, min, max)
+    if (startDate && endDate) {
+      setCompareDates({ startDate, endDate })
+    }
+  }, [comparePreset])
+
   if (!allData.sales) return null
+
   return (
     <Flex alignItems='center'>
-      {
-        !showCompareDate || fixedFullRange ? (
+      <Flex flexDirection='column' justifyContent='space-between' height={showCompareDate && !fixedFullRange ? 96 : 'auto'}>
 
-          <Select
-            opacity={fixedFullRange ? 0 : 1}
-            options={options}
-            onChange={(arr) => setPreset(arr[0])}
-            selectProps={{
-              values: preset ? [preset] : [],
-              disabled: fixedFullRange,
-              searchable: false,
-              style: { width: '140px', fontSize: '15px' },
-              separator: true
-            }}
-          />
-        ) : null
-      }
+        <Select
+          opacity={fixedFullRange ? 0 : 1}
+          options={options}
+          onChange={(arr) => setPreset(arr[0])}
+          selectProps={{
+            values: preset ? [preset] : [],
+            disabled: fixedFullRange,
+            searchable: false,
+            style: { width: '140px', fontSize: '15px' },
+            separator: true
+          }}
+        />
+        {
+          showCompareDate ? (
+            <Select
+              opacity={fixedFullRange ? 0 : 1}
+              options={options}
+              onChange={(arr) => setComparePreset(arr[0])}
+              selectProps={{
+                values: comparePreset ? [comparePreset] : [],
+                disabled: fixedFullRange,
+                searchable: false,
+                style: { width: '140px', fontSize: '15px' },
+                separator: true
+              }}
+            />
+          ) : null
+        }
+      </Flex>
       <Flex flexDirection='column'>
 
         <DateRangePicker
@@ -98,8 +131,10 @@ const DateContainer = ({ page }) => {
           endDate={dateRange.endDate ? moment(fixedFullRange ? max : dateRange.endDate) : null}
           disabled={fixedFullRange}
           isOutsideRange={(day) => {
-            return (day.isBefore(min) || day.isAfter(max))
+            console.log(day, moment(max))
+            return (day.isBefore(moment(min)) || day.isAfter(moment(max)))
           }}
+          enableOutsideDays={false}
           onDatesChange={({ startDate, endDate }) => {
             setPreset({ label: 'Custom', value: null })
             setDates({
@@ -129,6 +164,7 @@ const DateContainer = ({ page }) => {
                   return (day.isBefore(min) || day.isAfter(max))
                 }}
                 onDatesChange={({ startDate, endDate }) => {
+                  setComparePreset({ label: 'Custom', value: null })
                   setCompareDates({
                     startDate: startDate ? startDate.format('MM-DD-YYYY') : null,
                     endDate: endDate ? endDate.format('MM-DD-YYYY') : null
@@ -140,11 +176,21 @@ const DateContainer = ({ page }) => {
         }
       </Flex>
 
-      <AddBtn onClick={() => toggleCompare(!showCompareDate)} disabled={fixedFullRange}>
+      <AddBtn
+        isFixedFullRange={fixedFullRange}
+        onClick={() => {
+          if (loading || fixedFullRange) return
+          toggleCompare(!showCompareDate)
+        }}
+        disabled={loading || fixedFullRange}
+      >
         {
-          fixedFullRange ? null : (
-            <i className={showCompareDate ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} />
-          )
+          fixedFullRange ? null
+            : loading ? (
+              <Spinner width='2em' size={3} />
+            ) : (
+              <i className={showCompareDate ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} />
+            )
         }
       </AddBtn>
     </Flex>
@@ -205,7 +251,7 @@ const AddBtn = styled.div`
   width: 60px;
   display: flex;
   align-items: center;
-  border-left: 1px solid ${({ theme }) => theme.colors.mainBg};
+  border-left: 1px solid ${({ theme, isFixedFullRange }) => isFixedFullRange ? 'transparent' : theme.colors.mainBg};
   justify-content: center;
   &:hover {
     color: ${({ theme, disabled }) => !disabled ? theme.colors.primary : null};

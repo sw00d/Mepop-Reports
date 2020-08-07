@@ -4,13 +4,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Tooltip from '../styles/elements/Tooltip'
 import Text from '../styles/elements/Text'
+import { withFirebase } from '../firebase'
 
-const Sidebar = (props) => {
+const Sidebar = withFirebase(({ firebase, ...props }) => {
   const [isMini, minify] = useState(true)
   const router = useRouter()
   const [activeRoute, updateRoute] = useState(router.pathname)
   return (
     <Container isMini={isMini}>
+
       <Row title='true' onClick={() => minify(!isMini)}>
         <Title isMini={isMini}>Mepop</Title>
 
@@ -23,117 +25,151 @@ const Sidebar = (props) => {
             }}
           />
         </IconButton>
+
       </Row>
-      <Nav>
-        <Tooltip
-          title='Dashboard'
-          disabled={!isMini}
-          distance={0}
-          position='top'
-          arrow={false}
-        >
+      <SubContainer>
 
-          <Link href='/dashboard'>
-            <Row
-              isMini={isMini}
-              onClick={() => updateRoute('/dashboard')}
-              isActive={activeRoute === '/dashboard'}
-            >
-              <I className='fa fa-home' />
-              <RowText isMini={isMini}>Dashboard</RowText>
-            </Row>
-          </Link>
-        </Tooltip>
-        <Tooltip
-          title='Reports'
-          disabled={!isMini}
-          distance={0}
-          position='top-start'
-          arrow={false}
-        >
-          <Link href='/reports'>
-            <Row
-              isMini={isMini}
-              onClick={() => updateRoute('/reports')}
-              isActive={activeRoute === '/reports'}
-            >
-              <I className='fa fa-area-chart' />
-              <RowText isMini={isMini}>Reports</RowText>
-            </Row>
-          </Link>
-        </Tooltip>
-        <Tooltip
-          title='Fee Calculator'
-          disabled={!isMini}
-          distance={0}
-          position='top-start'
-          arrow={false}
-        >
+        <Nav>
+          <Tooltip
+            title='Dashboard'
+            disabled={!isMini}
+            distance={0}
+            position='right-start'
 
-          <Link href='/fees-calculator'>
-            <Row
-              isMini={isMini}
-              onClick={() => updateRoute('/fees-calculator')}
-              isActive={activeRoute === '/fees-calculator'}
-            >
-              <I className='fa fa-calculator' />
-              <RowText isMini={isMini}>Fees Calculator</RowText>
-            </Row>
-          </Link>
-        </Tooltip>
+            arrow={false}
+          >
+
+            <Link href='/dashboard'>
+              <Row
+                isMini={isMini}
+                onClick={() => updateRoute('/dashboard')}
+                isActive={activeRoute === '/dashboard'}
+              >
+                <I className='fa fa-home' />
+                <RowText isMini={isMini}>Dashboard</RowText>
+              </Row>
+            </Link>
+          </Tooltip>
+          <Tooltip
+            title='Reports'
+            disabled={!isMini}
+            distance={0}
+            position='right-start'
+
+            arrow={false}
+          >
+            <Link href='/reports'>
+              <Row
+                isMini={isMini}
+                onClick={() => updateRoute('/reports')}
+                isActive={activeRoute === '/reports'}
+              >
+                <I className='fa fa-area-chart' />
+                <RowText isMini={isMini}>Reports</RowText>
+              </Row>
+            </Link>
+          </Tooltip>
+          <Tooltip
+            title='Fee Calculator'
+            disabled={!isMini}
+            distance={0}
+            position='right-start'
+
+            arrow={false}
+          >
+
+            <Link href='/fees-calculator'>
+              <Row
+                isMini={isMini}
+                onClick={() => updateRoute('/fees-calculator')}
+                isActive={activeRoute === '/fees-calculator'}
+              >
+                <I className='fa fa-calculator' />
+                <RowText isMini={isMini}>Fees Calculator</RowText>
+              </Row>
+            </Link>
+          </Tooltip>
+          <Tooltip
+            title='Files'
+            disabled={!isMini}
+            distance={0}
+            position='right-start'
+
+            arrow={false}
+          >
+
+            <Link href='/files'>
+              <Row
+                isMini={isMini}
+                onClick={() => updateRoute('/files')}
+                isActive={activeRoute === '/files'}
+              >
+                <I className='fa fa-file' />
+                <RowText isMini={isMini}>Files</RowText>
+              </Row>
+            </Link>
+          </Tooltip>
+          <Tooltip
+            title='Settings'
+            disabled={!isMini}
+            distance={0}
+            position='right-start'
+
+            arrow={false}
+          >
+            <Link href='/settings/user'>
+              <Row
+                isMini={isMini}
+                onClick={() => updateRoute('/settings')}
+                isActive={activeRoute === '/settings'}
+              >
+                <I className='fa fa-cog' />
+                <RowText isMini={isMini}>Settings</RowText>
+              </Row>
+            </Link>
+          </Tooltip>
+
+        </Nav>
         <Tooltip
-          title='Files'
+          title='Sign Out'
           disabled={!isMini}
           distance={0}
-          position='top-start'
+          position='right-start'
           arrow={false}
         >
-
-          <Link href='/files'>
-            <Row
-              isMini={isMini}
-              onClick={() => updateRoute('/files')}
-              isActive={activeRoute === '/files'}
-            >
-              <I className='fa fa-file' />
-              <RowText isMini={isMini}>Files</RowText>
-            </Row>
-          </Link>
+          <Row
+            isMini={isMini}
+            onClick={() => firebase.doSignOut()}
+          >
+            <I className='fa fa-sign-out' />
+            <RowText isMini={isMini}>Sign Out</RowText>
+          </Row>
         </Tooltip>
-        <Tooltip
-          title='Settings'
-          disabled={!isMini}
-          distance={0}
-          position='top-start'
-          arrow={false}
-        >
-          <Link href='/styles'>
-            <Row
-              isMini={isMini}
-              onClick={() => updateRoute('/styles')}
-              isActive={activeRoute === '/styles'}
-            >
-              <I className='fa fa-cog' />
-              <RowText isMini={isMini}>Settings</RowText>
-            </Row>
-          </Link>
-        </Tooltip>
+      </SubContainer>
 
-      </Nav>
     </Container>
   )
-}
+})
 
 export default Sidebar
 
 const Container = styled.div`
-    background: ${({ theme }) => theme.colors.white};
-    min-width: ${({ isMini }) => isMini ? 57 : 200}px;
-    width: 10px; /* This is an arbitrary value that is needs to minify correctly */
-    height: 100vh;
-    transition: .5s;
-    box-shadow: ${({ theme }) => theme.shadows.subtle};
-    border-right: 1px solid ${({ theme }) => theme.colors.mainBg};
+  background: ${({ theme }) => theme.colors.white};
+  min-width: ${({ isMini }) => isMini ? 57 : 200}px;
+  width: 10px; /* This is an arbitrary value that is needs to minify correctly */
+  height: 100vh;
+  transition: .5s;
+  box-shadow: ${({ theme }) => theme.shadows.subtle};
+  border-right: 1px solid ${({ theme }) => theme.colors.mainBg};
+`
+const SubContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 50px);
+  overflow: auto;
+  overflow-x: hidden;
+  
 `
 const Nav = styled.div`
     padding-top:20px;
@@ -171,7 +207,8 @@ const RowText = styled(Text)`
     font-size: 15px;
     transition: .1s;
     transition-delay:.1s;
-    
+    user-select: none;
+    white-space: nowrap;
     > i {
         color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.white}; 
     }

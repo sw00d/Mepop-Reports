@@ -1,12 +1,14 @@
+import { memo } from 'react'
 
 import Barchart from '../../../styles/reporting/BarChart'
 
 import { getProfitsByMonth } from '../../dashboard/util'
 
-const ProfitsByMonth = ({ data }) => {
+const ProfitsByMonth = memo(({ data }) => {
   const chartData = getProfitsByMonth(data)
   return (
     <Barchart
+      disableAnimation
       headerBorder='none'
       headerContent='Profits By Month'
       data={chartData}
@@ -19,7 +21,7 @@ const ProfitsByMonth = ({ data }) => {
       ]}
     />
   )
-}
+})
 
 export default (ProfitsByMonth)
 

@@ -1,8 +1,10 @@
 import TotalEarnings from '../../../styles/reporting/TotalEarnings'
+import { memo } from 'react'
 
-const TotalEarningsView = ({ data }) => (
+const TotalEarningsView = memo(({ data, half }) => (
   <TotalEarnings
     m='0px'
+    boxShadow='none'
     borderRadius='0px'
     float
     currencyType='$'
@@ -20,6 +22,7 @@ const TotalEarningsView = ({ data }) => (
       { name: 'Paypal Fees', value: parseFloat(data.paypal_fees) },
       { name: 'Total Shipping', value: parseFloat(data.total_shipping_cost) }
     ]}
-  />)
+  />
+))
 
 export default TotalEarningsView

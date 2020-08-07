@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Flex } from 'rebass'
 import SelectInput from 'react-dropdown-select'
 import { Select as RebassSelect } from '@rebass/forms'
 import Box from '../../layout/Box'
 import Label from '../Form/Label'
+import styled from 'styled-components'
 
 const Select = ({
   options,
@@ -15,8 +16,6 @@ const Select = ({
   selectProps = { style: {} },
   ...props
 }) => {
-  const [labelIsShown, showLabel] = useState(false)
-
   return (
     <>
       {
@@ -31,7 +30,7 @@ const Select = ({
                     // color={!labelIsShown ? 'transparent' : null}
                   />) : null
             }
-            <RebassSelect {...props} onChange={onChange}>
+            <StyledSelect {...props} onChange={onChange}>
               {options.map((opt, key) => (
                 <option
                   key={key}
@@ -41,7 +40,7 @@ const Select = ({
                 </option>
               ))}
 
-            </RebassSelect>
+            </StyledSelect>
           </Box>
         ) : (
 
@@ -60,3 +59,9 @@ const Select = ({
 }
 
 export default Select
+
+const StyledSelect = styled(RebassSelect)`
+  border-radius: ${({ theme }) => theme.borderRadius.normal};
+  border-color: ${({ theme }) => theme.colors.greyDisabled} !important;
+  color: ${({ theme }) => theme.colors.primary} !important;
+`

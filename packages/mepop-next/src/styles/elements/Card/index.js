@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import Flex from '../../layout/Flex'
 import Switch from '../Switch'
+import Tooltip from '../Tooltip'
 import Spinner from '../Loading/Spinner'
 import BlurShield from '../BlurShield'
 const Card = ({
@@ -10,6 +11,8 @@ const Card = ({
   switchLabel,
   switchCheck,
   switchEvent,
+  switchDisabled,
+  switchDisabledMsg,
   proOnly,
   ...props
 }) => {
@@ -31,24 +34,28 @@ const Card = ({
                 {
 
                   switchLabel || onClose ? (
-                    <Flex alignItems='center'>
-                      {
-                        switchLabel
-                          ? (
-                            <Switch
-                              label={switchLabel}
-                              checked={switchCheck}
-                              onChange={switchEvent}
-                            />) : null
-                      }
-                      {
-                        onClose ? (
-                          <Button onClick={onClose}>
-                            <i className='fa fa-close' />
-                          </Button>
-                        ) : null
-                      }
-                    </Flex>
+                    <Tooltip disabled={!switchDisabled} title={switchDisabledMsg} hideOnClick={false}>
+                      <Flex alignItems='center'>
+                        {
+                          switchLabel
+                            ? (
+                              <Switch
+                                label={switchLabel}
+                                checked={switchCheck}
+                                onChange={switchEvent}
+                                disabled={switchDisabled}
+                              />
+                            ) : null
+                        }
+                        {
+                          onClose ? (
+                            <Button onClick={onClose}>
+                              <i className='fa fa-close' />
+                            </Button>
+                          ) : null
+                        }
+                      </Flex>
+                    </Tooltip>
                   )
                     : null
                 }

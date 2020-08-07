@@ -13,6 +13,7 @@ const RadialGraph = ({
   float,
   data,
   radius = 50,
+  disableAnimation,
   ...rest
 }) => {
   const [index, setIndex] = useState(0)
@@ -28,6 +29,7 @@ const RadialGraph = ({
             innerRadius={radius}
             outerRadius={radius + 20}
             fill='#8884d8'
+            isAnimationActive={typeof disableAnimation !== 'boolean'}
             paddingAngle={5}
             dataKey='value'
             onMouseEnter={(_, i) => setIndex(i)}

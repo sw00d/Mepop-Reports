@@ -51,7 +51,7 @@ const SaleTable = ({ data, getUrl }) => {
       />
       {activeRow
         ? (
-          <SaleDetails row={activeRow} getUrl={getUrl} onClose={() => activateRow(null)} />
+          <SaleDetails row={activeRow} getUrl={getUrl} onClose={() => activateRow(null)} currencyType={data.currency_type} />
         )
         : null}
     </Flex>
@@ -66,7 +66,16 @@ const Header = ({ data, setTerm, term }) => {
       <Text mr='5px'>
           All Sales - {data.length}
       </Text>
-      <StyledInput placeholder='Search...' value={term} onChange={(e) => setTerm(e.target.value)} />
+      <Flex>
+
+        <StyledInput
+          borderColor='greyLight'
+          placeholder='Search...'
+          pl='10px'
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+        />
+      </Flex>
     </Flex>
   )
 }

@@ -28,6 +28,7 @@ let colors = {
   whiteDark: '#f3f3f3',
   black: '#000',
   textGrey: '#585858',
+  greyDarkest: '#252629',
   greyDarker: '#585853',
   greyDark: '#787878',
   greyLight: '#B2B2B2',
@@ -73,6 +74,7 @@ let colors = {
 // color aliases
 colors = {
   ...colors,
+  transparent: 'transparent',
   primary: colors.blue,
   textSubtle: colors.greyText,
   accent: colors.blueHighlight,

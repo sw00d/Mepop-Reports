@@ -16,7 +16,7 @@ const VertBarChart = ({
   xdataKey,
   height,
   formatTooltip,
-
+  disableAnimation,
   ...props
 }) => {
   return (
@@ -32,7 +32,10 @@ const VertBarChart = ({
             <XAxis type='number' />
             <YAxis dataKey={ydataKey} type='category' />
             <Tooltip formatter={formatTooltip} />
-            <Bar dataKey={xdataKey}>
+            <Bar
+              dataKey={xdataKey}
+              isAnimationActive={typeof disableAnimation !== 'boolean'}
+            >
               {
           	    data.map((entry, index) => {
                   const currentColor = getColor(entry, index)

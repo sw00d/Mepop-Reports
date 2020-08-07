@@ -11,7 +11,7 @@ import SaleDetails from '../../general/SaleDetails'
 import Flex from '../../../styles/layout/Flex'
 import { getGeopoints } from '../util/geopoints'
 
-const SalesMap = ({ data, styles }) => {
+const SalesMap = memo(({ data, styles }) => {
   const [salesToMap, setSalesToMap] = useState([])
   const [salesToShow, setSalesToShow] = useState({})
   const [activeSale, activateSale] = useState(null)
@@ -92,7 +92,7 @@ const SalesMap = ({ data, styles }) => {
       </Flex>
     </Card>
   )
-}
+})
 
 export default SalesMap
 

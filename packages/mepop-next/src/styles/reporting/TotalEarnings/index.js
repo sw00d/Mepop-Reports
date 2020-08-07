@@ -23,6 +23,7 @@ const RadialGraph = ({
   currencyType,
   float,
   data,
+  disableAnimation,
   netValue,
   ...rest
 }) => {
@@ -82,6 +83,7 @@ const RadialGraph = ({
               outerRadius={80}
               paddingAngle={5}
               dataKey='value'
+              isAnimationActive={typeof disableAnimation !== 'boolean'}
               onMouseEnter={(_, i) => setIndex(i)}
             >
               {

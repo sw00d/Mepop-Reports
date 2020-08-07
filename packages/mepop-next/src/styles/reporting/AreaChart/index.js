@@ -3,12 +3,11 @@ import {
   AreaChart, Area, XAxis, Tooltip, ResponsiveContainer
 } from 'recharts'
 
-import Card from '../../elements/Card'
 import theme from '../../../theme'
 import { ChartWrap } from '../styleUtil'
 import { transparentize } from 'polished'
 
-const Areachart = ({ areas, xdataKey, data, onHover, ...props }) => {
+const Areachart = ({ areas, xdataKey, data, onHover, disableAnimation, noToolTip, ...props }) => {
   return (
     // <Card {...props} minWidth='100%'>
     <ChartWrap noPadding style={{ position: 'absolute', bottom: '0px', width: '102%' }}>
@@ -31,21 +30,26 @@ const Areachart = ({ areas, xdataKey, data, onHover, ...props }) => {
           </defs>
 
           <XAxis dataKey='week' hide />
-          <Tooltip wrapperStyle={onHover ? { visibility: 'hidden' } : null} formatter={onHover} labelFormatter={onHover} />
+          {
+            noToolTip ? null : (
+
+              <Tooltip wrapperStyle={onHover ? { visibility: 'hidden' } : null} formatter={onHover} labelFormatter={onHover} />
+            )
+          }
           {areas.map(({ key, color }, i) => {
             return (
               <Area
                 key={i}
                 type='monotone'
+                isAnimationActive={typeof disableAnimation !== 'boolean'}
                 dataKey={key}
-                stroke={transparentize(.7, theme.colors[color] || theme.colors.primary)}
+                stroke={transparentize(0.7, theme.colors[color] || theme.colors.primary)}
                 fillOpacity={1}
                 fill={`url(#${key})`}
               />
 
             )
           })}
-          <Area type='monotone' dataKey='pv' stroke='#82ca9d' fillOpacity={1} fill='url(#colorPv)' />
         </AreaChart>
       </ResponsiveContainer>
     </ChartWrap>

@@ -1,26 +1,28 @@
-import { withFirebase } from '../../../firebase'
+import { withFirebase } from '../../firebase'
 import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 
-import Card from '../../../styles/elements/Card'
-import Flex from '../../../styles/layout/Flex'
-import Button from '../../../styles/elements/Button'
-import Tooltip from '../../../styles/elements/Tooltip'
-import Text from '../../../styles/elements/Text'
-import { fetchFiles } from '../../../store/actions/files'
+import Card from '../../styles/elements/Card'
+import Flex from '../../styles/layout/Flex'
+import Button from '../../styles/elements/Button'
+import Tooltip from '../../styles/elements/Tooltip'
+import Text from '../../styles/elements/Text'
+import { fetchFiles } from '../../store/actions/files'
 import { useSelector, useDispatch } from 'react-redux'
-import Spinner from '../../../styles/elements/Loading/Spinner'
+import Spinner from '../../styles/elements/Loading/Spinner'
+import InfoModal from './InfoModal'
 
 const Dropzone = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
-  const { files, user } = useSelector(state => state.generalReducer)
+  const { files } = useSelector(state => state.generalReducer)
   const [loading, setLoading] = useState(files.length)
   const [buttonDisable, disableBtns] = useState(false)
   const [activeBtn, activateBtn] = useState(null)
+  const [modalIsOpen, toggleModal] = useState(false)
   const startFetch = useCallback(() => {
     disableBtns(true)
-    fetchFiles(user, { firebase, dispatch }, () => {
+    fetchFiles({ firebase, dispatch }, () => {
       setLoading(false)
       disableBtns(false)
       activateBtn(null)
@@ -32,10 +34,14 @@ const Dropzone = withFirebase(({ firebase }) => {
   }, [startFetch])
 
   const onDrop = useCallback(acceptedFiles => {
-    setLoading(true)
-    disableBtns(true)
+    if (acceptedFiles.length) {
+      setLoading(true)
+      disableBtns(true)
 
-    firebase.uploadFiles(acceptedFiles, startFetch)
+      firebase.uploadFiles(acceptedFiles, startFetch)
+    } else {
+      // alert('Make sure the file is of type .csv')
+    }
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -53,13 +59,26 @@ const Dropzone = withFirebase(({ firebase }) => {
   return (
 
     <Container>
+      <InfoModal modalIsOpen={modalIsOpen} toggleModal={toggleModal} />
+      <Flex justifyContent='flex-end' px='10px'>
+        <Tooltip title="What's this?">
+          <Button
+            bg='transparent'
+            color='greyDarkest'
+            fontSize='20px'
+            onClick={() => toggleModal(!modalIsOpen)}
+          >
+            <i className='fa fa-question-circle' />
+          </Button>
+        </Tooltip>
+      </Flex>
       <DropZone isDragActive={isDragActive} {...getRootProps()}>
         <input {...getInputProps()} />
         <H2>
             Drop files here
         </H2>
         <p>or</p>
-        <Button color='blue' size='lg'>Select Files</Button>
+        <Button color='blue' bg='white' size='lg'>Select Files</Button>
         <p>Files must be from Depop to be valid</p>
       </DropZone>
       {
@@ -113,20 +132,22 @@ const Dropzone = withFirebase(({ firebase }) => {
 export default Dropzone
 
 const Container = styled.div`
-    width:100%;
+  width:100%;
 `
+
 const DropZone = styled(Flex)`
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px;
-    transition: .2s;
-    position:relative;
-    border: 5px dashed ${({ theme, isDragActive }) => isDragActive ? theme.colors.greyDark : theme.colors.greyLight};
-    border-radius: ${({ theme, isDragActive }) => isDragActive ? theme.borderRadius.more : theme.borderRadius.normal};
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  margin-top: 10px;
+  transition: .2s;
+  position:relative;
+  border: 5px dashed ${({ theme, isDragActive }) => isDragActive ? theme.colors.greyDark : theme.colors.greyLight};
+  border-radius: ${({ theme, isDragActive }) => isDragActive ? theme.borderRadius.more : theme.borderRadius.normal};
 `
 
 const H2 = styled.h2`
