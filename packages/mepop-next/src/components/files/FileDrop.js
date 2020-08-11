@@ -12,15 +12,18 @@ import { fetchFiles } from '../../store/actions/files'
 import { useSelector, useDispatch } from 'react-redux'
 import Spinner from '../../styles/elements/Loading/Spinner'
 import InfoModal from './InfoModal'
+import { useToasts } from 'react-toast-notifications'
 
 const Dropzone = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
+  const { addToast } = useToasts()
   const { files } = useSelector(state => state.generalReducer)
   const [loading, setLoading] = useState(files.length)
   const [buttonDisable, disableBtns] = useState(false)
   const [activeBtn, activateBtn] = useState(null)
   const [modalIsOpen, toggleModal] = useState(false)
-  const startFetch = useCallback(() => {
+  const startFetch = useCallback((load = true) => {
+    if (load) setLoading(true)
     disableBtns(true)
     fetchFiles({ firebase, dispatch }, () => {
       setLoading(false)
@@ -33,14 +36,16 @@ const Dropzone = withFirebase(({ firebase }) => {
     startFetch()
   }, [startFetch])
 
+  const onError = (msg) => {
+    addToast(<div>{msg || 'Error Occurred'}</div>, {
+      appearance: 'error'
+    })
+    setLoading(false)
+    disableBtns(false)
+  }
   const onDrop = useCallback(acceptedFiles => {
     if (acceptedFiles.length) {
-      setLoading(true)
-      disableBtns(true)
-
-      firebase.uploadFiles(acceptedFiles, startFetch)
-    } else {
-      // alert('Make sure the file is of type .csv')
+      firebase.uploadFiles(acceptedFiles, startFetch, onError)
     }
   }, [])
 
@@ -52,7 +57,7 @@ const Dropzone = withFirebase(({ firebase }) => {
   const deleteFile = (filename) => {
     firebase.deleteFile(filename, (file) => {
       // success! Now remove that file from local state or refresh files in some way.
-      startFetch()
+      startFetch(false)
     })
   }
 
@@ -83,7 +88,7 @@ const Dropzone = withFirebase(({ firebase }) => {
         <p>Files must be from Depop to be valid</p>
       </DropZone>
       {
-        <Card headerContent='Uploaded Files' isLoading={loading} minHeight='200px' mb="100px">
+        <Card headerContent='Uploaded Files' isLoading={loading} minHeight='200px' mb='100px'>
           {
             files.length
               ? (
@@ -98,7 +103,6 @@ const Dropzone = withFirebase(({ firebase }) => {
                         disabled={buttonDisable}
                         aria-label={`Click to delete ${filename}`}
                         onClick={() => {
-                          console.log(i)
                           deleteFile(filename)
                           activateBtn(i)
                         }}

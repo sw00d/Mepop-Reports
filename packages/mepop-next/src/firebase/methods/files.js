@@ -59,7 +59,7 @@ export const deleteFileMethod = (auth, storage, filename, fetchFiles) => {
   })
 }
 
-export const uploadFilesMethod = (auth, storage, files, fetchFiles) => {
+export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
   const rejectedFiles = []
 
   // upload accepted files to firebase
@@ -119,7 +119,7 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles) => {
         }
         if (i === files.length - 1) {
           if (rejectedFiles.length) {
-            window.alert(`The following files were not processed because they are not Depop files: ${rejectedFiles.join(', ')}. If this seems to be an error, please contact samote.wood@gmail.com for support.`)
+            err(`The following files were not processed because they are not Depop files: ${rejectedFiles.join(', ')}. If this seems to be an error, please contact samote.wood@gmail.com for support.`)
           }
         }
       }

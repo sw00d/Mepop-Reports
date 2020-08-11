@@ -21,9 +21,11 @@ class Firebase {
     try {
       firebase.initializeApp(firebaseConfig)
       firebase.analytics()
-      if (window.location.href.includes('localhost')) {
-        firebase.functions().useFunctionsEmulator('http://localhost:4001')
-      }
+      // uncomment this if running functions in emulator
+      // if (window.location.href.includes('localhost')) {
+      //   console.log('Dev env')
+      //   firebase.functions().useFunctionsEmulator('http://localhost:4001')
+      // }
     } catch (err) {
       if (!/already exists/.test(err.message)) {
         console.error('Firebase initialization error', err.message)
@@ -53,46 +55,21 @@ class Firebase {
   // Stripe
 
   handleStripeClients () {
-    console.log('get client')
+    // creates stripe client if doesn't exist (This handles people moving over from legacy app but who already have accounts)
     return this.db.collection('stripeClients').doc(this.auth.currentUser.uid).get()
       .then((doc) => {
         if (!doc.exists) {
-          return this.setStripeClient()
-          // .then((stripeDoc) => {
-          //   console.log('SUCCESS', stripeDoc)
-          // })
-          // .then((newDoc) => {
-          // creates new stripe client in firestrore
-
-          // return { ...userAndMembership, profile: newDoc }
-        // })
-        } else {
-        // return { ...userAndMembership, profile: doc.data() }
+          return this.createStripeClient()
         }
       })
   }
 
-  setStripeClient () {
-
-    // return stripe.customers.create({ email: this.auth.currentUser.email }, (err, customer) => {
-    //   console.log('Customer', customer)
-    //   if (err) {
-    //     console.log('ERROR:', err)
-    //     alert('Error With Stripe')
-    //   }
-    //   const initialDoc = {
-    //     stripeId: customer.id,
-    //     stripeLink: `https://dashboard.stripe.com/customers/${customer.id}`
-    //   }
-    //   console.log('UID', this.auth.currentUser.uid)
-    //   console.log('doc:', initialDoc)
-    //   return this.db.collection('stripeClients')
-    //     .doc(this.auth.currentUser.uid)
-    //     .set(initialDoc)
-    //     .then(() => {
-    //       return initialDoc
-    //     })
-    // })
+  createStripeClient () {
+    const createStripeClientFunction = firebase.functions().httpsCallable('createStripeClient')
+    const { email, uid } = this.auth.currentUser
+    createStripeClientFunction({ email, uid }).then(() => {
+      console.log('Create Stripe Client')
+    })
   }
 
   // profiles
@@ -190,8 +167,8 @@ class Firebase {
     deleteFileMethod(this.auth, this.storage, filename, fetchFiles)
   }
 
-  uploadFiles (files, fetchFiles) {
-    uploadFilesMethod(this.auth, this.storage, files, fetchFiles)
+  uploadFiles (files, fetchFiles, err) {
+    uploadFilesMethod(this.auth, this.storage, files, fetchFiles, err)
   }
 }
 
