@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "react-cookie-consent": "^5.1.1"
+    "react-cookie-consent": "^5.1.1",
+    "stripe": "^8.84.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -1,0 +1,36 @@
+$primary-bg-color: #e0e0e0;
+$secondary-bg-color: #fff;
+$highlight-color: #293757;
+$border-primary: #96c1da;
+$text-highlight: #22293a;
+$text-subtle: #7e7e7e;
+$outline: #a3a3a3;
+$inactive-btn: #ededed;
+$input: #ededed;
+$charcoal: #5d5d5d;
+$chart-fill: #FFBB2a;
+$chart-secondary: #E56469;
+$chart-third: #59bd6b;
+$chart-fourth: #96c1da;
+$lightgrey: #f2f2f2;
+
+$danger: #ff4747;
+$safe: #069f06;
+
+// 65df65 green fill
+// efb5ea pink chart fill
+$notification-yellow: #ffd600;
+
+:export {
+  primaryBgColor: $primary-bg-color;
+  secondaryBgColor: $secondary-bg-color;
+  hightlightColor: $highlight-color;
+  borderPrimary: $border-primary;
+  textHighlight:$text-highlight;
+  textSubtle: $text-subtle;
+  inactiveBtn: $inactive-btn;
+  chartFill:$chart-fill;
+  chartSecondary: $chart-secondary;
+  chartThird: $chart-third;
+  chartFourth: $chart-fourth;
+}
