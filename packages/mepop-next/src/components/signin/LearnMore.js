@@ -1,4 +1,5 @@
-import React from 'react'
+import Link from 'next/link'
+
 import Flex from '../../styles/layout/Flex'
 import Text from '../../styles/elements/Text'
 import Button from '../../styles/elements/Button'
@@ -7,17 +8,17 @@ import Card from '../../styles/elements/Card'
 
 const LearnMore = (props) => {
   return (
-    <Flex flexDirection='column' width={[1]}>
+    <>
       <Flex sx={{ position: 'relative' }}>
-        <Flex flexDirection='column' sx={{ position: 'absolute', zIndex: 2 }} p='10px'>
+        <Flex flexDirection='column' sx={{ position: 'absolute', zIndex: 2 }} p='10px' pl='30px'>
           <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]} mb='5px'>
-      🌟 Monitor your sales.
+            🌟 Monitor your sales.
           </Text>
           <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]} mb='5px'>
-      🌟 Track your revenue.
+            🌟 Track your revenue.
           </Text>
           <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]}>
-        🌟 Grow your shop.
+            🌟 Grow your shop.
           </Text>
         </Flex>
         <Card boxShadow='none' m={0}>
@@ -33,13 +34,21 @@ const LearnMore = (props) => {
         </Card>
       </Flex>
 
-      <Flex>
-
-        <Button width={[1]} mt='20px' mr='4px' height='40px'>Sign Up</Button>
+      <Flex
+        pl='30px'
+        sx={{
+          '@media only screen and (max-width: 650px)': {
+            marginTop: '20px',
+            paddingLeft: '0px'
+          }
+        }}
+      >
+        <Link href='/sign-up'>
+          <Button width={[1]} mt='20px' mr='4px' height='40px'>Sign Up</Button>
+        </Link>
         <Button width={[1]} mt='20px' height='40px' mr='20px'>Learn More</Button>
       </Flex>
-
-    </Flex>
+    </>
   )
 }
 

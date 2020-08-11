@@ -9,6 +9,7 @@ const SalesAndListingsByDay = memo(({ data }) => {
 
   return (
     <Barchart
+      minHeight='400px'
       disableAnimation
       headerBorder='none'
       headerContent='Sales and Listings by day'

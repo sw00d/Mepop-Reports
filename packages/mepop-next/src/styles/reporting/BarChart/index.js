@@ -15,15 +15,17 @@ const Barchart = ({
   formatTooltip,
   disableAnimation,
   bars = [],
+  hideLegend,
   ...props
 }) => {
   return (
     <Card {...props}>
-      <ChartWrap>
+      <ChartWrap height={400}>
         <ResponsiveContainer width='100%' height='100%'>
           <BarChart data={data}>
             <XAxis dataKey={xdataKey} tickFormatter={tickFormatter} />
             <Tooltip labelFormatter={labelFormatter} formatter={formatTooltip} />
+            {!hideLegend ? <Legend verticalAlign='top' iconType='circle' /> : null}
             {
               bars.map(({ size, dataKey, color }, i) => {
                 return (
@@ -37,8 +39,6 @@ const Barchart = ({
                   />)
               })
             }
-
-            <Legend />
 
           </BarChart>
         </ResponsiveContainer>

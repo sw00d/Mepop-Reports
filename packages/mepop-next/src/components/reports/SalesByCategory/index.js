@@ -1,11 +1,12 @@
+import { useMemo, useState, memo } from 'react'
 
+import { formatNum } from '../util/general'
 import { groupByCategory } from '../util/grouping'
 import VertComposedChart from '../../../styles/reporting/VertBarChart'
 import Flex from '../../../styles/layout/Flex'
 import ValueBox from '../../../styles/reporting/ValueBox'
-import { useMemo, useState, memo } from 'react'
 
-const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
+const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
   const [revenue, showRevenue] = useState(false)
   const chartData = useMemo(() => groupByCategory(data, revenue), [revenue, data])
   const max = { gross: chartData[0], sold: chartData[0] }
@@ -31,6 +32,10 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
         switchEvent={() => {
           showRevenue(!revenue)
         }}
+        proOnly={isBasic ? {
+          component: 'Sales by Category',
+          img: 'sales-by-category.png'
+        } : null}
       />
     )
   }
@@ -49,6 +54,10 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
         switchEvent={() => {
           showRevenue(!revenue)
         }}
+        proOnly={isBasic ? {
+          component: 'Sales by Category',
+          img: 'sales-by-category.png'
+        } : null}
       />
       {
         !hideBoxes ? (
@@ -62,7 +71,7 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
                       title='Highest Earning Category'
                       string
                       smallText
-                      value={`${max.gross.Category} - ${data.currency_type}${max.gross['Gross Earnings']} Gross Profit`}
+                      value={`${max.gross.Category} - ${formatNum(data.currency_type, max.gross['Gross Earnings'])} Gross Profit`}
                     />
                     <ValueBox
                       minWidth='50px'
@@ -76,7 +85,7 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
                       title='Lowest Earning Category'
                       string
                       smallText
-                      value={`${min.gross.Category} - ${data.currency_type}${min.gross['Gross Earnings']} Gross Profit`}
+                      value={`${min.gross.Category} -${formatNum(data.currency_type, min.gross['Gross Earnings'])} Gross Profit`}
                     />
                     <ValueBox
                       minWidth='50px'

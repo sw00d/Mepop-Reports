@@ -12,6 +12,8 @@ const SalesByDate = memo(({ data }) => {
   const switchDisable = soldDatesData.length === allDatesData.length
   return (
     <Barchart
+      hideLegend
+      minHeight='450px'
       headerContent='Sales by date'
       data={allDates ? allDatesData : soldDatesData}
       xdataKey='Date Sold'

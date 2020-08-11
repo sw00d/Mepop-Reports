@@ -11,7 +11,7 @@ import SaleDetails from '../../general/SaleDetails'
 import Flex from '../../../styles/layout/Flex'
 import { getGeopoints } from '../util/geopoints'
 
-const SalesMap = memo(({ data, styles }) => {
+const SalesMap = memo(({ data, styles, isBasic }) => {
   const [salesToMap, setSalesToMap] = useState([])
   const [salesToShow, setSalesToShow] = useState({})
   const [activeSale, activateSale] = useState(null)
@@ -31,7 +31,14 @@ const SalesMap = memo(({ data, styles }) => {
   if (!googleMapsKey) return null
 
   return (
-    <Card headerContent='Map of Sales (US ONLY)'>
+    <Card
+      headerContent='Map of Sales (US only)'
+      proOnly={isBasic ? {
+        component: 'Map of Sales (US only)',
+        img: 'sales-map.png'
+      } : null}
+      height='350px'
+    >
       <Flex width={[1, 1, 1, 1]}>
         <MapContainer mini={salesToShow.sales}>
           <GoogleMapReact
@@ -120,7 +127,7 @@ function getTitle ({ location, sales }) {
 
 const MapContainer = styled.div`
   visibility: visible;
-  height: 400px;
+  height: 320px;
   width: 100%;
   background: 'black';
   transition: .2s;

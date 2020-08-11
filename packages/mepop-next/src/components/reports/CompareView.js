@@ -12,7 +12,7 @@ import VariableLineGraph from './VariableLineGraph'
 
 export const CompareView = ({ data, compareData }) => {
   return (
-    <Flex flexDirection='column'>
+    <Flex flexDirection='column' width={[1]}>
       <Flex>
         <TotalEarningsView half data={data} />
         <TotalEarningsView half data={compareData} />

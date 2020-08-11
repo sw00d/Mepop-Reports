@@ -8,6 +8,7 @@ const ProfitsByMonth = memo(({ data }) => {
   const chartData = getProfitsByMonth(data)
   return (
     <Barchart
+      minHeight='400px'
       disableAnimation
       headerBorder='none'
       headerContent='Profits By Month'

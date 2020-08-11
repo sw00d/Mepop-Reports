@@ -72,6 +72,7 @@ const Dropzone = withFirebase(({ firebase }) => {
           </Button>
         </Tooltip>
       </Flex>
+
       <DropZone isDragActive={isDragActive} {...getRootProps()}>
         <input {...getInputProps()} />
         <H2>
@@ -82,7 +83,7 @@ const Dropzone = withFirebase(({ firebase }) => {
         <p>Files must be from Depop to be valid</p>
       </DropZone>
       {
-        <Card headerContent='Uploaded Files' isLoading={loading} minHeight='200px'>
+        <Card headerContent='Uploaded Files' isLoading={loading} minHeight='200px' mb="100px">
           {
             files.length
               ? (
@@ -143,6 +144,7 @@ const DropZone = styled(Flex)`
   justify-content: center;
   align-items: center;
   margin: 15px;
+  min-height: 250px;
   margin-top: 10px;
   transition: .2s;
   position:relative;

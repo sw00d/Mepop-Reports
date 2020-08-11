@@ -6,7 +6,8 @@ import { Input as RebassInput } from '@rebass/forms'
 import Label from '../Form/Label'
 import Flex from '../../layout/Flex'
 
-const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, ...rest }) => {
+const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, hideEye, ...rest }) => {
+  const [showPassword, togglePassword] = useState(false)
   const [labelIsShown, showLabel] = useState(!!rest.value || !!rest.defaultValue || alwaysShowLabel)
   const handleFocus = (e) => {
     if (!alwaysShowLabel) {
@@ -15,6 +16,9 @@ const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, ...rest }) => {
     }
 
     if (rest.onChange) rest.onChange(e)
+  }
+  const hoverIcon = (type) => {
+    togglePassword(type === 'enter')
   }
   return (
     <Flex flexDirection='column' width={[1]} m='2px'>
@@ -28,11 +32,34 @@ const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, ...rest }) => {
               color={!labelIsShown ? 'transparent' : null}
             />) : null
       }
-      <StyleInput
-        pl={rest.bg ? '5px' : !rest.disabled ? '0px' : null}
-        {...rest}
-        onChange={handleFocus}
-      />
+      <Flex alignItems='center'>
+
+        <StyleInput
+          pl={rest.bg ? '5px' : !rest.disabled ? '0px' : null}
+          {...rest}
+          type={showPassword ? 'text' : rest.type}
+          onChange={handleFocus}
+        />
+
+        {
+          rest.type === 'password' && !hideEye
+            ? (
+              <Flex
+                ml='3px'
+                // color='greyDisabled'
+                height='100%'
+                py='8px'
+                px='5px'
+                onMouseOver={() => hoverIcon('enter')}
+                onMouseLeave={() => hoverIcon('leave')}
+              >
+
+                <i className='fa fa-eye' />
+              </Flex>
+            )
+            : null
+        }
+      </Flex>
     </Flex>
   )
 }

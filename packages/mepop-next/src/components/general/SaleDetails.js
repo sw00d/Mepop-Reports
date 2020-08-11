@@ -6,8 +6,12 @@ import Text from '../../styles/elements/Text'
 import RadialChart from '../../styles/reporting/RadialChart'
 import Flex from '../../styles/layout/Flex'
 import styled from 'styled-components'
+import BlurBackground from './BlurBackground'
+import { useSelector } from 'react-redux'
 
 const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props }) => {
+  const { user } = useSelector(state => state.generalReducer)
+  const isBasic = user.membership.type === 'basic'
   const chartData = [
     {
       name: 'Sale Price', value: currency(row['item price']).value, fill: 'green'
@@ -30,6 +34,8 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
       headerBorder='none'
       {...props}
     >
+      {isBasic ? <BlurBackground component='Sale Details' /> : null}
+
       <Flex justifyContent='space-between' width={[1]} flexWrap='wrap'>
 
         <ValueBox

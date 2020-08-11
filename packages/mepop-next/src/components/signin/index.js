@@ -13,6 +13,7 @@ import { UPDATE_USER, TOGGLE_LOADING } from '../../store/generalReducer'
 import { fetchFiles } from '../../store/actions/files'
 import { useRouter } from 'next/router'
 import LearnMore from './LearnMore'
+import ForgotPass from './ForgotPass'
 
 const Login = withFirebase(({ firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
@@ -20,17 +21,19 @@ const Login = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
   const [form, updateForm] = useState({ email: 'samote.wood@gmail.com', password: '83815Mso' })
   const [isLoading, setLoading] = useState(false)
+  const [modalIsOpen, openModal] = useState(false)
+  const [error, setError] = useState('')
   const noUser = JSON.stringify(user) === '{}'
   useEffect(() => {
-    console.log(user)
     if (!noUser) {
-      console.log('pushing to dash')
       router.push('/dashboard')
     }
   }, [])
 
   const login = () => {
     setLoading(true)
+    setError('')
+
     firebase.doSignIn(form.email, form.password).then(({ user }) => {
       router.push({ pathname: '/dashboard' })
       dispatch({
@@ -48,34 +51,54 @@ const Login = withFirebase(({ firebase }) => {
           payload: false
         })
       })
-    }).catch(() => {
+    }).catch((err) => {
+      setError(translateError(err))
       setLoading(false)
     })
   }
   if (!noUser) return null
   return (
-    <Flex alignItems='center' width={[0.5, 0.5, 0.8, 0.9]} minWidth='1000px' maxWidth='98%'>
-      <Card p={30} pr='0px' justifyContent='flex-start'>
+    <Flex alignItems='center' width={[1]} maxWidth='1200px'>
+      <ForgotPass modalIsOpen={modalIsOpen} onRequestClose={() => openModal(false)} email={form.email} />
+      <Card p={30} pr='0px' justifyContent='flex-start' width={[1]}>
         <Text fontSize={30} fontWeight={600} color='primary' width={[1]} mb={2}><i>Mepop Reports</i></Text>
-        <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]} mb={20}>A tool for Depop Sellers.</Text>
-        <Flex width={[1]}>
+        <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]} mb={20}>A tool for Depop sellers.</Text>
+        <Flex
+          width={[1]}
+          sx={{
+            '@media only screen and (max-width: 650px)': {
+              flexDirection: 'column'
+            }
+          }}
+        >
 
-          <Flex flexDirection='column' width={[1]}>
+          <Flex
+            flexDirection='column'
+            width={[1]}
+            sx={{
+              '@media only screen and (max-width: 650px)': {
+                paddingRight: '20px !important',
+                zIndex: 2
+              }
+            }}
+          >
             <Form>
-
-              <Input
-                placeholder='Email'
-                label='Email'
-                bg='greyDisabled'
-                type='email'
-                borderRadius='4px'
-                color='white'
-                value={form.email}
-                onKeyPress={e => e.key === 'Enter' ? login() : null}
-                onChange={(e) => {
-                  updateForm({ ...form, email: e.target.value })
-                }}
-              />
+              <Text fontSize='14px' color='depopRed'>{error}</Text>
+              <Flex mb='15px'>
+                <Input
+                  placeholder='Email'
+                  label='Email'
+                  bg='greyDisabled'
+                  type='email'
+                  borderRadius='4px'
+                  color='white'
+                  value={form.email}
+                  onKeyPress={e => e.key === 'Enter' ? login() : null}
+                  onChange={(e) => {
+                    updateForm({ ...form, email: e.target.value })
+                  }}
+                />
+              </Flex>
               <Input
                 placeholder='Password'
                 label='Password'
@@ -90,13 +113,15 @@ const Login = withFirebase(({ firebase }) => {
                 }}
               />
               <Button
+                m='2px'
                 isLoading={isLoading}
                 type='button'
                 width={[1]}
-                mt='20px'
+                mt='30px'
                 height='40px'
                 onClick={login}
-              >Login
+              >
+                Sign In
               </Button>
             </Form>
             <Button
@@ -110,14 +135,33 @@ const Login = withFirebase(({ firebase }) => {
               p='0px'
               pl='1px'
               height='15px'
+              type='button'
+              onClick={() => openModal(!modalIsOpen)}
             >
               Forgot Password
             </Button>
           </Flex>
-          <Flex m='0px 30px'>
+          <Flex
+            m='0px 0px 0px 30px'
+            sx={{
+              '@media only screen and (max-width: 650px)': {
+                display: 'none'
+              }
+            }}
+          >
             <VertDivider />
           </Flex>
-          <LearnMore />
+          <Flex
+            flexDirection='column'
+            width={[1]}
+            sx={{
+              '@media only screen and (max-width: 650px)': {
+                marginTop: '20px'
+              }
+            }}
+          >
+            <LearnMore />
+          </Flex>
         </Flex>
       </Card>
     </Flex>
@@ -125,3 +169,24 @@ const Login = withFirebase(({ firebase }) => {
 })
 
 export default Login
+
+const translateError = (err) => {
+  switch (err.code) {
+    case 'auth/invalid-email':
+      return 'Invalid email'
+    case 'auth/user-disabled':
+      return 'Account temporarily disabled. Please email samote.wood@gmail.com for support.'
+    case 'auth/user-not-found':
+      return 'No account found with this email.'
+    case 'auth/wrong-password':
+      return 'Please verify password and try again.'
+    case 'auth/email-already-in-use':
+      return 'An account associated with this email already exists. Try logging in.'
+    case 'auth/operation-not-allowed':
+      return 'Error Occurred. Please email samote.wood@gmail.com for support'
+    case 'auth/weak-password':
+      return err.message
+    default:
+      return err.message
+  }
+}

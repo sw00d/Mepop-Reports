@@ -6,8 +6,9 @@ import Flex from '../../../styles/layout/Flex'
 import Text from '../../../styles/elements/Text'
 import PieChart from '../../../styles/reporting/PieChart'
 import Card from '../../../styles/elements/Card'
+import { formatNum } from '../util/general'
 
-const SalesByPaymentType = memo(({ data }) => {
+const SalesByPaymentType = memo(({ data, isBasic }) => {
   const [chartType, toggleChartType] = useState(false)
   const chartData = groupByPaymentType(data)
   return (
@@ -20,6 +21,10 @@ const SalesByPaymentType = memo(({ data }) => {
           flexDirection: 'column'
         }
       }}
+      proOnly={isBasic ? {
+        component: 'Profits By Payment Type',
+        img: 'payment-type.png'
+      } : null}
     >
       <Flex
         height='40%'
@@ -72,13 +77,6 @@ const SalesByPaymentType = memo(({ data }) => {
 })
 
 export default (SalesByPaymentType)
-
-const formatNum = (type, num) => {
-  return type + parseFloat(num).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  })
-}
 
 const Title = styled(Text)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.mainBg};

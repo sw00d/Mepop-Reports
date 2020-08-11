@@ -1,8 +1,6 @@
 import Flex from '../../styles/layout/Flex'
 import { useSelector } from 'react-redux'
 
-import LineChart from '../../styles/reporting/LineChart'
-
 import SalesByDate from './SalesByDate'
 import SalesByCategory from './SalesByCategory'
 import SalesMap from './SalesMap'
@@ -18,14 +16,15 @@ import TopValueBoxes from './TopValueBoxes'
 import VariableLineGraph from './VariableLineGraph'
 
 const Reports = (props) => {
-  const { rangedData, allData, compareData } = useSelector(state => state.generalReducer)
+  const { rangedData, allData, compareData, user } = useSelector(state => state.generalReducer)
   const data = rangedData
+  const isBasic = user.membership.type === 'basic'
 
   if (JSON.stringify(compareData) !== '{}') {
     return <CompareView data={rangedData} compareData={compareData} />
   }
   return (
-    <Flex flexDirection='column'>
+    <Flex flexDirection='column' width={[1]}>
       {/* <RoadToVerified data={data} /> */}
       <Flex>
         <TotalEarningsView data={data} />
@@ -33,12 +32,12 @@ const Reports = (props) => {
       <TopValueBoxes data={data} minWidth='20%' />
 
       <Flex>
-        <RevenueOverview data={data} />
-        <SalesByPaymentType data={data} />
+        <RevenueOverview data={data} isBasic={isBasic} />
+        <SalesByPaymentType data={data} isBasic={isBasic} />
       </Flex>
       <SalesByDate data={data} />
-      <SalesByCategory data={data} />
-      <SalesMap data={data} />
+      <SalesByCategory data={data} isBasic={isBasic} />
+      <SalesMap data={data} isBasic={isBasic} />
 
       <Flex>
         <SalesAndListingsByDay data={data} />

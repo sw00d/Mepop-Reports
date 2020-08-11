@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { withFirebase } from '../firebase'
+
 import Tooltip from '../styles/elements/Tooltip'
 import Text from '../styles/elements/Text'
-import { withFirebase } from '../firebase'
 
 const Sidebar = withFirebase(({ firebase, ...props }) => {
   const [isMini, minify] = useState(true)
   const router = useRouter()
   const [activeRoute, updateRoute] = useState(router.pathname)
+
+  useEffect(() => {
+    updateRoute(router.pathname)
+  }, [router.pathname])
   return (
     <Container isMini={isMini}>
 
@@ -35,7 +41,6 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
             disabled={!isMini}
             distance={0}
             position='right-start'
-
             arrow={false}
           >
 
@@ -117,7 +122,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
 
             arrow={false}
           >
-            <Link href='/settings/user'>
+            <Link href='/settings/personal'>
               <Row
                 isMini={isMini}
                 onClick={() => updateRoute('/settings')}
@@ -127,6 +132,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
                 <RowText isMini={isMini}>Settings</RowText>
               </Row>
             </Link>
+
           </Tooltip>
 
         </Nav>
@@ -144,6 +150,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
             <I className='fa fa-sign-out' />
             <RowText isMini={isMini}>Sign Out</RowText>
           </Row>
+
         </Tooltip>
       </SubContainer>
 
@@ -169,6 +176,36 @@ const SubContainer = styled.div`
   height: calc(100% - 50px);
   overflow: auto;
   overflow-x: hidden;
+
+/* width */
+&::-webkit-scrollbar {
+  width: 0px;
+  transition: 0.5s;
+}
+
+/* Handle on hover */
+&::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  transition: 0.5s;
+}
+/* Track */
+&::-webkit-scrollbar-track {
+  transition: 0.5s;
+}
+
+/* Handle */
+&::-webkit-scrollbar-thumb {
+  background: #555;
+  transition: 0.5s;
+}
+
+&:hover {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 1px;
+    transition: 0.5s;
+  }
+}
   
 `
 const Nav = styled.div`
@@ -176,7 +213,7 @@ const Nav = styled.div`
 `
 const Row = styled.div`
     position: relative;
-    padding:20px;
+    padding: 0px 20px;
     display: flex;
     align-items:center;
     height: 50px;

@@ -2,18 +2,20 @@ import { useState, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
+import Link from 'next/link'
 
 import Flex from '../styles/layout/Flex'
 import DateRangePicker from '../styles/elements/DateRangePicker'
 import Select from '../styles/elements/Select'
 
 import { getRangedData } from '../dataProcessing/utils'
-import { UPDATE_RANGED_DATA, UPDATE_COMPARE_DATA, TOGGLE_LOADING } from '../store/generalReducer'
+import { UPDATE_RANGED_DATA, UPDATE_COMPARE_DATA } from '../store/generalReducer'
 import Text from '../styles/elements/Text'
 import Spinner from '../styles/elements/Loading/Spinner'
+import Tooltip from '../styles/elements/Tooltip'
 
 const DateContainer = ({ page }) => {
-  const { allData, loading } = useSelector(state => state.generalReducer)
+  const { allData, loading, user } = useSelector(state => state.generalReducer)
   const fixedFullRange = page === 'Dashboard'
   const dispatch = useDispatch()
 
@@ -24,7 +26,8 @@ const DateContainer = ({ page }) => {
   const [preset, setPreset] = useState({ label: 'Full Range', value: 'full' })
   const [comparePreset, setComparePreset] = useState({ label: 'Full Range', value: 'full' })
   const [showCompareDate, toggleCompare] = useState(false)
-  // const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+  const isBasic = user.membership.type === 'basic'
 
   useEffect(() => {
     if (dateRange.startDate === null || dateRange.endDate === null) {
@@ -53,7 +56,7 @@ const DateContainer = ({ page }) => {
   }, [allData, dateRange])
 
   useEffect(() => {
-    // const shouldBeLoading = (compareDateRange.startDate !== null && compareDateRange.endDate !== null)
+    setLoading(true)
     setTimeout(() => {
       if (allData.sales && compareDateRange.startDate && compareDateRange.endDate) {
         const rangedData = getRangedData(allData, {
@@ -72,6 +75,7 @@ const DateContainer = ({ page }) => {
           payload: {}
         })
       }
+      setLoading(false)
     })
   }, [allData, compareDateRange, showCompareDate])
 
@@ -90,7 +94,7 @@ const DateContainer = ({ page }) => {
   }, [comparePreset])
 
   if (!allData.sales) return null
-
+  const btnDisabled = loading || fixedFullRange || isLoading || isBasic
   return (
     <Flex alignItems='center'>
       <Flex flexDirection='column' justifyContent='space-between' height={showCompareDate && !fixedFullRange ? 96 : 'auto'}>
@@ -175,24 +179,31 @@ const DateContainer = ({ page }) => {
           ) : null
         }
       </Flex>
-
-      <AddBtn
-        isFixedFullRange={fixedFullRange}
-        onClick={() => {
-          if (loading || fixedFullRange) return
-          toggleCompare(!showCompareDate)
-        }}
-        disabled={loading || fixedFullRange}
+      <Tooltip
+        disabled={!isBasic}
+        html={<TooltipContent />}
+        interactive
+        interactiveBorder={100}
       >
-        {
-          fixedFullRange ? null
-            : loading ? (
-              <Spinner width='2em' size={3} />
-            ) : (
-              <i className={showCompareDate ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} />
-            )
-        }
-      </AddBtn>
+
+        <AddBtn
+          isFixedFullRange={fixedFullRange}
+          onClick={() => {
+            if (btnDisabled) return
+            toggleCompare(!showCompareDate)
+          }}
+          disabled={btnDisabled}
+        >
+          {
+            fixedFullRange ? null
+              : loading || isLoading ? (
+                <Spinner width='2em' size={3} />
+              ) : (
+                <i className={showCompareDate ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} />
+              )
+          }
+        </AddBtn>
+      </Tooltip>
     </Flex>
 
   )
@@ -200,46 +211,23 @@ const DateContainer = ({ page }) => {
 
 export default DateContainer
 
-const options = [
-  { label: 'Full Range', value: 'full' },
-  { label: 'This Month', value: 'this_month' },
-  { label: 'Last Month', value: 'last_month' },
-  { label: 'Past 3 Months', value: 'past_three_months' }
-]
-
-const getDatePreset = (preset, min, max) => {
-  switch (preset.value) {
-    case 'full': {
-      return { startDate: min, endDate: max }
-    }
-    case 'this_month': {
-      const newStart = moment(moment(max).startOf('month')).format('MM-DD-YYYY')
-      const newEnd = moment(moment(max).endOf('month')).format('MM-DD-YYYY')
-      return {
-        startDate: newStart,
-        endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
-      }
-    }
-    case 'last_month': {
-      const newStart = moment(moment(max).subtract(1, 'months').startOf('month')).format('MM-DD-YYYY')
-      const newEnd = moment(moment(max).subtract(1, 'months').endOf('month')).format('MM-DD-YYYY')
-
-      return {
-        startDate: newStart,
-        endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
-      }
-    }
-    case 'past_three_months': {
-      const newStart = moment(moment(max).subtract(3, 'months')).format('MM-DD-YYYY')
-      return { startDate: newStart, endDate: max }
-    }
-    default: {
-      return {}
-    }
-  }
+const TooltipContent = () => {
+  return (
+    <div>
+      You must <Link href='/settings/membership'><Span title='/membership'>upgrade</Span></Link> to compare date ranges
+    </div>
+  )
 }
 
-const AddBtn = styled.div`
+const Span = styled.span`
+  color: white;
+  cursor: pointer;
+  border-bottom: 1px solid white;
+  &:hover {
+    opacity: .7;
+  }
+`
+const AddBtn = styled.span`
   color: ${({ theme }) => theme.colors.greyLight};
   background: none;
   border: none;
@@ -256,4 +244,43 @@ const AddBtn = styled.div`
   &:hover {
     color: ${({ theme, disabled }) => !disabled ? theme.colors.primary : null};
   }
-`
+  `
+
+const options = [
+  { label: 'Full Range', value: 'full' },
+  { label: 'This Month', value: 'this_month' },
+  { label: 'Last Month', value: 'last_month' },
+  { label: 'Past 3 Months', value: 'past_three_months' }
+]
+
+const getDatePreset = (preset, min, max) => {
+  switch (preset.value) {
+    case 'full': {
+      return { startDate: min, endDate: max }
+    }
+    case 'this_month': {
+      const newStart = moment(moment().startOf('month')).format('MM-DD-YYYY')
+      const newEnd = moment(moment().endOf('month')).format('MM-DD-YYYY')
+      return {
+        startDate: newStart,
+        endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
+      }
+    }
+    case 'last_month': {
+      const newStart = moment(moment().subtract(1, 'months').startOf('month')).format('MM-DD-YYYY')
+      const newEnd = moment(moment().subtract(1, 'months').endOf('month')).format('MM-DD-YYYY')
+
+      return {
+        startDate: newStart,
+        endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
+      }
+    }
+    case 'past_three_months': {
+      const newStart = moment(moment().subtract(3, 'months')).format('MM-DD-YYYY')
+      return { startDate: newStart, endDate: max }
+    }
+    default: {
+      return {}
+    }
+  }
+}

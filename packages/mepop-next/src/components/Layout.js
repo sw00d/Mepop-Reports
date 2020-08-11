@@ -7,6 +7,7 @@ import DateContainer from './DateContainer'
 import { useSelector } from 'react-redux'
 import NoDataFound from '../styles/elements/NoDataFound'
 import Loading from '../styles/elements/Loading'
+import { withFirebase } from '../firebase'
 
 const getheaderContent = pathname => {
   switch (pathname) {
@@ -16,15 +17,15 @@ const getheaderContent = pathname => {
       return 'Reports'
     case '/files':
       return 'Files'
-    case '/settings/user':
+    case '/settings/personal':
       return 'Settings'
     case '/fees-calculator':
       return 'Fees Calculator'
     default:
-      return 'Mepop'
+      return 'Mepop Reports'
   }
 }
-const Layout = (props) => {
+const Layout = withFirebase((props) => {
   const { loading, compareData, files, rangedData, user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const heading = getheaderContent(router.pathname)
@@ -32,15 +33,22 @@ const Layout = (props) => {
   const noUser = JSON.stringify(user) === '{}'
   const routeRequiresData = heading === 'Reports' || heading === 'Dashboard'
   const centerContent = loading || noData
-  const unprotectedRoute = router.pathname === '/login'
+  const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up'
+  const hideSideBar = router.pathname === '/settings/membership/'
 
   if (noUser && !unprotectedRoute) {
     return null
+  }
+  if (user.profile && router.pathname !== '/settings/membership') {
+    if (!user.profile.hasSignedIn) {
+      router.push('/settings/membership')
+    }
   }
   return (
     <Flex
       justifyContent='center'
       bg='mainBg'
+      flex={[1]}
     >
       {
         unprotectedRoute ? (
@@ -60,7 +68,7 @@ const Layout = (props) => {
           : (
 
             <>
-              <Sidebar />
+              {hideSideBar ? null : <Sidebar />}
               <Flex
                 justifyContent='space-between'
                 flexWrap='wrap'
@@ -95,7 +103,7 @@ const Layout = (props) => {
     </Flex>
 
   )
-}
+})
 
 export default Layout
 

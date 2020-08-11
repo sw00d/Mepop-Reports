@@ -33,6 +33,7 @@ class Firebase {
     this.auth = firebase.auth()
     this.storage = firebase.storage()
     this.db = firebase.firestore()
+    this.functions = firebase.functions()
   }
 
   // Get api Keys from firestore
@@ -49,13 +50,59 @@ class Firebase {
       return { error, data: null }
     })
   }
+  // Stripe
+
+  handleStripeClients () {
+    console.log('get client')
+    return this.db.collection('stripeClients').doc(this.auth.currentUser.uid).get()
+      .then((doc) => {
+        if (!doc.exists) {
+          return this.setStripeClient()
+          // .then((stripeDoc) => {
+          //   console.log('SUCCESS', stripeDoc)
+          // })
+          // .then((newDoc) => {
+          // creates new stripe client in firestrore
+
+          // return { ...userAndMembership, profile: newDoc }
+        // })
+        } else {
+        // return { ...userAndMembership, profile: doc.data() }
+        }
+      })
+  }
+
+  setStripeClient () {
+
+    // return stripe.customers.create({ email: this.auth.currentUser.email }, (err, customer) => {
+    //   console.log('Customer', customer)
+    //   if (err) {
+    //     console.log('ERROR:', err)
+    //     alert('Error With Stripe')
+    //   }
+    //   const initialDoc = {
+    //     stripeId: customer.id,
+    //     stripeLink: `https://dashboard.stripe.com/customers/${customer.id}`
+    //   }
+    //   console.log('UID', this.auth.currentUser.uid)
+    //   console.log('doc:', initialDoc)
+    //   return this.db.collection('stripeClients')
+    //     .doc(this.auth.currentUser.uid)
+    //     .set(initialDoc)
+    //     .then(() => {
+    //       return initialDoc
+    //     })
+    // })
+  }
 
   // profiles
   handleProfile (userAndMembership) {
     return this.db.collection('profiles').doc(this.auth.currentUser.uid).get().then((doc) => {
+      this.handleStripeClients()
       if (!doc.exists) {
         this.setProfile().then((newDoc) => {
           // creates new profile if it doesn't exist (only on first login/signup ever)
+
           return { ...userAndMembership, profile: newDoc }
         })
       } else {
@@ -64,10 +111,16 @@ class Firebase {
     })
   }
 
-  setProfile (incomingDoc) {
-    const newDoc = { firstName: '', lastName: '', depopShopName: '' }
-    return this.db.collection('profiles').doc(this.auth.currentUser.uid).set(incomingDoc || newDoc).then(() => {
-      return newDoc
+  setProfile (incomingDoc, uid) {
+    const initialDoc = {
+      firstName: '',
+      lastName: '',
+      depopShopName: '',
+      hasSignedIn: false,
+      email: this.auth.currentUser ? this.auth.currentUser.email : ''
+    }
+    return this.db.collection('profiles').doc(uid || this.auth.currentUser.uid).set(incomingDoc || initialDoc).then(() => {
+      return incomingDoc || initialDoc
     }).catch(() => alert('Error Occurred Creating Profile'))
   }
 
@@ -90,16 +143,18 @@ class Firebase {
   }
 
   setMembership (incomingDoc) {
-    const newDoc = { type: 'free', paymentInfo: {} }
+    const newDoc = { type: 'basic', paymentInfo: {} }
     return this.db.collection('memberships').doc(this.auth.currentUser.uid).set(incomingDoc || newDoc).then(() => {
-      return newDoc
-    }).catch(() => alert('Error Occurred Creating Membership'))
+      return incomingDoc || newDoc
+    }).catch(() => window.alert('Error Occurred Creating Membership'))
   }
 
   // auth
-  doCreateUser (email, password) {
-    console.log('created user for:', email)
-    return this.auth.createUserWithEmailAndPassword(email, password)
+  doCreateUser ({ password, ...form }) {
+    return this.auth.createUserWithEmailAndPassword(form.email, password)
+      .then(({ user }) => {
+        return this.setProfile(form, user.uid)
+      })
   }
 
   doGetCurrentUser () {
@@ -119,7 +174,12 @@ class Firebase {
     return this.auth.sendPasswordResetEmail(email)
   }
 
-  doPasswordUpdate (password) { return this.auth.currentUser.updatePassword(password) }
+  doPasswordUpdate (passwords) {
+    return this.auth.signInWithEmailAndPassword(this.auth.currentUser.email, passwords.oldPassword)
+      .then(({ user }) => {
+        return this.auth.currentUser.updatePassword(passwords.newPassword)
+      })
+  }
 
   // files
   getUserFiles (resolve) {

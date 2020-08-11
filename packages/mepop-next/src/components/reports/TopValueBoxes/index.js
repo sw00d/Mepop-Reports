@@ -3,7 +3,7 @@ import Flex from '../../../styles/layout/Flex'
 
 const TopValueBoxes = ({ data, minWidth }) => {
   return (
-    <Flex flexWrap='wrap'>
+    <Flex flexWrap='wrap' mt='5px'>
       <ValueBox
         minWidth={minWidth}
         value={data.sales ? data.sales.length : 0}

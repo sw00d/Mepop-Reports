@@ -25,7 +25,7 @@ const Dashboard = (props) => {
   const itemsSoldPerDay = avgItemsPerDay(data)
 
   return (
-    <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg'>
+    <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg' width={[1]}>
       <Flex width={[1]} flexDirection='column'>
         <ValueContainer>
 

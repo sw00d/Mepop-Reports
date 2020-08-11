@@ -8,8 +8,9 @@ import Flex from '../../../styles/layout/Flex'
 import Areachart from '../../../styles/reporting/AreaChart'
 import styled from 'styled-components'
 import theme from '../../../theme'
+import { formatNum } from '../util/general'
 
-const RevenueOverview = memo(({ data }) => {
+const RevenueOverview = memo(({ data, isBasic }) => {
   const chartData = groupByWeek(data)
   const [week, setWeek] = useState(chartData[chartData.length - 1].week)
   const [revenue, setRevenue] = useState({ gross: chartData[chartData.length - 1].Gross, net: chartData[chartData.length - 1].Net })
@@ -32,10 +33,10 @@ const RevenueOverview = memo(({ data }) => {
       sx={{ overflow: 'hidden', boxShadow: theme.shadows.normal }}
       minHeight='420px'
 
-      // proOnly={{
-      //   component: 'Revenue Overview',
-      //   img: 'revenue-overview.png'
-      // }}
+      proOnly={isBasic ? {
+        component: 'Revenue Overview',
+        img: 'revenue-overview.png'
+      } : null}
     >
       <Flex flexDirection='column' width={[1]} p={50}>
 
@@ -63,13 +64,6 @@ const RevenueOverview = memo(({ data }) => {
 })
 
 export default RevenueOverview
-
-const formatNum = (type, num) => {
-  return type + num.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  })
-}
 
 const Title = styled(Text)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.mainBg};
