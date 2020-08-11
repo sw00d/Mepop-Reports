@@ -82,3 +82,4 @@ node_modules/
 
 # # next
 # **/**/old-mepop-frontend
+out/
