@@ -1,0 +1,1 @@
+{"ast":null,"code":"import React from \"react\";\nvar __jsx = React.createElement;\nimport FeesCalculator from '../components/feesCalculator';\nexport default (function (props) {\n  return __jsx(FeesCalculator, null);\n});","map":null,"metadata":{},"sourceType":"module"}

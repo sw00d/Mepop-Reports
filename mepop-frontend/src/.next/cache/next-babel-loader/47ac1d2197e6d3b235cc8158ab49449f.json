@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React from 'react';\nimport { Flex as FlexView } from 'rebass/styled-components';\n\nconst Flex = props => {\n  return __jsx(FlexView, props, props.children);\n};\n\nexport default Flex;","map":null,"metadata":{},"sourceType":"module"}
