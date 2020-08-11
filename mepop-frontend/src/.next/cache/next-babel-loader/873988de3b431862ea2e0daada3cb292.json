@@ -1,1 +1,0 @@
-{"ast":null,"code":"import React from \"react\";\nvar __jsx = React.createElement;\nimport Settings from '../../components/settings';\nexport default (function (props) {\n  return __jsx(Settings, {\n    tab: \"personal\"\n  });\n});","map":null,"metadata":{},"sourceType":"module"}

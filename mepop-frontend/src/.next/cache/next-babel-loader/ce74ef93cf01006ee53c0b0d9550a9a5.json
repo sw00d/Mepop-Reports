@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { combineReducers, createStore } from 'redux';\nimport generalReducer from './generalReducer';\nconst appReducer = combineReducers({\n  generalReducer\n});\n\nconst rootReducer = (state, action) => appReducer(state, action);\n\nexport default createStore(rootReducer);","map":null,"metadata":{},"sourceType":"module"}
