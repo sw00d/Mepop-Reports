@@ -25,7 +25,13 @@ const Barchart = ({
           <BarChart data={data}>
             <XAxis dataKey={xdataKey} tickFormatter={tickFormatter} />
             <Tooltip labelFormatter={labelFormatter} formatter={formatTooltip} />
-            {!hideLegend ? <Legend verticalAlign='top' iconType='circle' /> : null}
+            {!hideLegend ? (
+              <Legend
+                verticalAlign='top'
+                iconType='circle'
+                align='left'
+              />
+            ) : null}
             {
               bars.map(({ size, dataKey, color }, i) => {
                 return (

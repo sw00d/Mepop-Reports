@@ -15,5 +15,5 @@ export const getRangedData = (data, { startDate, endDate }) => {
   })
   if (newData.length) {
     return setUpState(newData, data.currency_type)
-  } else return newData
+  } else return {}
 }

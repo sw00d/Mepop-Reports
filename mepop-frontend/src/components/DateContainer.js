@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
 import Link from 'next/link'
+import { useToasts } from 'react-toast-notifications'
 
 import Flex from '../styles/layout/Flex'
 import DateRangePicker from '../styles/elements/DateRangePicker'
@@ -18,6 +19,7 @@ const DateContainer = ({ page }) => {
   const { allData, loading, user } = useSelector(state => state.generalReducer)
   const fixedFullRange = page === 'Dashboard'
   const dispatch = useDispatch()
+  const { addToast } = useToasts()
 
   const min = useMemo(() => allData.sales ? allData.sales[0].date_of_sale : null, [allData])
   const max = useMemo(() => allData.sales ? allData.sales[allData.sales.length - 1].date_of_sale : null, [allData])
@@ -27,8 +29,20 @@ const DateContainer = ({ page }) => {
   const [comparePreset, setComparePreset] = useState({ label: 'Full Range', value: 'full' })
   const [showCompareDate, toggleCompare] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const isBasic = user.membership.type === 'basic'
+  const isBasic = !user.membership ? 'basic' : user.membership.type === 'basic'
 
+  const showWarning = () => {
+    if (moment(dateRange.startDate).isBefore(min) || moment(dateRange.endDate).isAfter(max)) {
+      addToast(
+        <div>
+        This date range exceeds the files you've uploaded.
+          <Link href='/files'><CustomLink>Click here to upload more files.</CustomLink></Link>
+        </div>, {
+          appearance: 'warning',
+          autoDismiss: true
+        })
+    }
+  }
   useEffect(() => {
     if (dateRange.startDate === null || dateRange.endDate === null) {
       setPreset({ label: 'Full Range', value: 'full' })
@@ -40,9 +54,12 @@ const DateContainer = ({ page }) => {
       }
     }
   }, [min, max])
+
   useEffect(() => {
+    setLoading(true)
     setTimeout(() => {
       if (allData.sales && dateRange.startDate && dateRange.endDate) {
+        showWarning()
         const rangedData = getRangedData(allData, {
           startDate: dateRange.startDate,
           endDate: dateRange.endDate
@@ -52,6 +69,7 @@ const DateContainer = ({ page }) => {
           payload: rangedData
         })
       }
+      setLoading(false)
     })
   }, [allData, dateRange])
 
@@ -59,6 +77,7 @@ const DateContainer = ({ page }) => {
     setLoading(true)
     setTimeout(() => {
       if (allData.sales && compareDateRange.startDate && compareDateRange.endDate) {
+        showWarning()
         const rangedData = getRangedData(allData, {
           startDate: compareDateRange.startDate,
           endDate: compareDateRange.endDate
@@ -134,11 +153,12 @@ const DateContainer = ({ page }) => {
           startDate={dateRange.startDate ? moment(fixedFullRange ? min : dateRange.startDate) : null}
           endDate={dateRange.endDate ? moment(fixedFullRange ? max : dateRange.endDate) : null}
           disabled={fixedFullRange}
-          isOutsideRange={(day) => {
-            console.log(day, moment(max))
-            return (day.isBefore(moment(min)) || day.isAfter(moment(max)))
-          }}
-          enableOutsideDays={false}
+          isOutsideRange={() => false}
+          enableOutsideDays
+          // isOutsideRange={(day) => {
+          //   return (day.isBefore(moment(min)) || day.isAfter(moment(max)))
+          // }}
+          // enableOutsideDays={false}
           onDatesChange={({ startDate, endDate }) => {
             setPreset({ label: 'Custom', value: null })
             setDates({
@@ -245,7 +265,18 @@ const AddBtn = styled.span`
     color: ${({ theme, disabled }) => !disabled ? theme.colors.primary : null};
   }
   `
+const CustomLink = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  margin-left: 5px;
+  text-decoration: none;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
 
+  &:hover {
+    opacity: .8;
+  }
+
+`
 const options = [
   { label: 'Full Range', value: 'full' },
   { label: 'This Month', value: 'this_month' },
@@ -263,7 +294,7 @@ const getDatePreset = (preset, min, max) => {
       const newEnd = moment(moment().endOf('month')).format('MM-DD-YYYY')
       return {
         startDate: newStart,
-        endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
+        endDate: newEnd
       }
     }
     case 'last_month': {
@@ -272,7 +303,7 @@ const getDatePreset = (preset, min, max) => {
 
       return {
         startDate: newStart,
-        endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
+        endDate: newEnd
       }
     }
     case 'past_three_months': {

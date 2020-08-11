@@ -30,7 +30,7 @@ const Layout = withFirebase((props) => {
   const router = useRouter()
   const heading = getheaderContent(router.pathname)
   const noData = !files.length || JSON.stringify(rangedData) === '{}'
-  const noUser = JSON.stringify(user) === '{}'
+  const noUser = JSON.stringify(user) === '{}' || !user
   const routeRequiresData = heading === 'Reports' || heading === 'Dashboard'
   const centerContent = loading || noData
   const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up'

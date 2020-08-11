@@ -18,6 +18,7 @@ const Barchart = ({
 
   return (
     <BarChart
+      hideLegend
       headerBorder='none'
       boxShadow='none'
       headerContent='Net Earnings By Month'

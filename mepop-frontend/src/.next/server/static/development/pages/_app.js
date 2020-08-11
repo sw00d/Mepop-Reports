@@ -1891,17 +1891,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! next/link */ "../node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _styles_layout_Flex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/layout/Flex */ "./styles/layout/Flex/index.js");
-/* harmony import */ var _styles_elements_DateRangePicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../styles/elements/DateRangePicker */ "./styles/elements/DateRangePicker/index.js");
-/* harmony import */ var _styles_elements_Select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../styles/elements/Select */ "./styles/elements/Select/index.js");
-/* harmony import */ var _dataProcessing_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../dataProcessing/utils */ "./dataProcessing/utils.js");
-/* harmony import */ var _store_generalReducer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../store/generalReducer */ "./store/generalReducer.js");
-/* harmony import */ var _styles_elements_Text__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../styles/elements/Text */ "./styles/elements/Text/index.js");
-/* harmony import */ var _styles_elements_Loading_Spinner__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../styles/elements/Loading/Spinner */ "./styles/elements/Loading/Spinner.js");
-/* harmony import */ var _styles_elements_Tooltip__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../styles/elements/Tooltip */ "./styles/elements/Tooltip/index.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/components/DateContainer.js";
+/* harmony import */ var react_toast_notifications__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toast-notifications */ "react-toast-notifications");
+/* harmony import */ var react_toast_notifications__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_toast_notifications__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _styles_layout_Flex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../styles/layout/Flex */ "./styles/layout/Flex/index.js");
+/* harmony import */ var _styles_elements_DateRangePicker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../styles/elements/DateRangePicker */ "./styles/elements/DateRangePicker/index.js");
+/* harmony import */ var _styles_elements_Select__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../styles/elements/Select */ "./styles/elements/Select/index.js");
+/* harmony import */ var _dataProcessing_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../dataProcessing/utils */ "./dataProcessing/utils.js");
+/* harmony import */ var _store_generalReducer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../store/generalReducer */ "./store/generalReducer.js");
+/* harmony import */ var _styles_elements_Text__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../styles/elements/Text */ "./styles/elements/Text/index.js");
+/* harmony import */ var _styles_elements_Loading_Spinner__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../styles/elements/Loading/Spinner */ "./styles/elements/Loading/Spinner.js");
+/* harmony import */ var _styles_elements_Tooltip__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../styles/elements/Tooltip */ "./styles/elements/Tooltip/index.js");
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/components/DateContainer.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -1926,6 +1929,9 @@ const DateContainer = ({
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(state => state.generalReducer);
   const fixedFullRange = page === 'Dashboard';
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+  const {
+    addToast
+  } = Object(react_toast_notifications__WEBPACK_IMPORTED_MODULE_5__["useToasts"])();
   const min = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(() => allData.sales ? allData.sales[0].date_of_sale : null, [allData]);
   const max = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(() => allData.sales ? allData.sales[allData.sales.length - 1].date_of_sale : null, [allData]);
   const {
@@ -1966,7 +1972,39 @@ const DateContainer = ({
     0: isLoading,
     1: setLoading
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
-  const isBasic = user.membership.type === 'basic';
+  const isBasic = !user.membership ? 'basic' : user.membership.type === 'basic';
+
+  const showWarning = () => {
+    if (moment__WEBPACK_IMPORTED_MODULE_3___default()(dateRange.startDate).isBefore(min) || moment__WEBPACK_IMPORTED_MODULE_3___default()(dateRange.endDate).isAfter(max)) {
+      addToast(__jsx("div", {
+        __self: undefined,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 37,
+          columnNumber: 9
+        }
+      }, "This date range exceeds the files you've uploaded.", __jsx(next_link__WEBPACK_IMPORTED_MODULE_4___default.a, {
+        href: "/files",
+        __self: undefined,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 39,
+          columnNumber: 11
+        }
+      }, __jsx(CustomLink, {
+        __self: undefined,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 39,
+          columnNumber: 31
+        }
+      }, "Click here to upload more files."))), {
+        appearance: 'warning',
+        autoDismiss: true
+      });
+    }
+  };
+
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     if (dateRange.startDate === null || dateRange.endDate === null) {
       setPreset({
@@ -1991,37 +2029,42 @@ const DateContainer = ({
     }
   }, [min, max]);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    setLoading(true);
     setTimeout(() => {
       if (allData.sales && dateRange.startDate && dateRange.endDate) {
-        const rangedData = Object(_dataProcessing_utils__WEBPACK_IMPORTED_MODULE_8__["getRangedData"])(allData, {
+        showWarning();
+        const rangedData = Object(_dataProcessing_utils__WEBPACK_IMPORTED_MODULE_9__["getRangedData"])(allData, {
           startDate: dateRange.startDate,
           endDate: dateRange.endDate
         });
         dispatch({
-          type: _store_generalReducer__WEBPACK_IMPORTED_MODULE_9__["UPDATE_RANGED_DATA"],
+          type: _store_generalReducer__WEBPACK_IMPORTED_MODULE_10__["UPDATE_RANGED_DATA"],
           payload: rangedData
         });
       }
+
+      setLoading(false);
     });
   }, [allData, dateRange]);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     setLoading(true);
     setTimeout(() => {
       if (allData.sales && compareDateRange.startDate && compareDateRange.endDate) {
-        const rangedData = Object(_dataProcessing_utils__WEBPACK_IMPORTED_MODULE_8__["getRangedData"])(allData, {
+        showWarning();
+        const rangedData = Object(_dataProcessing_utils__WEBPACK_IMPORTED_MODULE_9__["getRangedData"])(allData, {
           startDate: compareDateRange.startDate,
           endDate: compareDateRange.endDate
         }); // console.log(rangedData)
 
         dispatch({
-          type: _store_generalReducer__WEBPACK_IMPORTED_MODULE_9__["UPDATE_COMPARE_DATA"],
+          type: _store_generalReducer__WEBPACK_IMPORTED_MODULE_10__["UPDATE_COMPARE_DATA"],
           payload: rangedData
         });
       }
 
       if (!showCompareDate) {
         dispatch({
-          type: _store_generalReducer__WEBPACK_IMPORTED_MODULE_9__["UPDATE_COMPARE_DATA"],
+          type: _store_generalReducer__WEBPACK_IMPORTED_MODULE_10__["UPDATE_COMPARE_DATA"],
           payload: {}
         });
       }
@@ -2057,25 +2100,25 @@ const DateContainer = ({
   }, [comparePreset]);
   if (!allData.sales) return null;
   const btnDisabled = loading || fixedFullRange || isLoading || isBasic;
-  return __jsx(_styles_layout_Flex__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  return __jsx(_styles_layout_Flex__WEBPACK_IMPORTED_MODULE_6__["default"], {
     alignItems: "center",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 99,
+      lineNumber: 118,
       columnNumber: 5
     }
-  }, __jsx(_styles_layout_Flex__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, __jsx(_styles_layout_Flex__WEBPACK_IMPORTED_MODULE_6__["default"], {
     flexDirection: "column",
     justifyContent: "space-between",
     height: showCompareDate && !fixedFullRange ? 96 : 'auto',
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 100,
+      lineNumber: 119,
       columnNumber: 7
     }
-  }, __jsx(_styles_elements_Select__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, __jsx(_styles_elements_Select__WEBPACK_IMPORTED_MODULE_8__["default"], {
     opacity: fixedFullRange ? 0 : 1,
     options: options,
     onChange: arr => setPreset(arr[0]),
@@ -2092,10 +2135,10 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 102,
+      lineNumber: 121,
       columnNumber: 9
     }
-  }), showCompareDate ? __jsx(_styles_elements_Select__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }), showCompareDate ? __jsx(_styles_elements_Select__WEBPACK_IMPORTED_MODULE_8__["default"], {
     opacity: fixedFullRange ? 0 : 1,
     options: options,
     onChange: arr => setComparePreset(arr[0]),
@@ -2112,26 +2155,27 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 116,
+      lineNumber: 135,
       columnNumber: 13
     }
-  }) : null), __jsx(_styles_layout_Flex__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }) : null), __jsx(_styles_layout_Flex__WEBPACK_IMPORTED_MODULE_6__["default"], {
     flexDirection: "column",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 131,
+      lineNumber: 150,
       columnNumber: 7
     }
-  }, __jsx(_styles_elements_DateRangePicker__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, __jsx(_styles_elements_DateRangePicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
     startDate: dateRange.startDate ? moment__WEBPACK_IMPORTED_MODULE_3___default()(fixedFullRange ? min : dateRange.startDate) : null,
     endDate: dateRange.endDate ? moment__WEBPACK_IMPORTED_MODULE_3___default()(fixedFullRange ? max : dateRange.endDate) : null,
     disabled: fixedFullRange,
-    isOutsideRange: day => {
-      console.log(day, moment__WEBPACK_IMPORTED_MODULE_3___default()(max));
-      return day.isBefore(moment__WEBPACK_IMPORTED_MODULE_3___default()(min)) || day.isAfter(moment__WEBPACK_IMPORTED_MODULE_3___default()(max));
-    },
-    enableOutsideDays: false,
+    isOutsideRange: () => false,
+    enableOutsideDays: true // isOutsideRange={(day) => {
+    //   return (day.isBefore(moment(min)) || day.isAfter(moment(max)))
+    // }}
+    // enableOutsideDays={false}
+    ,
     onDatesChange: ({
       startDate,
       endDate
@@ -2148,10 +2192,10 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 133,
+      lineNumber: 152,
       columnNumber: 9
     }
-  }), showCompareDate && !fixedFullRange ? __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(_styles_elements_Text__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }), showCompareDate && !fixedFullRange ? __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(_styles_elements_Text__WEBPACK_IMPORTED_MODULE_11__["default"], {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -2161,10 +2205,10 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 153,
+      lineNumber: 173,
       columnNumber: 15
     }
-  }, "vs."), __jsx(_styles_elements_DateRangePicker__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, "vs."), __jsx(_styles_elements_DateRangePicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
     startDate: compareDateRange.startDate ? moment__WEBPACK_IMPORTED_MODULE_3___default()(fixedFullRange ? min : compareDateRange.startDate) : null,
     endDate: compareDateRange.endDate ? moment__WEBPACK_IMPORTED_MODULE_3___default()(fixedFullRange ? max : compareDateRange.endDate) : null,
     disabled: fixedFullRange,
@@ -2187,16 +2231,16 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 163,
+      lineNumber: 183,
       columnNumber: 15
     }
-  })) : null), __jsx(_styles_elements_Tooltip__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  })) : null), __jsx(_styles_elements_Tooltip__WEBPACK_IMPORTED_MODULE_13__["default"], {
     disabled: !isBasic,
     html: __jsx(TooltipContent, {
       __self: undefined,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 184,
+        lineNumber: 204,
         columnNumber: 15
       }
     }),
@@ -2205,7 +2249,7 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 182,
+      lineNumber: 202,
       columnNumber: 7
     }
   }, __jsx(AddBtn, {
@@ -2218,16 +2262,16 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 189,
+      lineNumber: 209,
       columnNumber: 9
     }
-  }, fixedFullRange ? null : loading || isLoading ? __jsx(_styles_elements_Loading_Spinner__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, fixedFullRange ? null : loading || isLoading ? __jsx(_styles_elements_Loading_Spinner__WEBPACK_IMPORTED_MODULE_12__["default"], {
     width: "2em",
     size: 3,
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 200,
+      lineNumber: 220,
       columnNumber: 17
     }
   }) : __jsx("i", {
@@ -2235,7 +2279,7 @@ const DateContainer = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 202,
+      lineNumber: 222,
       columnNumber: 17
     }
   }))));
@@ -2248,7 +2292,7 @@ const TooltipContent = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 216,
+      lineNumber: 236,
       columnNumber: 5
     }
   }, "You must ", __jsx(next_link__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -2256,7 +2300,7 @@ const TooltipContent = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 217,
+      lineNumber: 237,
       columnNumber: 16
     }
   }, __jsx(Span, {
@@ -2264,7 +2308,7 @@ const TooltipContent = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 217,
+      lineNumber: 237,
       columnNumber: 50
     }
   }, "upgrade")), " to compare date ranges");
@@ -2290,6 +2334,14 @@ const AddBtn = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.span.wit
   theme,
   disabled
 }) => !disabled ? theme.colors.primary : null);
+const CustomLink = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.span.withConfig({
+  displayName: "DateContainer__CustomLink",
+  componentId: "sc-3ofmch-2"
+})(["color:", ";margin-left:5px;text-decoration:none;border-bottom:1px solid ", ";cursor:pointer;&:hover{opacity:.8;}"], ({
+  theme
+}) => theme.colors.primary, ({
+  theme
+}) => theme.colors.primary);
 const options = [{
   label: 'Full Range',
   value: 'full'
@@ -2320,7 +2372,7 @@ const getDatePreset = (preset, min, max) => {
         const newEnd = moment__WEBPACK_IMPORTED_MODULE_3___default()(moment__WEBPACK_IMPORTED_MODULE_3___default()().endOf('month')).format('MM-DD-YYYY');
         return {
           startDate: newStart,
-          endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
+          endDate: newEnd
         };
       }
 
@@ -2330,7 +2382,7 @@ const getDatePreset = (preset, min, max) => {
         const newEnd = moment__WEBPACK_IMPORTED_MODULE_3___default()(moment__WEBPACK_IMPORTED_MODULE_3___default()().subtract(1, 'months').endOf('month')).format('MM-DD-YYYY');
         return {
           startDate: newStart,
-          endDate: new Date(newEnd) <= new Date(max) ? newEnd : max
+          endDate: newEnd
         };
       }
 
@@ -2375,7 +2427,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_elements_NoDataFound__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../styles/elements/NoDataFound */ "./styles/elements/NoDataFound/index.js");
 /* harmony import */ var _styles_elements_Loading__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../styles/elements/Loading */ "./styles/elements/Loading/index.js");
 /* harmony import */ var _firebase__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../firebase */ "./firebase/index.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/components/Layout.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/components/Layout.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -2421,7 +2473,7 @@ const Layout = Object(_firebase__WEBPACK_IMPORTED_MODULE_9__["withFirebase"])(pr
   const router = Object(next_router__WEBPACK_IMPORTED_MODULE_1__["useRouter"])();
   const heading = getheaderContent(router.pathname);
   const noData = !files.length || JSON.stringify(rangedData) === '{}';
-  const noUser = JSON.stringify(user) === '{}';
+  const noUser = JSON.stringify(user) === '{}' || !user;
   const routeRequiresData = heading === 'Reports' || heading === 'Dashboard';
   const centerContent = loading || noData;
   const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up';
@@ -2592,7 +2644,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _firebase__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../firebase */ "./firebase/index.js");
 /* harmony import */ var _styles_elements_Tooltip__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/elements/Tooltip */ "./styles/elements/Tooltip/index.js");
 /* harmony import */ var _styles_elements_Text__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../styles/elements/Text */ "./styles/elements/Text/index.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/components/Sidebar.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/components/Sidebar.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -3215,7 +3267,7 @@ const getRangedData = (data, {
 
   if (newData.length) {
     return Object(_index__WEBPACK_IMPORTED_MODULE_1__["setUpState"])(newData, data.currency_type);
-  } else return newData;
+  } else return {};
 };
 
 /***/ }),
@@ -3232,7 +3284,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withFirebase", function() { return withFirebase; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/firebase/context.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/firebase/context.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -3705,7 +3757,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_actions_files__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../store/actions/files */ "./store/actions/files.js");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! next/router */ "next/router");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_20__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/pages/_app.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/pages/_app.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4106,44 +4158,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dates__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dates */ "react-dates");
 /* harmony import */ var react_dates__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dates__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _layout_Flex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout/Flex */ "./styles/layout/Flex/index.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/DateRangePicker/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/DateRangePicker/index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-// import React, { Component } from 'react'
-// import 'react-dates/initialize'
-// import { DateRangePicker } from 'react-dates'
-// class App extends Component {
-//   constructor (props) {
-//     super(props)
-//     this.state = {
-//       startDate: null,
-//       endDate: null,
-//       focusedInput: null
-//     }
-//   }
-//   render () {
-//     return (
-//       <div className='App'>
-//         <DateRangePicker
-//           startDateId='startDate'
-//           endDateId='endDate'
-//           startDate={this.state.startDate}
-//           endDate={this.state.endDate}
-//           onDatesChange={({ startDate, endDate }) => {
-//             console.log(startDate.format('MM_DD_yyyy'))
-//             this.setState({ startDate, endDate })
-//           }}
-//           focusedInput={this.state.focusedInput}
-//           onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
-//         />
-//       </div>
-//     )
-//   }
-// }
-// export default App
 
 
 
@@ -4166,7 +4186,7 @@ class Dates extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 56,
+          lineNumber: 19,
           columnNumber: 11
         }
       }, __jsx("i", {
@@ -4174,7 +4194,7 @@ class Dates extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 61,
+          lineNumber: 24,
           columnNumber: 13
         }
       })),
@@ -4190,7 +4210,7 @@ class Dates extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 53,
+        lineNumber: 16,
         columnNumber: 7
       }
     }));
@@ -4219,7 +4239,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _rebass_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @rebass/forms */ "@rebass/forms");
 /* harmony import */ var _rebass_forms__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_rebass_forms__WEBPACK_IMPORTED_MODULE_3__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Form/Label.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Form/Label.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4277,7 +4297,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "styled-components");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _layout_Flex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layout/Flex */ "./styles/layout/Flex/index.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Loading/Spinner.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Loading/Spinner.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4325,7 +4345,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "styled-components");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_1__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Loading/ThreeDotLoader.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Loading/ThreeDotLoader.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4376,7 +4396,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Spinner__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Spinner */ "./styles/elements/Loading/Spinner.js");
 /* harmony import */ var _ThreeDotLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ThreeDotLoader */ "./styles/elements/Loading/ThreeDotLoader.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Loading/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Loading/index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -4435,29 +4455,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! next/link */ "../node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_5__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/NoDataFound/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/NoDataFound/index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 
 
 
 
-const NoDataFound = props => {
+
+
+const NoDataFound = (_ref) => {
+  let {
+    title,
+    msg
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["title", "msg"]);
+
   const {
     files
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.generalReducer);
-  return __jsx(_layout_Flex__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  return __jsx(_layout_Flex__WEBPACK_IMPORTED_MODULE_1__["default"], _extends({
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
+  }, props, {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 11,
       columnNumber: 5
     }
-  }, __jsx(_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }), __jsx(_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
     color: "primary",
     fontSize: 22,
     fontWeight: 600,
@@ -4467,7 +4501,7 @@ const NoDataFound = props => {
       lineNumber: 12,
       columnNumber: 7
     }
-  }, "Oops!"), __jsx(Divider, {
+  }, title || 'Oops!'), __jsx(Divider, {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
@@ -4500,7 +4534,7 @@ const NoDataFound = props => {
       lineNumber: 18,
       columnNumber: 28
     }
-  }, "It seems that you don't any sales yet!") : __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, "It seems that you need to", __jsx(next_link__WEBPACK_IMPORTED_MODULE_5___default.a, {
+  }, msg || "It seems that you don't any sales yet!") : __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, "It seems that you need to", __jsx(next_link__WEBPACK_IMPORTED_MODULE_5___default.a, {
     href: "/files",
     __self: undefined,
     __source: {
@@ -4575,7 +4609,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Form_Label__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Form/Label */ "./styles/elements/Form/Label.js");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! styled-components */ "styled-components");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_6__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Select/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Select/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -4704,7 +4738,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "styled-components");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _theme__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../theme */ "./theme.js");
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Text/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Text/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4765,7 +4799,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_tippy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-tippy */ "react-tippy");
 /* harmony import */ var react_tippy__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_tippy__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/elements/Tooltip/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/elements/Tooltip/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4831,7 +4865,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rebass_styled_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(rebass_styled_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "styled-components");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/layout/Box/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/layout/Box/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -4875,7 +4909,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var rebass_styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rebass/styled-components */ "rebass/styled-components");
 /* harmony import */ var rebass_styled_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(rebass_styled_components__WEBPACK_IMPORTED_MODULE_1__);
-var _jsxFileName = "/Users/samuelwood/development/test/mepop-next/src/styles/layout/Flex/index.js";
+var _jsxFileName = "/Users/samuelwood/development/mepop-reports/mepop-frontend/src/styles/layout/Flex/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }

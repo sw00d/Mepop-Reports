@@ -14,39 +14,52 @@ import TotalEarningsView from './TotalEarnings'
 import { CompareView } from './CompareView'
 import TopValueBoxes from './TopValueBoxes'
 import VariableLineGraph from './VariableLineGraph'
+import NoDataFound from '../../styles/elements/NoDataFound'
 
 const Reports = (props) => {
   const { rangedData, allData, compareData, user } = useSelector(state => state.generalReducer)
   const data = rangedData
-  const isBasic = user.membership.type === 'basic'
 
-  if (JSON.stringify(compareData) !== '{}') {
+  const isBasic = user.membership.type === 'basic'
+  if (JSON.stringify(compareData) !== '{}' && !isBasic) {
     return <CompareView data={rangedData} compareData={compareData} />
   }
   return (
-    <Flex flexDirection='column' width={[1]}>
-      {/* <RoadToVerified data={data} /> */}
-      <Flex>
-        <TotalEarningsView data={data} />
-      </Flex>
-      <TopValueBoxes data={data} minWidth='20%' />
+    <Flex flexDirection='column' width={[1]} justifyContent='center'>
+      {
+        !data.sales.length ? (
+          <NoDataFound
+            mt='100px'
+            title='Shoot!'
+            msg="It doesn't look like you have any sales in the specified date range."
+          />)
+          : (
 
-      <Flex>
-        <RevenueOverview data={data} isBasic={isBasic} />
-        <SalesByPaymentType data={data} isBasic={isBasic} />
-      </Flex>
-      <SalesByDate data={data} />
-      <SalesByCategory data={data} isBasic={isBasic} />
-      <SalesMap data={data} isBasic={isBasic} />
+            <>
+              {/* <RoadToVerified data={data} /> */}
+              <Flex>
+                <TotalEarningsView data={data} />
+              </Flex>
+              <TopValueBoxes data={data} minWidth='20%' />
 
-      <Flex>
-        <SalesAndListingsByDay data={data} />
-        <ProfitsByMonth data={data} />
-      </Flex>
-      <VariableLineGraph data={data} />
-      <RecentSales data={allData} />
-      <SalesByTime data={data} />
+              <Flex>
+                <RevenueOverview data={data} isBasic={isBasic} />
+                <SalesByPaymentType data={data} isBasic={isBasic} />
+              </Flex>
+              <SalesByDate data={data} />
+              <SalesByCategory data={data} isBasic={isBasic} />
+              <SalesMap data={data} isBasic={isBasic} />
 
+              <Flex>
+                <SalesAndListingsByDay data={data} />
+                <ProfitsByMonth data={data} />
+              </Flex>
+              <VariableLineGraph data={data} />
+              <RecentSales data={allData} />
+              <SalesByTime data={data} />
+            </>
+          )
+      }
     </Flex>
   )
 }

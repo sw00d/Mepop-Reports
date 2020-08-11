@@ -4,18 +4,18 @@ import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import Link from 'next/link'
 
-const NoDataFound = (props) => {
+const NoDataFound = ({ title, msg, ...props }) => {
   const { files } = useSelector(state => state.generalReducer)
 
   return (
-    <Flex justifyContent='center' alignItems='center'>
-      <Text color='primary' fontSize={22} fontWeight={600}>Oops!</Text>
+    <Flex justifyContent='center' alignItems='center' {...props}>
+      <Text color='primary' fontSize={22} fontWeight={600}>{title || 'Oops!'}</Text>
       <Divider />
       <Flex flexDirection='column' justifyContent='space-between' alignItems='center'>
 
         <Flex alignItems='center'>
           {
-            files.length ? <Text color='primary'>It seems that you don't any sales yet!</Text>
+            files.length ? <Text color='primary'>{msg || "It seems that you don't any sales yet!"}</Text>
               : (
                 <>
               It seems that you need to
