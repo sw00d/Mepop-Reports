@@ -24,6 +24,7 @@ import store from '../store'
 import Firebase, { FirebaseContext, withFirebase } from '../firebase'
 import { UPDATE_USER, TOGGLE_LOADING, NOTIFICATION } from '../store/generalReducer'
 import { fetchFiles } from '../store/actions/files'
+import Head from 'next/head'
 
 // Components
 import Notification from '../components/general/Notificaiton'
@@ -34,6 +35,10 @@ const stripePromise = loadStripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
 export const MyApp = (props) => {
   return (
     <Elements stripe={stripePromise}>
+      <Head>
+        <title>Reports for Depop Sellers</title>
+        <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
+      </Head>
       <ThemeProvider theme={theme}>
         <ReduxProvider store={store}>
           <FirebaseContext.Provider value={new Firebase()}>
