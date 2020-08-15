@@ -67,9 +67,10 @@ class Firebase {
   createStripeClient () {
     const createStripeClientFunction = firebase.functions().httpsCallable('createStripeClient')
     const { email, uid } = this.auth.currentUser
-    createStripeClientFunction({ email, uid }).then(() => {
-      console.log('Create Stripe Client')
-    })
+    console.log('create stripe client')
+    // createStripeClientFunction({ email, uid }).then(() => {
+    //   console.log('Create Stripe Client')
+    // })
   }
 
   // profiles
@@ -77,7 +78,7 @@ class Firebase {
     return this.db.collection('profiles').doc(this.auth.currentUser.uid).get().then((doc) => {
       this.handleStripeClients()
       if (!doc.exists) {
-        this.setProfile().then((newDoc) => {
+        return this.setProfile().then((newDoc) => {
           // creates new profile if it doesn't exist (only on first login/signup ever)
 
           return { ...userAndMembership, profile: newDoc }
@@ -105,7 +106,7 @@ class Firebase {
   handleMembership (user) {
     return this.db.collection('memberships').doc(this.auth.currentUser.uid).get().then((doc) => {
       if (!doc.exists) {
-        this.setMembership().then((newDoc) => {
+        return this.setMembership().then((newDoc) => {
           // creates new membership if it doesn't exist (only on first login/signup ever)
           return this.handleProfile({ user, membership: newDoc }).then((newUserObject) => {
             return newUserObject
@@ -127,6 +128,10 @@ class Firebase {
   }
 
   // auth
+  doSendVerificationEmail () {
+    return this.auth.currentUser.sendEmailVerification()
+  }
+
   doCreateUser ({ password, ...form }) {
     return this.auth.createUserWithEmailAndPassword(form.email, password)
       .then(({ user }) => {
@@ -140,12 +145,13 @@ class Firebase {
 
   doSignIn (email, password) {
     return this.auth.signInWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        return this.handleMembership(user)
-      })
+    // .then(({ user }) => {
+    //   return {user, membership: {type: "basic"}, profile: {}}
+    //   // return this.handleMembership(user)
+    // })
   }
 
-  doSignOut () { this.auth.signOut() }
+  doSignOut () { return this.auth.signOut() }
 
   doPasswordReset (email) {
     return this.auth.sendPasswordResetEmail(email)

@@ -8,9 +8,7 @@ import Form from '../../styles/elements/Form'
 import Button from '../../styles/elements/Button'
 import Text from '../../styles/elements/Text'
 import VertDivider from '../../styles/elements/VertDivider'
-import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_USER, TOGGLE_LOADING } from '../../store/generalReducer'
-import { fetchFiles } from '../../store/actions/files'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import LearnMore from './LearnMore'
 import ForgotPass from './ForgotPass'
@@ -18,7 +16,6 @@ import ForgotPass from './ForgotPass'
 const Login = withFirebase(({ firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
-  const dispatch = useDispatch()
   const [form, updateForm] = useState({ email: 'samote.wood@gmail.com', password: '83815Mso' })
   const [isLoading, setLoading] = useState(false)
   const [modalIsOpen, openModal] = useState(false)
@@ -34,23 +31,9 @@ const Login = withFirebase(({ firebase }) => {
     setLoading(true)
     setError('')
 
-    firebase.doSignIn(form.email, form.password).then(({ user }) => {
+    firebase.doSignIn(form.email, form.password).then(() => {
       router.push({ pathname: '/dashboard' })
-      dispatch({
-        type: UPDATE_USER,
-        payload: user
-      })
-      dispatch({
-        type: TOGGLE_LOADING,
-        payload: true
-      })
-      fetchFiles({ firebase, dispatch }, () => {
-        // after fetching files do this
-        dispatch({
-          type: TOGGLE_LOADING,
-          payload: false
-        })
-      })
+      setLoading(false)
     }).catch((err) => {
       setError(translateError(err))
       setLoading(false)

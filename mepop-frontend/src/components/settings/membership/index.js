@@ -1,21 +1,27 @@
-import { withFirebase } from '../../../firebase'
 import { useSelector, useDispatch } from 'react-redux'
+import styled from 'styled-components'
+
 import Card from '../../../styles/elements/Card'
+import { withFirebase } from '../../../firebase'
 import Button from '../../../styles/elements/Button'
 import Text from '../../../styles/elements/Text'
 import Flex from '../../../styles/layout/Flex'
-import styled from 'styled-components'
 import Tooltip from '../../../styles/elements/Tooltip'
 import Box from '../../../styles/layout/Box'
 import { UPDATE_USER } from '../../../store/generalReducer'
 import { useToasts } from 'react-toast-notifications'
 import { useRouter } from 'next/router'
 
+import FeatureToolTip from './FeatureTooltip'
+import { useState } from 'react'
+import Modal from '../../../styles/elements/Modal'
+
 const ChooseMembership = withFirebase(({ firebase }) => {
   const router = useRouter()
   const { addToast } = useToasts()
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.generalReducer)
+  const [activeModal, setModal] = useState(null)
   const { hasSignedIn } = user.profile
   const onChoose = (type) => {
     const newProfile = { ...user.profile, hasSignedIn: true }
@@ -43,6 +49,9 @@ const ChooseMembership = withFirebase(({ firebase }) => {
   }
   return (
     <Card minHeight='650px'>
+      <Modal isOpen={!!activeModal} onRequestClose={() => setModal(null)}>
+        {activeModal}
+      </Modal>
       <Text as='h1' color='greyDarker'>Continue with a Plan</Text>
       <div>
 
@@ -65,21 +74,21 @@ const ChooseMembership = withFirebase(({ firebase }) => {
             })}
           </Flex>
           {
-            options.map(({ title, ref, tooltip }, i) => {
+            options.map(({ title, ref, tooltip, html, icon, cursor }, i) => {
               return (
                 <Flex key={i}>
-                  <Cell px='10px'>
+                  <Cell px='10px' cursor={cursor} onClick={() => html ? setModal(html) : null}>
                     <Tooltip
                       title={tooltip}
-                      position='right'
+                      position='left'
                       height='100%'
                       arrow={false}
                       style={{ width: '100%' }}
                     >
                       <Flex justifyContent='space-between' width={[1]}>
                         {title}
-                        <Box ml='5px' fontSize='20px' alignItems='center'>
-                          <i className='fa fa-question-circle' />
+                        <Box ml='5px' fontSize={icon ? '16px' : '20px'} alignItems='center'>
+                          <i className={`fa ${icon || 'fa-question-circle'}`} />
                         </Box>
                       </Flex>
                     </Tooltip>
@@ -138,6 +147,11 @@ const Cell = styled(Flex)`
     border-bottom: 1px solid ${({ theme }) => theme.colors.whiteDark};
     align-items:center;
     font-weight: ${({ theme }) => theme.fontWeights.bold};
+    cursor: ${({ cursor }) => cursor};
+    transition: .2s;
+    &:hover {
+      background: ${({ theme, cursor }) => cursor === 'pointer' ? theme.colors.mainBg : null};
+    }
 `
 const Table = styled(Flex)`
     border: 1px solid ${({ theme }) => theme.colors.greyLightest};
@@ -146,10 +160,10 @@ const Table = styled(Flex)`
 
 const options = [
   { ref: 'reports', title: 'In Depth Reports', tooltip: 'The best available reporting for Depop Sellers.' },
-  { ref: 'saveCSV', title: "Saving of CSV's", tooltip: 'The ability to upload and save your sales.' },
-  { ref: 'feeCalculator', title: 'Depop Fee Calculator', tooltip: 'Automatically calculate at what price to list your items.' },
+  { ref: 'saveCSV', title: "Saving of CSV's", tooltip: 'The ability to upload, save, and come back to your sales.' },
+  { ref: 'feeCalculator', title: 'Depop Fee Calculator', tooltip: 'Easily calculate where to price your items.' },
   { ref: 'salesDashboard', title: 'Sales Dashboard', tooltip: 'A quick overview of all sales and revenue.' },
-  { ref: 'featureRich', title: 'Way more features!', tooltip: 'Additional charts, maps, and graphs to better analyze your sale trends.' },
+  { ref: 'featureRich', title: 'Way more features!', html: <FeatureToolTip />, icon: 'fa-hand-pointer-o', cursor: 'pointer', tooltip: 'Click for more!' },
   { ref: 'dateComparison', title: 'Date Comparison', tooltip: 'Ever wonder how last month compared to this month? Wonder no more.' },
   { ref: 'exclusiveAccess', title: 'Exclusive Access', tooltip: 'Lots of features are in the works and will be released sporadically.' },
   { ref: 'monthlyFeatures', title: 'Monthly Feature Releases', tooltip: 'Every month at least one new feature will be released.' }

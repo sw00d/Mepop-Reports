@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useState, memo } from 'react'
 
 import { groupByWeek } from '../util/grouping'
@@ -6,12 +7,11 @@ import Card from '../../../styles/elements/Card'
 import Text from '../../../styles/elements/Text'
 import Flex from '../../../styles/layout/Flex'
 import Areachart from '../../../styles/reporting/AreaChart'
-import styled from 'styled-components'
 import theme from '../../../theme'
 import { formatNum } from '../util/general'
 
-const RevenueOverview = memo(({ data, isBasic }) => {
-  const chartData = groupByWeek(data)
+const RevenueOverview = memo(({ data, isBasic, fakeData }) => {
+  const chartData = fakeData || groupByWeek(data)
   const [week, setWeek] = useState(chartData[chartData.length - 1].week)
   const [revenue, setRevenue] = useState({ gross: chartData[chartData.length - 1].Gross, net: chartData[chartData.length - 1].Net })
 
@@ -33,7 +33,7 @@ const RevenueOverview = memo(({ data, isBasic }) => {
       sx={{ overflow: 'hidden', boxShadow: theme.shadows.normal }}
       minHeight='420px'
 
-      proOnly={isBasic ? {
+      proOnly={isBasic && !fakeData ? {
         component: 'Revenue Overview',
         img: 'revenue-overview.png'
       } : null}
@@ -42,10 +42,10 @@ const RevenueOverview = memo(({ data, isBasic }) => {
 
         <Title color='primary' fontSize={25}>{week}</Title>
         <Text pt='10px' color='pastelGreen' fontSize={20} fontWeight={600}>
-          Gross: {formatNum(data.currency_type, revenue.gross)}
+          Gross: {formatNum(data ? data.currency_type : '$', revenue.gross)}
         </Text>
         <Text color='pastelPurple' fontSize={20} fontWeight={600}>
-          Net: {formatNum(data.currency_type, revenue.net)}
+          Net: {formatNum(data ? data.currency_type : '&', revenue.net)}
         </Text>
       </Flex>
       <Areachart

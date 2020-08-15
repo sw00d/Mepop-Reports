@@ -23,11 +23,6 @@
     box-sizing: border-box;
   }
 
-  .CodeMirror *, pre {
-    font-family: monospace !important;
-    font-size: 14px;
-  }
-
 /* Next.js Transitions https://www.npmjs.com/package/next-page-transitions */
 .page-transition-enter {
   opacity: 0;

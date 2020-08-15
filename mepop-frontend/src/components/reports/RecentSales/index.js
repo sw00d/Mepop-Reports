@@ -22,7 +22,7 @@ const RecentSales = ({ data }) => {
         background='mainBg'
         minWidth='300px'
         tableHeight={380}
-        headerContent='Recent Sales'
+        headerContent='Most Recent Sales'
         data={tableData}
         activeRow={idx}
         handleRowClick={(row) => {

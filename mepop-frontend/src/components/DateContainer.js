@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, memo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -15,7 +15,7 @@ import Text from '../styles/elements/Text'
 import Spinner from '../styles/elements/Loading/Spinner'
 import Tooltip from '../styles/elements/Tooltip'
 
-const DateContainer = ({ page }) => {
+const DateContainer = memo(({ page }) => {
   const { allData, loading, user } = useSelector(state => state.generalReducer)
   const fixedFullRange = page === 'Dashboard'
   const dispatch = useDispatch()
@@ -113,7 +113,7 @@ const DateContainer = ({ page }) => {
   }, [comparePreset])
 
   if (!allData.sales) return null
-  const btnDisabled = loading || fixedFullRange || isLoading || isBasic
+  const btnDisabled = fixedFullRange || isLoading || isBasic
   return (
     <Flex alignItems='center'>
       <Flex flexDirection='column' justifyContent='space-between' height={showCompareDate && !fixedFullRange ? 96 : 'auto'}>
@@ -227,7 +227,7 @@ const DateContainer = ({ page }) => {
     </Flex>
 
   )
-}
+})
 
 export default DateContainer
 

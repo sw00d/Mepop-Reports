@@ -14,16 +14,17 @@ import { useSelector } from 'react-redux'
 // utils
 import { getAvgProfits, bestTimeToList, avgItemsPerDay } from './util'
 
-const Dashboard = (props) => {
+const Dashboard = () => {
   const { allData } = useSelector(state => state.generalReducer)
   const data = allData
 
-  if (!data) return null
-
+  if (!data) {
+    console.log('Returning null')
+    return null
+  }
   const avgNetProfit = getAvgProfits(data)
   const whenToList = bestTimeToList(data)
   const itemsSoldPerDay = avgItemsPerDay(data)
-
   return (
     <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg' width={[1]}>
       <Flex width={[1]} flexDirection='column'>

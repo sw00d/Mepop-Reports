@@ -44,7 +44,7 @@ const SignUp = withFirebase(({ firebase }) => {
           appearance: 'success',
           autoDismiss: true
         })
-        router.push('/sign-in')
+        // router.push('/sign-in')
       })
       .catch((err) => {
         setError(err.message)

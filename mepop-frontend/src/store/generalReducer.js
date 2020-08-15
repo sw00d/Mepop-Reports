@@ -7,6 +7,7 @@ export const SET_GEO_DATA = 'SET_GEO_DATA'
 export const UPDATE_RANGED_DATA = 'UPDATE_RANGED_DATA'
 export const UPDATE_COMPARE_DATA = 'UPDATE_COMPARE_DATA'
 export const TOGGLE_LOADING = 'TOGGLE_LOADING'
+export const NOTIFICATION = 'NOTIFICATION'
 
 const initialState = {
   user: {},
@@ -15,14 +16,18 @@ const initialState = {
   rangedData: {},
   compareData: {},
   geocodes: {},
+  notification: { type: 'email' },
   googleMapsKey: null,
-  loading: true
+  loading: false
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_LOADING: {
       return { ...state, loading: typeof action.payload === 'boolean' ? action.payload : !state.loading }
+    }
+    case NOTIFICATION: {
+      return { ...state, notification: { type: action.payload.type } }
     }
     case UPDATE_USER: {
       return { ...state, user: action.payload }

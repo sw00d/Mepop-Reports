@@ -25,7 +25,7 @@ const getheaderContent = pathname => {
       return 'Mepop Reports'
   }
 }
-const Layout = withFirebase((props) => {
+const Layout = (props) => {
   const { loading, compareData, files, rangedData, user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const heading = getheaderContent(router.pathname)
@@ -35,7 +35,6 @@ const Layout = withFirebase((props) => {
   const centerContent = loading || noData
   const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up'
   const hideSideBar = router.pathname === '/settings/membership/'
-
   if (noUser && !unprotectedRoute) {
     return null
   }
@@ -43,6 +42,19 @@ const Layout = withFirebase((props) => {
     if (!user.profile.hasSignedIn) {
       router.push('/settings/membership')
     }
+  }
+  if ((!user.membership || !user.profile) && !unprotectedRoute) {
+    return (
+      <Flex
+        justifyContent='center'
+        bg='mainBg'
+        flex={[1]}
+      >
+        <Flex justifyContent='center' height='90vh' alignItems='center'>
+          <Loading />
+        </Flex>
+      </Flex>
+    )
   }
   return (
     <Flex
@@ -103,7 +115,7 @@ const Layout = withFirebase((props) => {
     </Flex>
 
   )
-})
+}
 
 export default Layout
 

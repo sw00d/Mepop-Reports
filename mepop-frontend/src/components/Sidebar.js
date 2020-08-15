@@ -145,7 +145,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
         >
           <Row
             isMini={isMini}
-            onClick={() => firebase.doSignOut()}
+            onClick={() => firebase.doSignOut().then(()=>router.push("/sign-in"))}
           >
             <I className='fa fa-sign-out' />
             <RowText isMini={isMini}>Sign Out</RowText>
