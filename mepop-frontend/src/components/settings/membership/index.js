@@ -52,11 +52,11 @@ const ChooseMembership = withFirebase(({ firebase }) => {
       <Modal isOpen={!!activeModal} onRequestClose={() => setModal(null)}>
         {activeModal}
       </Modal>
-      <Text as='h1' color='greyDarker'>Continue with a Plan</Text>
-      <div>
+      <Text as='h2' color='greyDarker'>Continue with a Plan</Text>
+      <TableContainer>
 
         <Table flexDirection='column' alignItems='flex-end' mb='20px'>
-          <Flex>
+          <Flex width={[1]}>
             <Cell />
             {tiers.map(({ title, icon, price }) => {
               return (
@@ -76,8 +76,12 @@ const ChooseMembership = withFirebase(({ firebase }) => {
           {
             options.map(({ title, ref, tooltip, html, icon, cursor }, i) => {
               return (
-                <Flex key={i}>
-                  <Cell px='10px' cursor={cursor} onClick={() => html ? setModal(html) : null}>
+                <Flex width={[1]} key={i}>
+                  <Cell
+                    px='10px'
+                    cursor={cursor}
+                    onClick={() => html ? setModal(html) : null}
+                  >
                     <Tooltip
                       title={tooltip}
                       position='left'
@@ -85,7 +89,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
                       arrow={false}
                       style={{ width: '100%' }}
                     >
-                      <Flex justifyContent='space-between' width={[1]}>
+                      <Flex justifyContent='space-between' width={[1]} alignItems='center'>
                         {title}
                         <Box ml='5px' fontSize={icon ? '16px' : '20px'} alignItems='center'>
                           <i className={`fa ${icon || 'fa-question-circle'}`} />
@@ -111,7 +115,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
               )
             })
           }
-          <Flex>
+          <Flex width={[1]}>
             <Cell />
             {tiers.map(({ title, type }) => {
               return (
@@ -128,24 +132,29 @@ const ChooseMembership = withFirebase(({ firebase }) => {
           </Flex>
         </Table>
         <Text mb='10px' width={[1]} justifyContent='flex-start'>* By choosing a plan, you automatically agree to our 'terms of service'</Text>
-      </div>
+      </TableContainer>
     </Card>
   )
 })
 
 export default ChooseMembership
 
+const TableContainer = styled.div`
+  width: 90%;
+`
 const I = styled.i`
     color: ${({ good, theme }) => good ? theme.colors.good : theme.colors.bad};
     font-size: 25px;
 `
 const Cell = styled(Flex)`
     min-height: 50px;
-    min-width: 300px;
+    min-width: 200px;
+    padding: 0px 10px;
+    flex: 1;
     overflow: auto;
     border-right: 1px solid ${({ theme }) => theme.colors.whiteDark};
     border-bottom: 1px solid ${({ theme }) => theme.colors.whiteDark};
-    align-items:center;
+    align-items: center;
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     cursor: ${({ cursor }) => cursor};
     transition: .2s;
@@ -156,6 +165,8 @@ const Cell = styled(Flex)`
 const Table = styled(Flex)`
     border: 1px solid ${({ theme }) => theme.colors.greyLightest};
     border-radius: ${({ theme }) => theme.borderRadius.normal};
+    width:100%;
+    overflow: auto;
 `
 
 const options = [
