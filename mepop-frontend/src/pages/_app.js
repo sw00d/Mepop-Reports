@@ -115,7 +115,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
       <Notification {...notification} />
       {
         <PageTransition timeout={300} classNames='page-transition'>
-          <Component {...pageProps} />
+          <Component {...pageProps} key={router.pathname} />
         </PageTransition>
       }
 

@@ -67,10 +67,9 @@ class Firebase {
   createStripeClient () {
     const createStripeClientFunction = firebase.functions().httpsCallable('createStripeClient')
     const { email, uid } = this.auth.currentUser
-    console.log('create stripe client')
-    // createStripeClientFunction({ email, uid }).then(() => {
-    //   console.log('Create Stripe Client')
-    // })
+    createStripeClientFunction({ email, uid }).then(() => {
+      console.log('Created Stripe Client')
+    })
   }
 
   // profiles

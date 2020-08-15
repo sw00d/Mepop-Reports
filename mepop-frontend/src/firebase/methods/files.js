@@ -47,12 +47,12 @@ export const getFileMethod = (auth, storage, resolve) => {
     })
 }
 
-export const deleteFileMethod = (auth, storage, filename, fetchFiles) => {
+export const deleteFileMethod = (auth, storage, filename, resolve) => {
   const UID = auth.currentUser.uid
   const storageRef = storage.ref(`${UID}/${filename}`)
 
   storageRef.delete().then(() => {
-    fetchFiles()
+    resolve()
   }).catch((err) => {
     console.log(err)
     window.alert(err.message)
