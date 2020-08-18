@@ -7,7 +7,6 @@ import DateContainer from './DateContainer'
 import { useSelector } from 'react-redux'
 import NoDataFound from '../styles/elements/NoDataFound'
 import Loading from '../styles/elements/Loading'
-import { withFirebase } from '../firebase'
 
 const getheaderContent = pathname => {
   switch (pathname) {
@@ -17,7 +16,7 @@ const getheaderContent = pathname => {
       return 'Reports'
     case '/files':
       return 'Files'
-    case '/settings/personal':
+    case '/settings':
       return 'Settings'
     case '/fees-calculator':
       return 'Fees Calculator'
@@ -142,7 +141,7 @@ const Header = styled.div`
     align-items:center;
     padding-left: 10px;
     font-wieght: ${({ theme }) => theme.fontWeights.bold};
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.greyDarkest};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     font-size: 20px;
     justify-content: space-between;

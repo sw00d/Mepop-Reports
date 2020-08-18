@@ -135,7 +135,7 @@ const Button = styled.button`
   transition: .1s;
   &:hover {
 
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.greyDarkest};
   }
 
 `

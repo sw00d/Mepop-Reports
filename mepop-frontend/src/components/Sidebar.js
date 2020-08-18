@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 import { withFirebase } from '../firebase'
 
@@ -12,6 +13,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
   const [isMini, minify] = useState(true)
   const router = useRouter()
   const [activeRoute, updateRoute] = useState(router.pathname)
+  const { user } = useSelector(state => state.generalReducer)
 
   useEffect(() => {
     updateRoute(router.pathname)
@@ -122,7 +124,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
 
             arrow={false}
           >
-            <Link href='/settings/personal'>
+            <Link href='/settings'>
               <Row
                 isMini={isMini}
                 onClick={() => updateRoute('/settings')}
@@ -138,17 +140,15 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
         </Nav>
         <Tooltip
           title='Sign Out'
-          disabled={!isMini}
-          distance={0}
-          position='right-start'
           arrow={false}
+          followCursor
         >
           <Row
             isMini={isMini}
-            onClick={() => firebase.doSignOut().then(()=>router.push("/sign-in"))}
+            onClick={() => firebase.doSignOut().then(() => router.push('/sign-in'))}
           >
             <I className='fa fa-sign-out' />
-            <RowText isMini={isMini}>Sign Out</RowText>
+            <RowText isMini={isMini}>{user.user ? user.user.email : ''}</RowText>
           </Row>
 
         </Tooltip>
@@ -222,10 +222,13 @@ const Row = styled.div`
     isActive
     ? theme.colors.mainBg
     : null};
+    border-left: ${({ theme, isActive }) =>
+    isActive
+    ? `3px solid ${theme.colors.primary}`
+    : null};
     border-top-right-radius: ${({ theme, isMini, title }) => isMini || title ? '0px' : theme.borderRadius.normal};
     border-bottom-right-radius: ${({ theme, isMini, title }) => isMini || title ? '0px' : theme.borderRadius.normal};
     margin-right: ${({ isMini, title }) => isMini || title ? 0 : 10}px;
-    
     /* border-bottom: 1px solid ${({ theme, title }) => title ? theme.colors.mainBg : 'transparent'}; */
     
     &:hover {
@@ -252,7 +255,7 @@ const RowText = styled(Text)`
 `
 const IconButton = styled.div`
     background: transparent;
-    color: ${({ theme }) => theme.colors.black};
+    /* color: ${({ theme }) => theme.colors.greyDarkest}; */
     border-color: transparent;
     min-width: 55px;
     padding: 0px;

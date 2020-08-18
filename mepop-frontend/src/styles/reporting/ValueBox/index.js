@@ -64,7 +64,7 @@ const ValueBox = ({
                 decimals={float ? 2 : 0}
                 start={noAnimate ? value : 0}
                 end={float ? parseFloat(value) : typeof value === 'number' ? value : 0}
-              />
+                />
 
           }
         </Value>
@@ -146,7 +146,7 @@ const Content = styled.div`
 const Title = styled.div`
     padding: 10px;
     text-align: left;
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.greyDarkest};
     position: relative;
     font-weight: ${props => props.theme.fontWeights.medium};
     font-size: 18px;

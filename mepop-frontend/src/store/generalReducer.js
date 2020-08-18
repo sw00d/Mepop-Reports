@@ -27,7 +27,7 @@ export default (state = initialState, action) => {
       return { ...state, loading: typeof action.payload === 'boolean' ? action.payload : !state.loading }
     }
     case NOTIFICATION: {
-      return { ...state, notification: { type: action.payload.type } }
+      return { ...state, notification: { ...action.payload } }
     }
     case UPDATE_USER: {
       return { ...state, user: action.payload }

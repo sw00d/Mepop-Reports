@@ -81,6 +81,7 @@ export const PasswordFields = ({ onClick, user, btnText, passwordSuccess, isLoad
       }
     }
   }
+  const isCloseMode = !passwords.newPassword || !passwords.oldPassword
   return (
     <Flex alignItems='flex-end' flexDirection={btnIsOpen ? 'column' : 'row'} width={[1]} mt='10px'>
 
@@ -138,8 +139,8 @@ export const PasswordFields = ({ onClick, user, btnText, passwordSuccess, isLoad
           />
 
           <Button
-            bg='greyLightest'
-            color='primary'
+            bg={isCloseMode ? 'greyLightest' : null}
+            color={isCloseMode ? 'primary' : null}
             p='10px'
             pr='8px'
             mr='10px'
@@ -154,7 +155,7 @@ export const PasswordFields = ({ onClick, user, btnText, passwordSuccess, isLoad
               }
             }}
           >
-            <FadeIn>{!passwords.newPassword || !passwords.oldPassword ? 'Close' : btnText}</FadeIn>
+            <FadeIn>{isCloseMode ? 'Close' : btnText}</FadeIn>
           </Button>
         </>
       ) : null}

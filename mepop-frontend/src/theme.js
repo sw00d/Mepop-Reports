@@ -41,7 +41,8 @@ let colors = {
   greenSoft: '#309F87',
   greenSoftLight: '#BBD8D3',
   greenSoftLighter: '#D3EEEB',
-  blueBrand: '#05646E',
+  teal: '#24867A',
+  tealDark: '#18635a',
   blue: '#293757',
   blueHighlight: '#3458ac',
   blueLight: '#96c1da',
@@ -56,7 +57,6 @@ let colors = {
   redDisabled: '#C19C9C',
   green: '#069f06',
   purple: '#86529A',
-  teal: '#24867A',
 
   // Pastel Colors
   pastelPurple: '#8884d8',
@@ -75,7 +75,7 @@ let colors = {
 colors = {
   ...colors,
   transparent: 'transparent',
-  primary: colors.blue,
+  primary: colors.tealDark,
   textSubtle: colors.greyText,
   accent: colors.blueHighlight,
   danger: colors.red,
@@ -127,8 +127,8 @@ const shadows = {
   subtleSmall: '0 0 35px 0 rgba(0,0,0,0.06)',
   subtleSmallBelow: '0 5px 15px 0 rgba(0,0,0,0.03)',
   subtleTeal: `0 0 35px 0 ${transparentize(0.75, colors.greenSoft)}`,
-  normal: '0px 0px 20px 0px rgba(0, 0, 0, .3);',
-  heavy: '0 0 35px 0 rgba(0,0,0,0.3)',
+  normal: '2px 4px 6px 0 rgba(0, 0, 0, .2);',
+  heavy: '0 0 35px 0 rgba(0,0,0,0.2)',
   smallTeal: `0 0 12px 0 ${transparentize(0.85, colors.greenSoft)}`
 }
 

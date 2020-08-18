@@ -14,9 +14,11 @@ const Dropzone = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
   const { addToast } = useToasts()
   const [modalIsOpen, toggleModal] = useState(false)
+  const [loading, setLoading] = useState(false)
   const startFetch = useCallback(() => {
+    setLoading(true)
     fetchFiles({ firebase, dispatch }, () => {
-      // setLoading(false)
+      setLoading(false)
       // disableBtns(false)
       // activateBtn(null)
     })
@@ -55,6 +57,7 @@ const Dropzone = withFirebase(({ firebase }) => {
             color='greyDarkest'
             fontSize='20px'
             onClick={() => toggleModal(!modalIsOpen)}
+
           >
             <i className='fa fa-question-circle' />
           </Button>
@@ -67,7 +70,7 @@ const Dropzone = withFirebase(({ firebase }) => {
             Drop files here
         </H2>
         <p>or</p>
-        <Button color='blue' bg='white' size='lg'>Select Files</Button>
+        <Button isLoading={loading} minWidth='115px' color='blue' bg='white' size='lg'>Select Files</Button>
         <p>Files must be from Depop to be valid</p>
       </DropZone>
 

@@ -19,7 +19,7 @@ class Dates extends Component {
           <Flex
             fontSize={20}
             alignItems='center'
-            color={this.props.disabled ? 'greyLight' : 'primary'}
+            color={this.props.disabled ? 'greyLight' : 'greyDarkest'}
           >
             <i className='fa fa-arrow-circle-o-right' />
           </Flex>
