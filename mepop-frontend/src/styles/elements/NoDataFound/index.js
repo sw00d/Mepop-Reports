@@ -3,19 +3,19 @@ import Text from '../Text'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import Link from 'next/link'
+import VertDivider from '../VertDivider'
 
 const NoDataFound = ({ title, msg, ...props }) => {
   const { files } = useSelector(state => state.generalReducer)
-
   return (
     <Flex justifyContent='center' alignItems='center' {...props}>
-      <Text color='primary' fontSize={22} fontWeight={600}>{title || 'Oops!'}</Text>
-      <Divider />
+      <Text color='greyDarker' fontSize={22} fontWeight={600}>{title || 'Oops!'}</Text>
+      <VertDivider height='70px !important' mx='10px' />
       <Flex flexDirection='column' justifyContent='space-between' alignItems='center'>
 
         <Flex alignItems='center'>
           {
-            files.length ? <Text color='primary'>{msg || "It seems that you don't any sales yet!"}</Text>
+            files.length ? <Text color='greyDarker'>{msg || "It seems that you don't any sales yet!"}</Text>
               : (
                 <>
               It seems that you need to
@@ -36,12 +36,6 @@ const NoDataFound = ({ title, msg, ...props }) => {
 
 export default NoDataFound
 
-const Divider = styled.div`
-    height: 70px;
-    width: 2px;
-    background: ${({ theme }) => theme.colors.primary};
-    margin: 0px 10px 0px 10px;
-`
 const I = styled.i`
     margin-left: 10px;
 `

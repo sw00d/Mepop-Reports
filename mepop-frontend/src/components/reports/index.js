@@ -54,7 +54,7 @@ const Reports = (props) => {
                 <SalesAndListingsByDay data={data} />
                 <ProfitsByMonth data={data} />
               </Flex>
-              <VariableLineGraph data={data} />
+              <VariableLineGraph data={data} isBasic={isBasic} />
               <RecentSales data={allData} />
               <SalesByTime data={data} />
             </>

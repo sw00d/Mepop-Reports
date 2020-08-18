@@ -262,7 +262,7 @@ const AddBtn = styled.span`
   border-left: 1px solid ${({ theme, isFixedFullRange }) => isFixedFullRange ? 'transparent' : theme.colors.mainBg};
   justify-content: center;
   &:hover {
-    color: ${({ theme, disabled }) => !disabled ? theme.colors.primary : null};
+    color: ${({ theme, disabled }) => !disabled ? theme.colors.greyDarkest : null};
   }
   `
 const CustomLink = styled.span`

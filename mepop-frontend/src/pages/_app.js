@@ -2,8 +2,6 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { ThemeProvider } from 'styled-components'
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { ToastProvider } from 'react-toast-notifications'
 import { PageTransition } from 'next-page-transitions'
@@ -27,28 +25,25 @@ import { fetchFiles } from '../store/actions/files'
 import Head from 'next/head'
 
 // Components
-import Notification from '../components/general/Notificaiton'
+import Notification from '../components/general/Notification'
 import Layout from '../components/Layout'
 import { setupLocationKeys } from '../store/actions/keySetup'
 
-const stripePromise = loadStripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
 export const MyApp = (props) => {
   return (
-    <Elements stripe={stripePromise}>
+    <ThemeProvider theme={theme}>
       <Head>
         <title>Reports for Depop Sellers</title>
         <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
       </Head>
-      <ThemeProvider theme={theme}>
-        <ReduxProvider store={store}>
-          <FirebaseContext.Provider value={new Firebase()}>
-            <ToastProvider>
-              <Setup {...props} />
-            </ToastProvider>
-          </FirebaseContext.Provider>
-        </ReduxProvider>
-      </ThemeProvider>
-    </Elements>
+      <ReduxProvider store={store}>
+        <FirebaseContext.Provider value={new Firebase()}>
+          <ToastProvider>
+            <Setup {...props} />
+          </ToastProvider>
+        </FirebaseContext.Provider>
+      </ReduxProvider>
+    </ThemeProvider>
 
   )
 }
@@ -58,7 +53,7 @@ export default MyApp
 // This persists user sessions and sets up app from there.
 const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   // const { notification, user = {} } = {}
-  const { notification, user } = useSelector(state => state.generalReducer)
+  const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const dispatch = useDispatch()
   const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up'
@@ -103,22 +98,21 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   useEffect(() => {
     if (user.user) {
       if (!user.user.emailVerified) {
-        // dispatch({
-        //   type: NOTIFICATION,
-        //   payload: { type: 'email', active: true }
-        // })
+        dispatch({
+          type: NOTIFICATION,
+          payload: { type: 'email', active: true }
+        })
       }
     }
   }, [user.user])
   return (
     <Layout>
-      <Notification {...notification} />
+      <Notification />
       {
         <PageTransition timeout={300} classNames='page-transition'>
           <Component {...pageProps} key={router.pathname} />
         </PageTransition>
       }
-
     </Layout>
   )
 })

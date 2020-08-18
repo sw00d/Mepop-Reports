@@ -1,5 +1,6 @@
 import { useMemo, useState, memo } from 'react'
 import moment from 'moment'
+import styled from 'styled-components'
 
 // Utils
 import { groupByTime } from '../util/grouping'
@@ -7,7 +8,6 @@ import { groupByTime } from '../util/grouping'
 // Components
 import BubbleChart from '../../../styles/reporting/BubbleChart'
 import Flex from '../../../styles/layout/Flex'
-import styled from 'styled-components'
 
 import SalesTable from '../../general/SalesTable'
 
@@ -36,6 +36,7 @@ const SalesByDate = memo(({ data }) => {
         onClick={(x, y) => {
           activateCoords({ x, y })
         }}
+        color='black'
       />
       {
         coords ? (

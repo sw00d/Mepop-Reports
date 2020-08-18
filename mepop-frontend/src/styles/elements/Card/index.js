@@ -86,13 +86,11 @@ const Container = styled(Flex)`
   flex: 1;
   border-radius: ${props => props.borderRadius ? props.borderRadius : props.theme.borderRadius.normal};
   background-color: ${props => props.theme.colors[props.background] || props.theme.colors.white};
-  min-height:${({ minHeight }) => minHeight || 150}px;
-  /* min-width: 1px; */
   position: relative;
   z-index: 1;
   height: ${({ height }) => height};
   border-radius: ${props => props.theme.borderRadius.normal};
-
+  border-top: ${({ borderTop, theme }) => borderTop ? `3px solid ${theme.colors[borderTop]}` : null};
   ${({ isLoading }) => isLoading ? `
     display: flex;
     flex-direction: column;
@@ -149,7 +147,7 @@ const Button = styled.button`
   transition: .1s;
   &:hover {
 
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.greyDarkest};
   }
 
 `

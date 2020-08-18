@@ -21,7 +21,7 @@ const LearnMore = (props) => {
             🌟 Grow your shop.
           </Text>
         </Flex>
-        <Card boxShadow='none' m={0}>
+        <Card boxShadow='none' m={0} minHeight='150px'>
           <AreaChart
             boxShadow='none'
             data={data}
