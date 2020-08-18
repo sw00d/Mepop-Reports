@@ -64,7 +64,7 @@ const ValueBox = ({
                 decimals={float ? 2 : 0}
                 start={noAnimate ? value : 0}
                 end={float ? parseFloat(value) : typeof value === 'number' ? value : 0}
-              />
+                />
 
           }
         </Value>

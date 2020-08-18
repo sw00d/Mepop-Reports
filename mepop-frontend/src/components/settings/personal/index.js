@@ -7,7 +7,6 @@ import { UPDATE_USER } from '../../../store/generalReducer'
 
 import Text from '../../../styles/elements/Text'
 import Button from '../../../styles/elements/Button'
-import HorzDivider from '../../../styles/elements/HorzDivider'
 import Flex from '../../../styles/layout/Flex'
 import { InputField, PasswordFields } from './inputs'
 import styled from 'styled-components'
