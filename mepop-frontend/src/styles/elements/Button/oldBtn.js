@@ -115,7 +115,7 @@ Button.propTypes = propTypes
 Button.defaultProps = {
   caps: true,
   size: 'md',
-  color: 'black',
+  color: 'greyDarkest',
   borderRadius: 1,
   type: 'button',
   outlined: true

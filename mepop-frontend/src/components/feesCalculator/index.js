@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
+import styled from 'styled-components'
 
+import { formatNum } from '../reports/util/general'
 import Card from '../../styles/elements/Card'
 import Input from '../../styles/elements/Input'
 import Select from '../../styles/elements/Select'
 import Text from '../../styles/elements/Text'
 import Flex from '../../styles/layout/Flex'
-import styled from 'styled-components'
+
 import { currencies, countries } from './utils'
+
 const initVals = {
   pricePaid: '',
   listingPrice: '',
@@ -20,13 +23,14 @@ const initVals = {
 function FeeCalculator (props) {
   // (listing price+shipping-pricepaid) - all fees
   const [form, updateForm] = useState(initVals)
-
+  const [symbol, updateSymbol] = useState('$')
   const updateVal = (field) => {
     updateForm({ ...form, [field.target.name]: field.target.value })
   }
   const handleSelect = (field) => {
     if (field.target.name === 'currency') {
-      updateForm({ ...form, paypalCurrencyFee: JSON.parse(field.target.value).value })
+      updateForm({ ...form, paypalCurrencyFee: JSON.parse(field.target.value).value.val })
+      updateSymbol(JSON.parse(field.target.value).value.symbol)
     }
 
     if (field.target.name === 'sellerCountry' || field.target.name === 'buyerCountry') {
@@ -158,38 +162,38 @@ function FeeCalculator (props) {
                 <Text fontWeight={500} fontSize={17}>Total Revenue:</Text>
                 <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
                   <Span>
-                    {form.listingPrice ? `$${form.listingPrice}` : null}
+                    {form.listingPrice ? `${formatNum(symbol, form.listingPrice)}` : null}
                     {form.listingPrice && form.shipping ? ' + ' : null}
-                    {form.shipping !== '0' ? ` $${form.shipping} ` : null}
+                    {form.shipping !== '0' ? ` ${formatNum(symbol, form.shipping)} ` : null}
                     {form.listingPrice || form.shipping !== '0' ? ' = ' : null}
                   </Span>
-                  <SpanValue>${totalRevenue}</SpanValue>
+                  <SpanValue>{formatNum(symbol, totalRevenue)}</SpanValue>
                 </Text>
 
               </Flex>
               <Flex mt='20px' justifyContent='space-between'>
                 <Text fontWeight={500} fontSize={17}>Depop Fee ({parseFloat(form.depopFee)}%):</Text>
                 <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <SpanValue>${depopFee}</SpanValue>
+                  <SpanValue>{formatNum(symbol, depopFee)}</SpanValue>
                 </Text>
               </Flex>
 
               <Flex mt='20px' justifyContent='space-between'>
                 <Text fontWeight={500} fontSize={17}>Paypal Fee ({parseFloat(form.paypalFee)}%):</Text>
                 <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <SpanValue>${paypalFee}</SpanValue>
+                  <SpanValue>{formatNum(symbol, paypalFee)}</SpanValue>
                 </Text>
               </Flex>
               <Flex mt='20px' justifyContent='space-between'>
                 <Text fontWeight={500} fontSize={17}>Paypal Currency Fee:</Text>
                 <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <SpanValue>${form.paypalCurrencyFee}</SpanValue>
+                  <SpanValue>{formatNum(symbol, form.paypalCurrencyFee)}</SpanValue>
                 </Text>
               </Flex>
               <Flex mt='20px' justifyContent='space-between'>
                 <Text fontWeight={500} fontSize={17}>Shipping:</Text>
                 <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <SpanValue>${shipping}</SpanValue>
+                  <SpanValue>{formatNum(symbol, shipping)}</SpanValue>
                 </Text>
               </Flex>
               {
@@ -197,7 +201,7 @@ function FeeCalculator (props) {
                   <Flex mt='20px' justifyContent='space-between'>
                     <Text fontWeight={500} fontSize={17}>Cost of Item:</Text>
                     <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <SpanValue>${costOfItem}</SpanValue>
+                      <SpanValue>{formatNum(symbol, costOfItem)}</SpanValue>
                     </Text>
                   </Flex>) : null
               }
@@ -205,7 +209,7 @@ function FeeCalculator (props) {
               <Flex mt='30px' justifyContent='space-between'>
                 <Text fontSize={20} fontWeight={600}>Profit:</Text>
                 <Text sx={{ display: 'flex', alignItems: 'center' }}>
-                  <SpanValue>${profit}</SpanValue>
+                  <SpanValue>{formatNum(symbol, profit)} </SpanValue>
                 </Text>
               </Flex>
 
@@ -233,6 +237,7 @@ const Breakdown = styled.div`
   margin-left:20px;
   border-radius: ${({ theme }) => theme.borderRadius.more};
   padding: 15px;
+  overflow: auto;
 `
 const Span = styled.span`
   color: ${({ theme }) => theme.colors.grey};

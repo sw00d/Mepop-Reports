@@ -37,7 +37,7 @@ const Dashboard = () => {
             value2={avgNetProfit.monthly}
             float
             hideCompare
-            currencyType='$'
+            currencyType={allData.currency_type}
             label1='Weekly'
             label2='Monthly'
           />
@@ -67,7 +67,7 @@ const Dashboard = () => {
             boxShadow='none'
             borderRadius='0px'
             float
-            currencyType='$'
+            currencyType={allData.currency_type}
             title='Total Earnings'
             value={data.total_earnings}
             netValue={

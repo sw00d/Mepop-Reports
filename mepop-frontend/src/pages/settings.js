@@ -1,4 +1,4 @@
-import Settings from '../../components/settings'
+import Settings from '../components/settings'
 
 export default (props) => {
   return (

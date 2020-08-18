@@ -13,7 +13,7 @@ const BubbleChart = ({ height, color, data, xLabels, yLabels, tooltipContent, on
 
         <HeatMap
           cellStyle={getStyle}
-          background={color || theme.colors.teal}
+          background={color || theme.colors.tealDark}
           xLabels={xLabels}
           yLabels={yLabels}
           xLabelsLocation='bottom'
@@ -45,7 +45,7 @@ export default BubbleChart
 const getStyle = (bg, value, min, max) => {
   const opacity = (max - value) / (max - min)
   return {
-    background: transparentize(opacity < 1 ? opacity : 0.94, theme.colors.teal)
+    background: transparentize(opacity < 1 ? opacity : 0.94, theme.colors.tealDark)
 
   }
 }

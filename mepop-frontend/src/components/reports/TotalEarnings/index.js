@@ -7,7 +7,7 @@ const TotalEarningsView = memo(({ data, half }) => (
     boxShadow='none'
     borderRadius='0px'
     float
-    currencyType='$'
+    currencyType={data.currency_type}
     title='Total Earnings'
     value={data.total_earnings}
     netValue={

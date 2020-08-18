@@ -59,7 +59,7 @@ Table.propTypes = {
   // the card wrapper, but that'll do for now.
 }
 
-const rowStyle = (props, activeRow) => {
+export const rowStyle = (props, activeRow) => {
   return (
     {
       cursor: props.handleRowClick ? 'pointer' : 'default',
