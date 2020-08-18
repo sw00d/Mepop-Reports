@@ -47,7 +47,7 @@ const getContent = (type, firebase) => {
         icon: 'fa fa-envelope-o',
         content: (
           <>
-        You still need to verify your email: {firebase.auth.currentUser.email}
+        You still need to verify your email: {firebase.auth.currentUser ? firebase.auth.currentUser.email : ''}
             <Button
               ml='10px'
               bg='warning'
@@ -55,7 +55,7 @@ const getContent = (type, firebase) => {
               py='5px'
               px='10px'
               sx={{
- display: 'flex',
+                display: 'flex',
                 '@media only screen and (max-width: 500px)': {
                   paddingTop: '40px',
                   margin: 0,

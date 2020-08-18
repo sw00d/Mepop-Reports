@@ -22,9 +22,9 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
     <Container isMini={isMini}>
 
       <Row title='true' onClick={() => minify(!isMini)}>
-        <Title isMini={isMini}>Mepop</Title>
+        <Title isMini={isMini}>Mepop Reports</Title>
 
-        <IconButton isMini={isMini} onClick={() => minify(!isMini)}>
+        <IconButton isMini={isMini} onClick={() => minify(!isMini)} title>
           <i
             onClick={() => minify(!isMini)}
             className='fa fa-bars'
@@ -148,7 +148,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
             onClick={() => firebase.doSignOut().then(() => router.push('/sign-in'))}
           >
             <I className='fa fa-sign-out' />
-            <RowText isMini={isMini}>{user.user ? user.user.email : ''}</RowText>
+            <RowText signout isMini={isMini}>{user.user ? user.user.email : ''}</RowText>
           </Row>
 
         </Tooltip>
@@ -176,36 +176,7 @@ const SubContainer = styled.div`
   height: calc(100% - 50px);
   overflow: auto;
   overflow-x: hidden;
-
-/* width */
-&::-webkit-scrollbar {
-  width: 0px;
-  transition: 0.5s;
-}
-
-/* Handle on hover */
-&::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  transition: 0.5s;
-}
-/* Track */
-&::-webkit-scrollbar-track {
-  transition: 0.5s;
-}
-
-/* Handle */
-&::-webkit-scrollbar-thumb {
-  background: #555;
-  transition: 0.5s;
-}
-
-&:hover {
-  /* width */
-  &::-webkit-scrollbar {
-    width: 1px;
-    transition: 0.5s;
-  }
-}
+  ${({ theme }) => theme.scrollbars.light};
   
 `
 const Nav = styled.div`
@@ -249,6 +220,7 @@ const RowText = styled(Text)`
     transition-delay:.1s;
     user-select: none;
     white-space: nowrap;
+    ${({ theme, signout }) => signout ? theme.scrollbars.light : null}
     > i {
         color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.white}; 
     }
@@ -257,21 +229,23 @@ const IconButton = styled.div`
     background: transparent;
     /* color: ${({ theme }) => theme.colors.greyDarkest}; */
     border-color: transparent;
-    min-width: 55px;
+    min-width: ${({ title, isMini }) => title && !isMini ? 35 : 55}px;
     padding: 0px;
     position:${({ isMini }) => 'absolute'};
     right:0px;
     text-align:center;
     transform:${({ isMini }) => isMini ? 'rotate(180deg)' : 'rotate(90deg)'};
-    transition: .2s;
-
+    transition: .5s;    
+    color: ${({ theme, isMini }) => !isMini ? theme.colors.greyDarker : theme.colors.primary};
 `
 const Title = styled(Text)`
     color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.primary};
-    font-size: 20px;
+    font-size: 19px;
     font-style: italic;
     transition: .2s;
     transition-delay:.1s;
     user-select: none;
+    white-space: nowrap;
+
 
 `

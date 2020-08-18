@@ -11,6 +11,7 @@ import HorzDivider from '../../../styles/elements/HorzDivider'
 import Flex from '../../../styles/layout/Flex'
 import { InputField, PasswordFields } from './inputs'
 import styled from 'styled-components'
+import Box from '../../../styles/layout/Box'
 
 const UserSettings = withFirebase(({ firebase }) => {
   const [loading, setLoading] = useState(false)
@@ -22,7 +23,9 @@ const UserSettings = withFirebase(({ firebase }) => {
   const plan = {
     title: user.membership.type === 'basic' ? 'Free Plan' : 'Premium Plan',
     btnText: user.membership.type === 'basic' ? 'Upgrade' : 'Manage',
-    handleClick: user.membership.type === 'basic' ? firebase.startSubscription : firebase.openCustomerPortal
+    handleClick: user.membership.type === 'basic'
+      ? () => firebase.startSubscription()
+      : () => firebase.openCustomerPortal()
   }
 
   const updateProfile = (key, value) => {
@@ -144,7 +147,16 @@ const UserSettings = withFirebase(({ firebase }) => {
           alwaysShowLabel
           isLoading={loading}
         />
-
+        <Flex my='10px' fontSize='13px'>
+          <Box mr='10px'>
+            <i className='fa fa-envelope' />
+          </Box>
+          <Text>
+            Need support? Email us here: <A href='mailto:samote.wood@gmail.com'>
+              samote.wood@gmail.com
+            </A>
+          </Text>
+        </Flex>
         {/* <button onClick={() => firebase.startSubscription()}>
           Start sub
         </button>
@@ -163,4 +175,7 @@ export default UserSettings
 const MembershipContainer = styled(Flex)`
   border-radius: ${({ theme }) => theme.borderRadius.normal};
   border-left: 3px solid ${({ theme }) => theme.colors.tealDark};
+`
+const A = styled.a`
+  color: ${({ theme }) => theme.colors.greyDarkest};
 `

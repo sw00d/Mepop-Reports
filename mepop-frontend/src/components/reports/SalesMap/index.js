@@ -35,40 +35,44 @@ const SalesMap = memo(({ data, styles, isBasic }) => {
       headerContent='Map of Sales (US only)'
       proOnly={isBasic ? {
         component: 'Map of Sales (US only)',
-        img: 'sales-map.png'
+        img: 'sales-map.png',
+        style: { height: '400px' }
       } : null}
-      height='350px'
+      pb={!isBasic ? '30px' : null}
+      background='mainBg'
     >
-      <Flex width={[1, 1, 1, 1]}>
-        <MapContainer mini={salesToShow.sales}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: googleMapsKey.key }}
-            defaultCenter={{ lat: 39, lng: -98 }}
-            defaultZoom={0}
-            yesIWantToUseGoogleMapApiInternals
-            gestureHandling='cooperative'
-            options={{ gestureHandling: 'cooperative' }}
-            minWidth='500px'
-          >
-            {salesToMap.length
-              ? salesToMap.map((zip, i) => {
-                const { geopoint: { lat, lng } } = zip
-                if (getTitle(zip).includes('undefined')) return null // this weeds out other countries
-                return (
-                  <Marker
-                    setSalesToShow={setSalesToShow}
-                    activateSale={activateSale}
-                    zip={zip}
-                    key={i}
-                    lat={lat}
-                    lng={lng}
-                  />
-                )
-              })
-              : null}
+      <Flex width={[1, 1, 1, 1]} height='400px'>
+        <Flex width={[1, 1, 1, 1]} height='430px'>
+          <MapContainer mini={salesToShow.sales}>
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: googleMapsKey.key }}
+              defaultCenter={{ lat: 39, lng: -98 }}
+              defaultZoom={0}
+              yesIWantToUseGoogleMapApiInternals
+              gestureHandling='cooperative'
+              options={{ gestureHandling: 'cooperative' }}
+              minWidth='500px'
+            >
+              {salesToMap.length
+                ? salesToMap.map((zip, i) => {
+                  const { geopoint: { lat, lng } } = zip
+                  if (getTitle(zip).includes('undefined')) return null // this weeds out other countries
+                  return (
+                    <Marker
+                      setSalesToShow={setSalesToShow}
+                      activateSale={activateSale}
+                      zip={zip}
+                      key={i}
+                      lat={lat}
+                      lng={lng}
+                    />
+                  )
+                })
+                : null}
 
-          </GoogleMapReact>
-        </MapContainer>
+            </GoogleMapReact>
+          </MapContainer>
+        </Flex>
         {salesToShow.sales && !activeSale
           ? (
             <SalesTable
@@ -127,7 +131,7 @@ function getTitle ({ location, sales }) {
 
 const MapContainer = styled.div`
   visibility: visible;
-  height: 320px;
+  height: 100%;
   width: 100%;
   background: 'black';
   transition: .2s;

@@ -64,7 +64,7 @@ const ValueBox = ({
                 decimals={float ? 2 : 0}
                 start={noAnimate ? value : 0}
                 end={float ? parseFloat(value) : typeof value === 'number' ? value : 0}
-                />
+              />
 
           }
         </Value>
@@ -123,6 +123,7 @@ const ValueBox = ({
 export default ValueBox
 
 const Container = styled(Flex)`
+    border-top: 2px solid ${props => props.theme.colors.teal};
     background-color: ${props => props.theme.colors.white};
     overflow: auto;
     border-radius: $border-radius;

@@ -32,6 +32,7 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
       defaultTooltip={`Sale card - @${row.username}`}
       headerContent={<CardTitle getUrl={getUrl} row={row} onClose={onClose} />}
       headerBorder='none'
+      background='mainBg'
       {...props}
     >
       {isBasic ? <BlurBackground component='Sale Details' /> : null}
@@ -125,6 +126,7 @@ const Description = styled.div`
     overflow: auto;
     font-size: 15px;
     font-weight: ${({ theme }) => theme.fontWeights.regular};
+    color: ${({ theme }) => theme.colors.greyDarkest};
 `
 const Button = styled.button`
   border: none;

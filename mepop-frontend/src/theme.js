@@ -19,6 +19,43 @@ const breakpoints = [{ // has to be an array for some stupid reason
 const space = [0, 4, 8, 16, 32, 64, 128, 256, 512]
 
 /**
+ * Scrollbars
+ */
+const scrollbars = {
+  light: `
+  /* width */
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    transition: 0.5s;
+  }
+  
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    transition: 0.5s;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    transition: 0.5s;
+  }
+  
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #555;
+    transition: 0.5s;
+  }
+  
+  &:hover {
+    /* width */
+    &::-webkit-scrollbar {
+      width: 1px;
+      height: 1px;
+      transition: 0.5s;
+    }
+  }`
+}
+/**
  * Colors
  */
 
@@ -177,6 +214,8 @@ const theme = {
   lineHeights,
   fontWeights,
   letterSpacings,
+  // ScrollBars
+  scrollbars,
   // Colors
   colors,
   // Animation

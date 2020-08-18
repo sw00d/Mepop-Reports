@@ -1,10 +1,12 @@
-// Third part
 import React, { useEffect } from 'react'
+// Third party
 import { useRouter } from 'next/router'
 import { ThemeProvider } from 'styled-components'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { ToastProvider } from 'react-toast-notifications'
 import { PageTransition } from 'next-page-transitions'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 // Initialize Date Picker
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
@@ -29,21 +31,24 @@ import Notification from '../components/general/Notification'
 import Layout from '../components/Layout'
 import { setupLocationKeys } from '../store/actions/keySetup'
 
+const stripePromise = loadStripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
 export const MyApp = (props) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <title>Reports for Depop Sellers</title>
-        <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
-      </Head>
-      <ReduxProvider store={store}>
-        <FirebaseContext.Provider value={new Firebase()}>
-          <ToastProvider>
-            <Setup {...props} />
-          </ToastProvider>
-        </FirebaseContext.Provider>
-      </ReduxProvider>
-    </ThemeProvider>
+    <Elements stripe={stripePromise}>
+      <ThemeProvider theme={theme}>
+        <Head>
+          <title>Reports for Depop Sellers</title>
+          <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
+        </Head>
+        <ReduxProvider store={store}>
+          <FirebaseContext.Provider value={new Firebase()}>
+            <ToastProvider>
+              <Setup {...props} />
+            </ToastProvider>
+          </FirebaseContext.Provider>
+        </ReduxProvider>
+      </ThemeProvider>
+    </Elements>
 
   )
 }
@@ -66,7 +71,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
           type: TOGGLE_LOADING,
           payload: true
         })
-        firebase.handleMembership(persistedUser).then((userObj) => {
+        firebase.handleMembership(persistedUser, { dispatch, user }).then((userObj) => {
           dispatch({
             type: UPDATE_USER,
             payload: userObj

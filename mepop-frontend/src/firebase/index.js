@@ -4,6 +4,8 @@ import 'firebase/auth'
 import 'firebase/storage'
 import FirebaseContext, { withFirebase } from './context'
 import { getFileMethod, deleteFileMethod, uploadFilesMethod } from './methods/files'
+import { UPDATE_USER } from '../store/generalReducer'
+
 const firebaseConfig = {
   apiKey: 'AIzaSyB04NiM6bapVV6Jd2ZRw5vUVLy3Cu7o0x0',
   authDomain: 'mepop-app.firebaseapp.com',
@@ -72,14 +74,11 @@ class Firebase {
   }
 
   async openCustomerPortal () {
-    console.log('opening portal')
     const functionRef = firebase
       .app()
       .functions('us-central1')
       .httpsCallable('ext-firestore-stripe-subscriptions-createPortalLink')
-    console.log('trying...')
     const { data } = await functionRef({ returnUrl: window.location.origin })
-    console.log('Success:', data)
     window.open(data.url)
   }
 
@@ -89,21 +88,25 @@ class Firebase {
       .doc(this.auth.currentUser.uid)
       .collection('checkout_sessions')
       .add({
-        price: 'price_1HGtWiI6QogDwA7GZcdXzmxg', //
-        success_url: window.location.origin,
-        cancel_url: window.location.origin
+        price: 'price_1HGtWiI6QogDwA7GZcdXzmxg',
+        success_url: window.location.origin + '/settings',
+        cancel_url: window.location.origin + '/settings'
       })
     // Wait for the CheckoutSession to get attached by the extension
     docRef.onSnapshot((snap) => {
-      const { sessionId } = snap.data()
-      console.log(sessionId, 'snap', snap.data())
-      if (sessionId) {
-        // We have a session, let's redirect to Checkout
-        // Init Stripe
-        console.log('init stripe')
-
-        const stripe = window.Stripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
-        stripe.redirectToCheckout({ sessionId })
+      if (snap.data) {
+        const { sessionId } = snap.data()
+        if (sessionId) {
+          // We have a session, let's redirect to Checkout
+          // Init Stripe
+          const stripe = window.Stripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
+          window.open()
+          stripe.redirectToCheckout({ sessionId })
+        }
+      } else {
+        window.alert(
+          'Oh no! It looks like an error occurred. Please email samote.wood@gmail.com for support.'
+        )
       }
     })
   }
@@ -137,24 +140,47 @@ class Firebase {
   }
 
   // memberships
-  handleMembership (user) {
-    
-    // new
+  handleMembership (user, snapshotStuff) {
+    // This allows real time updates
     const docRef = this.db
       .collection('stripeClients')
       .doc(this.auth.currentUser.uid)
       .collection('subscriptions')
-      .get().then((querySnapshot)=>{
-        if (!querySnapshot.empty){
-          const plan = querySnapshot.docs[0].data()
-          if (plan.active){
-            console.log(plan)
-          }else {
-            console.log('no active plan found')
-          }
+
+    docRef.onSnapshot((snap) => {
+      // Websocket listening to subscription updates
+      const { user, dispatch } = snapshotStuff
+      console.log('Fired snapshot successfully.')
+      const basicType = { type: 'basic' }
+      if (!snap.empty) {
+        const data = snap.docs[0].data()
+        if (data.status === 'active') {
+          // updates user if subscription is live
+          this.setMembership({ type: 'premium' })
+          dispatch({
+            type: UPDATE_USER,
+            payload: { ...user, membership: { type: 'premium' } }
+          })
+        } else {
+          // if subscription isn't active
+          this.setMembership(basicType)
+          dispatch({
+            type: UPDATE_USER,
+            payload: { ...user, membership: basicType }
+          })
         }
-      })
-    // old 
+      } else {
+        console.log('empty subscription.')
+        // if not subscriptions exist
+        this.setMembership(basicType)
+        dispatch({
+          type: UPDATE_USER,
+          payload: { ...user, membership: basicType }
+        })
+      }
+    })
+
+    // this initializes membership etc
     return this.db.collection('memberships').doc(this.auth.currentUser.uid).get().then((doc) => {
       this.handleStripeClients()
       if (!doc.exists) {
@@ -173,7 +199,7 @@ class Firebase {
   }
 
   setMembership (incomingDoc) {
-    const newDoc = { type: 'basic', paymentInfo: {} }
+    const newDoc = { type: 'basic' }
     return this.db.collection('memberships').doc(this.auth.currentUser.uid).set(incomingDoc || newDoc).then(() => {
       return incomingDoc || newDoc
     }).catch(() => window.alert('Error Occurred Creating Membership'))
@@ -197,10 +223,6 @@ class Firebase {
 
   doSignIn (email, password) {
     return this.auth.signInWithEmailAndPassword(email, password)
-    // .then(({ user }) => {
-    //   return {user, membership: {type: "basic"}, profile: {}}
-    //   // return this.handleMembership(user)
-    // })
   }
 
   doSignOut () { return this.auth.signOut() }

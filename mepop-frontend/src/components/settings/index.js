@@ -19,7 +19,7 @@ const Settings = ({ tab }) => {
       </Flex> */}
       <Card
         maxWidth='700px'
-        p='40px'
+        p='20px 40px 0px 40px'
         mt='0px'
       >
 
