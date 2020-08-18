@@ -6,7 +6,7 @@
     "dev": "next dev ./src -p 2999",
     "build": "next build ./src",
     "start": "next start ./src",
-    "export": "next export ./src",
+    "export": "next export",
     "deploy": "npm run build && npm run export"
   },
   "dependencies": {
