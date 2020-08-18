@@ -17,7 +17,7 @@ import {
 
 const COLORS = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.pastelBlueLight]
 
-const RadialGraph = ({
+const TotalEarnings = ({
   title,
   value = 0,
   currencyType,
@@ -104,7 +104,7 @@ const RadialGraph = ({
   )
 }
 
-export default RadialGraph
+export default TotalEarnings
 
 const ActiveShape = (props) => {
   const {

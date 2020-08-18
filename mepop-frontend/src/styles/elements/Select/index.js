@@ -45,7 +45,7 @@ const Select = ({
         ) : (
 
           <Flex {...props}>
-            <SelectInput
+            <StyledDropdown
               options={options}
               onChange={onChange}
               {...selectProps}
@@ -63,5 +63,11 @@ export default Select
 const StyledSelect = styled(RebassSelect)`
   border-radius: ${({ theme }) => theme.borderRadius.normal};
   border-color: ${({ theme }) => theme.colors.greyDisabled} !important;
-  color: ${({ theme }) => theme.colors.primary} !important;
+  color: ${({ theme }) => theme.colors.greyDarkest} !important;
 `
+
+const StyledDropdown = styled(SelectInput)`
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.tealDark} !important;
+  }
+   `

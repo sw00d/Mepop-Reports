@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 import { withFirebase } from '../firebase'
 
@@ -12,6 +13,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
   const [isMini, minify] = useState(true)
   const router = useRouter()
   const [activeRoute, updateRoute] = useState(router.pathname)
+  const { user } = useSelector(state => state.generalReducer)
 
   useEffect(() => {
     updateRoute(router.pathname)
@@ -20,9 +22,9 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
     <Container isMini={isMini}>
 
       <Row title='true' onClick={() => minify(!isMini)}>
-        <Title isMini={isMini}>Mepop</Title>
+        <Title isMini={isMini}>Mepop Reports</Title>
 
-        <IconButton isMini={isMini} onClick={() => minify(!isMini)}>
+        <IconButton isMini={isMini} onClick={() => minify(!isMini)} title>
           <i
             onClick={() => minify(!isMini)}
             className='fa fa-bars'
@@ -122,7 +124,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
 
             arrow={false}
           >
-            <Link href='/settings/personal'>
+            <Link href='/settings'>
               <Row
                 isMini={isMini}
                 onClick={() => updateRoute('/settings')}
@@ -138,17 +140,15 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
         </Nav>
         <Tooltip
           title='Sign Out'
-          disabled={!isMini}
-          distance={0}
-          position='right-start'
           arrow={false}
+          followCursor
         >
           <Row
             isMini={isMini}
-            onClick={() => firebase.doSignOut().then(()=>router.push("/sign-in"))}
+            onClick={() => firebase.doSignOut().then(() => router.push('/sign-in'))}
           >
             <I className='fa fa-sign-out' />
-            <RowText isMini={isMini}>Sign Out</RowText>
+            <RowText signout isMini={isMini}>{user.user ? user.user.email : ''}</RowText>
           </Row>
 
         </Tooltip>
@@ -176,36 +176,7 @@ const SubContainer = styled.div`
   height: calc(100% - 50px);
   overflow: auto;
   overflow-x: hidden;
-
-/* width */
-&::-webkit-scrollbar {
-  width: 0px;
-  transition: 0.5s;
-}
-
-/* Handle on hover */
-&::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  transition: 0.5s;
-}
-/* Track */
-&::-webkit-scrollbar-track {
-  transition: 0.5s;
-}
-
-/* Handle */
-&::-webkit-scrollbar-thumb {
-  background: #555;
-  transition: 0.5s;
-}
-
-&:hover {
-  /* width */
-  &::-webkit-scrollbar {
-    width: 1px;
-    transition: 0.5s;
-  }
-}
+  ${({ theme }) => theme.scrollbars.light};
   
 `
 const Nav = styled.div`
@@ -222,10 +193,13 @@ const Row = styled.div`
     isActive
     ? theme.colors.mainBg
     : null};
+    border-left: ${({ theme, isActive }) =>
+    isActive
+    ? `3px solid ${theme.colors.primary}`
+    : null};
     border-top-right-radius: ${({ theme, isMini, title }) => isMini || title ? '0px' : theme.borderRadius.normal};
     border-bottom-right-radius: ${({ theme, isMini, title }) => isMini || title ? '0px' : theme.borderRadius.normal};
     margin-right: ${({ isMini, title }) => isMini || title ? 0 : 10}px;
-    
     /* border-bottom: 1px solid ${({ theme, title }) => title ? theme.colors.mainBg : 'transparent'}; */
     
     &:hover {
@@ -246,29 +220,32 @@ const RowText = styled(Text)`
     transition-delay:.1s;
     user-select: none;
     white-space: nowrap;
+    ${({ theme, signout }) => signout ? theme.scrollbars.light : null}
     > i {
         color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.white}; 
     }
 `
 const IconButton = styled.div`
     background: transparent;
-    color: ${({ theme }) => theme.colors.black};
+    /* color: ${({ theme }) => theme.colors.greyDarkest}; */
     border-color: transparent;
-    min-width: 55px;
+    min-width: ${({ title, isMini }) => title && !isMini ? 35 : 55}px;
     padding: 0px;
     position:${({ isMini }) => 'absolute'};
     right:0px;
     text-align:center;
     transform:${({ isMini }) => isMini ? 'rotate(180deg)' : 'rotate(90deg)'};
-    transition: .2s;
-
+    transition: .5s;    
+    color: ${({ theme, isMini }) => !isMini ? theme.colors.greyDarker : theme.colors.primary};
 `
 const Title = styled(Text)`
     color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.primary};
-    font-size: 20px;
+    font-size: 19px;
     font-style: italic;
     transition: .2s;
     transition-delay:.1s;
     user-select: none;
+    white-space: nowrap;
+
 
 `

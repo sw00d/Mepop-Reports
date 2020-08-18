@@ -1,29 +1,40 @@
 import styled, { keyframes } from 'styled-components'
 import Flex from '../../styles/layout/Flex'
 import Button from '../../styles/elements/Button'
-import { useState } from 'react'
 import { withFirebase } from '../../firebase'
+import { useSelector, useDispatch } from 'react-redux'
+import { NOTIFICATION } from '../../store/generalReducer'
 
-const Notification = withFirebase(({ type, active, firebase }) => {
-  const [isShown, show] = useState(active || false)
-  const { icon, content, color, bg } = getContent(type, firebase)
-  if (!isShown) return null
+const Notification = withFirebase(({ firebase }) => {
+  const { notification } = useSelector(state => state.generalReducer)
+  const dispatch = useDispatch()
+  const { icon, content, color, bg } = getContent(notification.type, firebase)
+  if (!notification.active) return null
   return (
-    <Main>
-      <CloseIcon onClick={() => show(false)}>
-        <i className='fa fa-close' />
-      </CloseIcon>
-      <Icon color={color} bg={bg}>
-        <i
-          className={icon}
-        />
+    <Flex justifyContent='center' width='100%'>
 
-      </Icon>
-      <Content>
+      <Main>
+        <CloseIcon onClick={() => {
+          dispatch({
+            type: NOTIFICATION,
+            payload: {}
+          })
+        }}
+        >
+          <i className='fa fa-close' />
+        </CloseIcon>
+        <Icon color={color} bg={bg}>
+          <i
+            className={icon}
+          />
 
-        {content}
-      </Content>
-    </Main>
+        </Icon>
+        <Content>
+
+          {content}
+        </Content>
+      </Main>
+    </Flex>
   )
 })
 
@@ -36,14 +47,21 @@ const getContent = (type, firebase) => {
         icon: 'fa fa-envelope-o',
         content: (
           <>
-        You still need to verify your email: samote.wood@gmail.com
+        You still need to verify your email: {firebase.auth.currentUser ? firebase.auth.currentUser.email : ''}
             <Button
-              ml='4px'
+              ml='10px'
               bg='warning'
               color='greyDarkest'
-              height='30px'
+              py='5px'
               px='10px'
-              sx={{ display: 'flex' }}
+              sx={{
+                display: 'flex',
+                '@media only screen and (max-width: 500px)': {
+                  paddingTop: '40px',
+                  margin: 0,
+                  marginTop: '10px'
+                }
+              }}
               onClick={() => firebase.doSendVerificationEmail()}
             >Resend Email
             </Button>
@@ -68,12 +86,13 @@ const enter = keyframes`
         opacity: 1;
     }
 `
+
 const Main = styled(Flex)`
     position: absolute;
     top: 10px;
     background: ${({ theme }) => theme.colors.greyDarkest};
     min-width: 200px;
-    max-width: 100%;
+    max-width: 80%;
     border-radius: 4px;
     color: ${({ theme }) => theme.colors.greyLightest};
     overflow: auto;
@@ -82,6 +101,7 @@ const Main = styled(Flex)`
     opacity:0;
     animation: ${enter} .1s linear 1;
     animation-fill-mode: forwards;
+   
 `
 
 const Icon = styled.div`
@@ -98,6 +118,11 @@ const Content = styled.div`
     font-size: 15px;
     display: flex;
     align-items:center;
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+        align-items: center;
+        text-align:center;
+    }
 `
 const CloseIcon = styled.button`
     position: absolute;

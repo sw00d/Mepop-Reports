@@ -7,7 +7,7 @@ import { groupByDate } from '../util/grouping'
 import Flex from '../../../styles/layout/Flex'
 import Button from '../../../styles/elements/Button'
 
-const VariableLineChart = memo(({ data }) => {
+const VariableLineChart = memo(({ data, isBasic }) => {
   const [variables, updateVars] = useState([
     { dataKey: 'Items Sold', size: 70, color: 'teal', disabled: false },
     { dataKey: 'Gross', size: 70, color: 'pastelPurple', disabled: true },
@@ -47,6 +47,11 @@ const VariableLineChart = memo(({ data }) => {
       tickFormatter={formatXAxis}
       labelFormatter={formatLabel}
       formatTooltip={(t, l) => formatTooltip(t, l, data)}
+      height={isBasic ? '300px' : null}
+      proOnly={isBasic ? {
+        component: 'Combo Chart',
+        img: 'variable-graph.png'
+      } : null}
     />
   )
 })

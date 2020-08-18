@@ -39,7 +39,7 @@ const SalesByPaymentType = memo(({ data, isBasic }) => {
           }
         }}
       >
-        <Title color='primary' fontSize={25} mb='10px'>
+        <Title color='greyDarkest' fontSize={25} mb='10px'>
           Total: {formatNum(data.currency_type, data.total_earnings)}
         </Title>
         {
