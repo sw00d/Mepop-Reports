@@ -42,6 +42,7 @@ const Layout = (props) => {
     return null
   }
   if (user.profile && router.pathname !== '/settings/membership') {
+    // this pushes user to membership decision on initial sign-in
     if (!user.profile.hasSignedIn) {
       router.push('/settings/membership')
     }
@@ -72,7 +73,7 @@ const Layout = (props) => {
             headerSize={0}
           >
             {
-              loading ? (
+              loading && router.pathname !== '/privacy-policy' ? (
                 <Flex justifyContent='center' height='90vh' alignItems='center'>
                   <Loading />
                 </Flex>

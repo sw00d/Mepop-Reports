@@ -146,13 +146,21 @@ const UserSettings = withFirebase(({ firebase }) => {
           alwaysShowLabel
           isLoading={loading}
         />
-        <Flex my='10px' fontSize='13px'>
-          <Box mr='10px'>
-            <i className='fa fa-envelope' />
-          </Box>
-          <Text>
+        <Flex my='10px' fontSize='13px' justifyContent='space-between'>
+          <Flex>
+
+            <Box mr='10px'>
+              <i className='fa fa-envelope' />
+            </Box>
+            <Text>
             Need support? Email us here: <A href='mailto:samote.wood@gmail.com'>
               samote.wood@gmail.com
+              </A>
+            </Text>
+          </Flex>
+          <Text>
+            <A href='/privacy-policy'>
+              Privacy Policy
             </A>
           </Text>
         </Flex>

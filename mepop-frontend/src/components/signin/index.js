@@ -163,7 +163,7 @@ export default Login
 const translateError = (err) => {
   switch (err.code) {
     case 'auth/invalid-email':
-      return 'Invalid email'
+      return 'Please ensure that your email is correct.'
     case 'auth/user-disabled':
       return 'Account temporarily disabled. Please email samote.wood@gmail.com for support.'
     case 'auth/user-not-found':
