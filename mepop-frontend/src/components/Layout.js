@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router'
-
-import Flex from '../styles/layout/Flex'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+
 import Sidebar from './Sidebar'
 import DateContainer from './DateContainer'
-import { useSelector } from 'react-redux'
+
+import Flex from '../styles/layout/Flex'
 import NoDataFound from '../styles/elements/NoDataFound'
 import Loading from '../styles/elements/Loading'
+
+import { unprotectedRoutes } from '../pages/_app'
 
 const getheaderContent = pathname => {
   switch (pathname) {
@@ -24,6 +27,7 @@ const getheaderContent = pathname => {
       return 'Mepop Reports'
   }
 }
+
 const Layout = (props) => {
   const { loading, compareData, files, rangedData, user } = useSelector(state => state.generalReducer)
   const router = useRouter()
@@ -32,7 +36,7 @@ const Layout = (props) => {
   const noUser = JSON.stringify(user) === '{}' || !user
   const routeRequiresData = heading === 'Reports' || heading === 'Dashboard'
   const centerContent = loading || noData
-  const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up'
+  const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
   const hideSideBar = router.pathname === '/settings/membership/'
   if (noUser && !unprotectedRoute) {
     return null

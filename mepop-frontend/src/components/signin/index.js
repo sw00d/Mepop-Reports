@@ -106,7 +106,7 @@ const Login = withFirebase(({ firebase }) => {
                 onClick={login}
                 bg='primary'
                 color='white'
-                // borderColor='primary'
+                sx={{ display: 'flex' }}
               >
                 <Box mr='10px'>
                   <i className='fa fa-sign-in' />

@@ -61,7 +61,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const dispatch = useDispatch()
-  const unprotectedRoute = router.pathname === '/sign-in' || router.pathname === '/sign-up'
+  const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
 
   useEffect(() => {
     firebase.auth.onAuthStateChanged((persistedUser) => {
@@ -87,6 +87,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
           })
         })
       } else {
+        console.log(!unprotectedRoute)
         if (!unprotectedRoute) router.push({ pathname: '/sign-in' })
         dispatch({
           type: UPDATE_USER,
@@ -121,3 +122,5 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
     </Layout>
   )
 })
+
+export const unprotectedRoutes = ['/sign-in', '/sign-up', '/privacy-policy']
