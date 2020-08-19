@@ -12,11 +12,12 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import LearnMore from './LearnMore'
 import ForgotPass from './ForgotPass'
+import Box from '../../styles/layout/Box'
 
 const Login = withFirebase(({ firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
-  const [form, updateForm] = useState({ email: 'samote.wood@gmail.com', password: '83815Mso' })
+  const [form, updateForm] = useState({ email: '', password: '' })
   const [isLoading, setLoading] = useState(false)
   const [modalIsOpen, openModal] = useState(false)
   const [error, setError] = useState('')
@@ -103,7 +104,13 @@ const Login = withFirebase(({ firebase }) => {
                 mt='30px'
                 height='40px'
                 onClick={login}
+                bg='primary'
+                color='white'
+                // borderColor='primary'
               >
+                <Box mr='10px'>
+                  <i className='fa fa-sign-in' />
+                </Box>
                 Sign In
               </Button>
             </Form>
@@ -117,7 +124,7 @@ const Login = withFirebase(({ firebase }) => {
               textAlign='left'
               p='0px'
               pl='1px'
-              height='15px'
+              height='20px'
               type='button'
               onClick={() => openModal(!modalIsOpen)}
             >

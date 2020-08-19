@@ -32,9 +32,10 @@ const StyledButton = styled(Button)`
     align-items: center;
     transition: ${({ theme }) => theme.transitionDurations[1]};
     cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    user-select:none;
+    user-select: none;
     overflow: hidden;
     letter-spacing: .5px;
+    border: 2px solid ${({ borderColor, theme }) => borderColor ? theme.colors[borderColor] : 'transparent'} !important;
     &:hover {
         opacity: .7;
     }

@@ -5,6 +5,7 @@ import Button from '../../styles/elements/Button'
 import Input from '../../styles/elements/Input'
 import Text from '../../styles/elements/Text'
 import { useState } from 'react'
+import Box from '../../styles/layout/Box'
 
 const ForgotPass = withFirebase(({ modalIsOpen, email, onRequestClose, firebase }) => {
   const [val, setVal] = useState(email)
@@ -46,7 +47,7 @@ const ForgotPass = withFirebase(({ modalIsOpen, email, onRequestClose, firebase 
               : (
                 <>
                   <Text mb='10px' fontSize='20px'>Reset Password</Text>
-                  <Flex flexDirection='column' width={[1]}>
+                  <Flex flexDirection='column' width={[1]} alignItems='center'>
                     <Input
                       placeholder='Email'
                       label='Email'
@@ -61,12 +62,16 @@ const ForgotPass = withFirebase(({ modalIsOpen, email, onRequestClose, firebase 
 
                     <Button
                       type='button'
-                      width={[1]}
-                      m='5px 2px'
+                      width='150px'
+                      mt='20px'
                       height='40px'
                       onClick={submit}
                       isLoading={isLoading}
+                      sx={{ display: 'flex' }}
                     >
+                      <Box mr='10px'>
+                        <i className='fa fa-envelope' />
+                      </Box>
                     Send Email
                     </Button>
                   </Flex>

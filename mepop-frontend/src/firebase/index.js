@@ -100,7 +100,6 @@ class Firebase {
           // We have a session, let's redirect to Checkout
           // Init Stripe
           const stripe = window.Stripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
-          window.open()
           stripe.redirectToCheckout({ sessionId })
         }
       } else {

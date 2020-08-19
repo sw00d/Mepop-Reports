@@ -49,7 +49,7 @@ const Layout = (props) => {
         bg='mainBg'
         flex={[1]}
       >
-        <Flex justifyContent='center' height='90vh' alignItems='center'>
+        <Flex justifyContent='center' height='100vh' alignItems='center'>
           <Loading />
         </Flex>
       </Flex>

@@ -5,6 +5,7 @@ import Text from '../../styles/elements/Text'
 import Button from '../../styles/elements/Button'
 import AreaChart from '../../styles/reporting/AreaChart'
 import Card from '../../styles/elements/Card'
+import Box from '../../styles/layout/Box'
 
 const LearnMore = (props) => {
   return (
@@ -44,9 +45,37 @@ const LearnMore = (props) => {
         }}
       >
         <Link href='/sign-up'>
-          <Button width={[1]} mt='20px' mr='4px' height='40px'>Sign Up</Button>
+          <Button
+            bg='white'
+            color='primary'
+            borderColor='primary'
+            width={[1]}
+            mt='20px'
+            mr='4px'
+            height='40px'
+            sx={{ display: 'flex' }}
+          >
+            <Box mr='10px'>
+              <i className='fa fa-user' />
+            </Box>
+            Sign Up
+          </Button>
         </Link>
-        <Button width={[1]} mt='20px' height='40px' mr='20px'>Learn More</Button>
+        <Button
+          bg='white'
+          color='primary'
+          borderColor='primary'
+          width={[1]}
+          mt='20px'
+          height='40px'
+          mr='20px'
+          sx={{ display: 'flex' }}
+        >
+          <Box mr='10px'>
+            <i className='fa fa-info-circle' />
+          </Box>
+Learn More
+        </Button>
       </Flex>
     </>
   )
