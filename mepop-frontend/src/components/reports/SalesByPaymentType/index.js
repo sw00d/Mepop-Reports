@@ -17,8 +17,8 @@ const SalesByPaymentType = memo(({ data, isBasic }) => {
       flexDirection='row-reverse'
       flexWrap='wrap'
       sx={{
-        '@media only screen and (max-width: 1200px)': {
-          flexDirection: 'column'
+        '@media only screen and (max-width: 640px)': {
+          justifyContent: 'center'
         }
       }}
       proOnly={isBasic ? {
@@ -30,14 +30,19 @@ const SalesByPaymentType = memo(({ data, isBasic }) => {
         height='40%'
         flexDirection='column'
         mr={5}
-        justifyContent='flex-start'
-        alignItems='center'
         sx={{
-          '@media only screen and (max-width: 1200px)': {
-            paddingTop: '40px',
-            margin: 0
+          '@media only screen and (max-width: 640px)': {
+            margin: '0px'
           }
         }}
+        justifyContent='flex-start'
+        alignItems='center'
+        // sx={{
+        //   '@media only screen and (max-width: 1200px)': {
+        //     paddingTop: '40px',
+        //     margin: 0
+        //   }
+        // }}
       >
         <Title color='greyDarkest' fontSize={25} mb='10px'>
           Total: {formatNum(data.currency_type, data.total_earnings)}
@@ -56,8 +61,9 @@ const SalesByPaymentType = memo(({ data, isBasic }) => {
         m={0}
         justifyContent='center'
         sx={{
-          '@media only screen and (max-width: 1200px)': {
-            marginBottom: '20px'
+          '@media only screen and (max-width: 640px)': {
+            marginBottom: '20px',
+            display: 'none'
           }
         }}
         boxShadow='none'

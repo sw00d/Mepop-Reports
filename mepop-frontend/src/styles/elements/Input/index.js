@@ -83,7 +83,7 @@ const StyleInput = styled(RebassInput)`
     transition: ${({ theme }) => theme.transitionDurations[1]};
     height: 35px;
     padding-left: 15px;
-    color: ${({ theme, disabled }) => disabled ? null : theme.colors.greyDarkest} !important;
+    color: ${({ theme, disabled }) => disabled ? null : theme.colors.greyDarker} !important;
     font-size: 15px;
     font-weight: 500;
     border-radius: ${({ theme, disabled, borderRadius }) => disabled || borderRadius ? theme.borderRadius.normal : 0};

@@ -213,6 +213,7 @@ const DateContainer = memo(({ page }) => {
             toggleCompare(!showCompareDate)
           }}
           disabled={btnDisabled}
+
         >
           {
             fixedFullRange ? null
@@ -263,6 +264,9 @@ const AddBtn = styled.span`
   justify-content: center;
   &:hover {
     color: ${({ theme, disabled }) => !disabled ? theme.colors.greyDarkest : null};
+  }
+  @media only screen and (max-width: 1200px) {
+      display: none;
   }
   `
 const CustomLink = styled.span`

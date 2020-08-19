@@ -28,7 +28,12 @@ const Dashboard = () => {
   return (
     <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg' width={[1]}>
       <Flex width={[1]} flexDirection='column'>
-        <ValueContainer>
+        <ValueContainer sx={{
+          '@media only screen and (max-width: 950px)': {
+            flexDirection: 'column'
+          }
+        }}
+        >
 
           <ValueBox
             minWidth='167px' // for mobile. Should change
@@ -62,6 +67,11 @@ const Dashboard = () => {
           flexDirection='row'
           borderRadius='0px'
           flexWrap='wrap'
+          sx={{
+            '@media only screen and (max-width: 950px)': {
+              flexDirection: 'column'
+            }
+          }}
         >
           <TotalEarnings
             boxShadow='none'

@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import _ from 'lodash'
 
 import Table from '../../../styles/elements/Table'
 import Input from '../../../styles/elements/Input'
@@ -83,5 +82,6 @@ const Header = ({ data, setTerm, term }) => {
 const StyledInput = styled(Input)`
   border-radius: 4px;
   border-color: ${({ theme }) => theme.colors.mainBg};
+  color: ${({ theme }) => theme.colors.greyDarker};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 `

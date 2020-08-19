@@ -42,7 +42,13 @@ const Reports = (props) => {
               </Flex>
               <TopValueBoxes data={data} minWidth='20%' />
 
-              <Flex>
+              <Flex
+                sx={{
+                  '@media only screen and (max-width: 1200px)': {
+                    flexDirection: 'column'
+                  }
+                }}
+              >
                 <RevenueOverview data={data} isBasic={isBasic} />
                 <SalesByPaymentType data={data} isBasic={isBasic} />
               </Flex>
@@ -50,7 +56,13 @@ const Reports = (props) => {
               <SalesByCategory data={data} isBasic={isBasic} />
               <SalesMap data={data} isBasic={isBasic} />
 
-              <Flex>
+              <Flex
+                sx={{
+                  '@media only screen and (max-width: 1200px)': {
+                    flexDirection: 'column'
+                  }
+                }}
+              >
                 <SalesAndListingsByDay data={data} />
                 <ProfitsByMonth data={data} />
               </Flex>

@@ -3,9 +3,8 @@ import Card from '../../styles/elements/Card'
 
 export const ValueContainer = styled.div`
   display: flex;
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.s}px) {
+  @media only screen and (max-width: 900px) {
       flex-direction: column;
-      order: 2;
   }
 `
 export const GraphContainer = styled(Card)`

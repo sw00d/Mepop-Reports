@@ -146,7 +146,7 @@ const Header = styled.div`
     align-items:center;
     padding-left: 10px;
     font-wieght: ${({ theme }) => theme.fontWeights.bold};
-    color: ${({ theme }) => theme.colors.greyDarkest};
+    color: ${({ theme }) => theme.colors.greyDarker};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
     font-size: 20px;
     justify-content: space-between;

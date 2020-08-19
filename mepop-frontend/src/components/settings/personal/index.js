@@ -73,7 +73,15 @@ const UserSettings = withFirebase(({ firebase }) => {
 
     <Flex width={[1]}>
       <Flex flexDirection='column' width={[1]}>
-        <Flex justifyContent='space-between' mb='15px'>
+        <Flex
+          justifyContent='space-between'
+          mb='15px'
+          sx={{
+            '@media only screen and (max-width: 500px)': {
+              flexDirection: 'column'
+            }
+          }}
+        >
           <Flex
             flexDirection='column'
             width={[1]}
@@ -182,6 +190,8 @@ export default UserSettings
 const MembershipContainer = styled(Flex)`
   border-radius: ${({ theme }) => theme.borderRadius.normal};
   border-left: 3px solid ${({ theme }) => theme.colors.tealDark};
+  max-width: 100%;
+  min-width: 212px;
 `
 const A = styled.a`
   color: ${({ theme }) => theme.colors.greyDarkest};

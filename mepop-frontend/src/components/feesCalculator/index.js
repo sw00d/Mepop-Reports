@@ -73,11 +73,32 @@ function FeeCalculator (props) {
   return (
     <Flex flexDirection='column' alignItems='center' width={[1]}>
 
-      <Card p='40px' width={[0.5]} minWidth='800px'>
+      <Card
+        p='40px'
+        width='800px'
+        maxWidth='95%'
+        sx={{
+          '@media only screen and (max-width: 600px)': {
+            padding: '10px !important'
+          }
+        }}
+      >
         <Text fontWeight={600} fontSize='40px' mb='25px' color='depopRed'>Depop Fees Calculator</Text>
-        <Flex justifyContent='space-between' width={[1]}>
+        <Flex
+          justifyContent='space-between'
+          width={[1]}
+          sx={{
+            '@media only screen and (max-width: 730px)': {
+              flexDirection: 'column'
+            }
+          }}
+        >
 
-          <Flex flexDirection='column' width={[1]} mr='10px'>
+          <Flex
+            flexDirection='column'
+            width={[1]}
+            mb='10px'
+          >
             <Input
               label='Cost of Item (optional)'
               placeholder='Cost of Item (optional)'
@@ -155,7 +176,10 @@ function FeeCalculator (props) {
             />
 
           </Flex>
-          <Flex width={[1]} ml='10px'>
+          <Flex
+            width={[1]}
+            mb='10px'
+          >
             <Breakdown>
               <Text textAlign='center' fontWeight={600} fontSize={18}>Breakdown</Text>
               <Flex mt='30px' justifyContent='space-between'>
@@ -238,6 +262,9 @@ const Breakdown = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.more};
   padding: 15px;
   overflow: auto;
+  @media only screen and (max-width: 730px) {
+      margin-left: 0px;
+  }
 `
 const Span = styled.span`
   color: ${({ theme }) => theme.colors.grey};

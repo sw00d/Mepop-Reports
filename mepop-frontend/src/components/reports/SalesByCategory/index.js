@@ -40,7 +40,14 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
     )
   }
   return (
-    <Flex flexWrap='wrap'>
+    <Flex
+      flexWrap='wrap'
+      sx={{
+        '@media only screen and (max-width: 1200px)': {
+          flexDirection: 'column'
+        }
+      }}
+    >
 
       <VertComposedChart
         headerContent={`Sales By Category${chartData.length < 15 ? '' : ' - ( Top 15 )'}`}
@@ -61,7 +68,13 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
       />
       {
         !hideBoxes ? (
-          <Flex justifyContent='space-between' flexWrap='wrap' alignItems='stretch' maxWidth='50%' flexDirection='column'>
+          <Flex
+            
+            justifyContent='space-between'
+            flexWrap='wrap'
+            alignItems='stretch'
+            flexDirection='column'
+          >
             {
               max
                 ? (
