@@ -184,7 +184,7 @@ const Nav = styled.div`
 `
 const Row = styled.div`
     position: relative;
-    padding: 0px 20px;
+    padding: 0px 0px 0px 20px;
     display: flex;
     align-items:center;
     height: 50px;
@@ -220,7 +220,8 @@ const RowText = styled(Text)`
     transition-delay:.1s;
     user-select: none;
     white-space: nowrap;
-    ${({ theme, signout }) => signout ? theme.scrollbars.light : null}
+    ${({ theme, signout }) => signout ? theme.scrollbars.light : null};
+    overflow: auto;
     > i {
         color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.white}; 
     }
