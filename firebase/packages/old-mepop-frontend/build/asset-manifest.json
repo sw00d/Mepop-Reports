@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8766305a.chunk.css",
+    "main.js": "/static/js/main.d3b65a37.chunk.js",
+    "main.js.map": "/static/js/main.d3b65a37.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.691e5b01.js",
+    "runtime-main.js.map": "/static/js/runtime-main.691e5b01.js.map",
+    "static/css/2.a7ef80be.chunk.css": "/static/css/2.a7ef80be.chunk.css",
+    "static/js/2.a783deed.chunk.js": "/static/js/2.a783deed.chunk.js",
+    "static/js/2.a783deed.chunk.js.map": "/static/js/2.a783deed.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.dff93e4461af2f4792df6462913787bd.js": "/precache-manifest.dff93e4461af2f4792df6462913787bd.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.a7ef80be.chunk.css.map": "/static/css/2.a7ef80be.chunk.css.map",
+    "static/css/main.8766305a.chunk.css.map": "/static/css/main.8766305a.chunk.css.map",
+    "static/js/2.a783deed.chunk.js.LICENSE.txt": "/static/js/2.a783deed.chunk.js.LICENSE.txt",
+    "static/media/get_file_example.gif": "/static/media/get_file_example.346ee9b2.gif",
+    "static/media/paypal_logo.png": "/static/media/paypal_logo.b1c4022a.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.691e5b01.js",
+    "static/css/2.a7ef80be.chunk.css",
+    "static/js/2.a783deed.chunk.js",
+    "static/css/main.8766305a.chunk.css",
+    "static/js/main.d3b65a37.chunk.js"
+  ]
+}

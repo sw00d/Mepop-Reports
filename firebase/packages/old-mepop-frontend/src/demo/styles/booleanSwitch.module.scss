@@ -1,0 +1,19 @@
+@import '../../styles/colors.module.scss';
+@import '../../styles/global.module.scss';
+
+.container {
+  width: 100%;
+  display: flex;
+}
+
+.button {
+  @include btn;
+}
+.buttonSelected {
+  @include btn;
+  background: $highlight-color;
+  color:white;
+  letter-spacing: 1px;
+  font-weight:600;
+  outline-color: $outline;
+}

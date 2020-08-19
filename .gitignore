@@ -10,7 +10,11 @@ firebase-debug.log*
 # Firebase cache
 
 .firebase/
+#build folders
 
+# /build/
+packages/mepop-frontend/build/*
+build/*
 
 # Firebase config
 
@@ -48,6 +52,9 @@ build/Release
 
 # Dependency directories
 node_modules/
+.next/
+
+
 
 # Optional npm cache directory
 .npm
@@ -67,5 +74,10 @@ node_modules/
 # dotenv environment variables file
 .env
 
-# Build output
-**/**/build/
+# # Build output
+out/
+/out_publish/
+/out_functions/
+/404.html
+
+node_modules
