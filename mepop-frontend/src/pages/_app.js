@@ -7,6 +7,8 @@ import { ToastProvider } from 'react-toast-notifications'
 import { PageTransition } from 'next-page-transitions'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import CookieConsent from 'react-cookie-consent'
+
 // Initialize Date Picker
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
@@ -41,8 +43,11 @@ export const MyApp = (props) => {
           <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
         </Head>
         <ReduxProvider store={store}>
+
           <FirebaseContext.Provider value={new Firebase()}>
             <ToastProvider>
+              <CookieConsent location='bottom'>By using this site, you are agreeing to our <a href='/privacy-policy' style={{ color: 'white' }}>Privacy Policy</a>.</CookieConsent>
+
               <Setup {...props} />
             </ToastProvider>
           </FirebaseContext.Provider>
