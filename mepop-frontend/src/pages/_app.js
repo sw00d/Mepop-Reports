@@ -108,6 +108,11 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
           payload: { type: 'email', active: true }
         })
       }
+    } else {
+      dispatch({
+        type: NOTIFICATION,
+        payload: { type: 'email', active: false }
+      })
     }
   }, [user.user])
   return (
