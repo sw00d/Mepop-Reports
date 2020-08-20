@@ -24,7 +24,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
       <Row title='true' onClick={() => minify(!isMini)}>
         <Title isMini={isMini}>Mepop Reports</Title>
 
-        <IconButton isMini={isMini} onClick={() => minify(!isMini)} title>
+        <IconButton isMini={isMini} onClick={() => minify(!isMini)} title='true'>
           <i
             onClick={() => minify(!isMini)}
             className='fa fa-bars'

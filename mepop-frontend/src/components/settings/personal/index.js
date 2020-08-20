@@ -161,8 +161,8 @@ const UserSettings = withFirebase(({ firebase }) => {
               <i className='fa fa-envelope' />
             </Box>
             <Text>
-            Need support? Email us here: <A href='mailto:samote.wood@gmail.com'>
-              samote.wood@gmail.com
+            Need support? Email us here: <A href='mailto:mepopreports@gmail.com'>
+              mepopreports@gmail.com
               </A>
             </Text>
           </Flex>
