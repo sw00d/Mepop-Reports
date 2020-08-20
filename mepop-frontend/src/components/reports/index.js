@@ -20,6 +20,7 @@ const Reports = (props) => {
   const { rangedData, allData, compareData, user } = useSelector(state => state.generalReducer)
   const data = rangedData
 
+  const noData = data.sales ? !data.sales.length : true
   const isBasic = user.membership.type === 'basic'
   if (JSON.stringify(compareData) !== '{}' && !isBasic) {
     return <CompareView data={rangedData} compareData={compareData} />
@@ -27,14 +28,8 @@ const Reports = (props) => {
   return (
     <Flex flexDirection='column' width={[1]} justifyContent='center'>
       {
-        !data.sales.length ? (
-          <NoDataFound
-            mt='100px'
-            title='Shoot!'
-            msg="It doesn't look like you have any sales in the specified date range."
-          />)
+        noData ? <NoDataFound />
           : (
-
             <>
               {/* <RoadToVerified data={data} /> */}
               <Flex>

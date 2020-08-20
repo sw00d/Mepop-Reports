@@ -11,7 +11,7 @@ const Notification = withFirebase(({ firebase }) => {
   const { icon, content, color, bg } = getContent(notification.type, firebase)
   if (!notification.active) return null
   return (
-    <Flex justifyContent='center' width='100%'>
+    <Container justifyContent='center' width='100%'>
 
       <Main>
         <CloseIcon onClick={() => {
@@ -34,7 +34,7 @@ const Notification = withFirebase(({ firebase }) => {
           {content}
         </Content>
       </Main>
-    </Flex>
+    </Container>
   )
 })
 
@@ -85,6 +85,11 @@ const enter = keyframes`
         transform: scale(1,1);
         opacity: 1;
     }
+`
+
+const Container = styled(Flex)`
+  position: absolute;
+  top: 0px;
 `
 
 const Main = styled(Flex)`

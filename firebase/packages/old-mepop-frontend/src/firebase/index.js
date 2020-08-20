@@ -172,7 +172,7 @@ class Firebase {
           }
           if (i === files.length - 1) {
             if (rejectedFiles.length) {
-              window.alert(`The following files were not processed because they are not Depop files: ${rejectedFiles.join(', ')}. If this seems to be an error, please contact samote.wood@gmail.com for support.`)
+              window.alert(`The following files were not processed because they are not Depop files: ${rejectedFiles.join(', ')}. If this seems to be an error, please contact mepopreports@gmail.com for support.`)
             }
           }
         }

@@ -44,7 +44,7 @@ const About = () => {
             </form>
           </div>
           <strong>
-              Inquiries: <a href='mailto:samote.wood@gmail.com'>samote.wood@gmail.com</a>
+              Inquiries: <a href='mailto:mepopreports@gmail.com'>mepopreports@gmail.com</a>
           </strong>
         </div>
 

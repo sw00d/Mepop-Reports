@@ -1,7 +1,11 @@
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/storage'
+import 'firebase/firestore'
+import 'firebase/functions'
+import 'firebase/analytics'
+
 import FirebaseContext, { withFirebase } from './context'
 import { getFileMethod, deleteFileMethod, uploadFilesMethod } from './methods/files'
 import { UPDATE_USER } from '../store/generalReducer'
@@ -32,7 +36,6 @@ class Firebase {
         console.error('Firebase initialization error', err.message)
       }
     }
-
     this.auth = firebase.auth()
     this.storage = firebase.storage()
     this.db = firebase.firestore()
@@ -66,7 +69,7 @@ class Firebase {
   }
 
   createStripeClient () {
-    const createStripeClientFunction = firebase.functions().httpsCallable('createStripeClient')
+    const createStripeClientFunction = this.functions.httpsCallable('createStripeClient')
     const { email, uid } = this.auth.currentUser
     createStripeClientFunction({ email, uid }).then(() => {
       console.log('Created Stripe Client')
@@ -82,14 +85,14 @@ class Firebase {
     window.open(data.url)
   }
 
-  async startSubscription () {
+  async startSubscription (successUrl) {
     const docRef = await this.db
       .collection('stripeClients')
       .doc(this.auth.currentUser.uid)
       .collection('checkout_sessions')
       .add({
         price: 'price_1HGtWiI6QogDwA7GZcdXzmxg',
-        success_url: window.location.origin + '/settings',
+        success_url: successUrl || window.location.origin + '/settings',
         cancel_url: window.location.origin + '/settings'
       })
     // Wait for the CheckoutSession to get attached by the extension
@@ -104,7 +107,7 @@ class Firebase {
         }
       } else {
         window.alert(
-          'Oh no! It looks like an error occurred. Please email samote.wood@gmail.com for support.'
+          'Oh no! It looks like an error occurred. Please email mepopreports@gmail.com for support.'
         )
       }
     })
@@ -149,7 +152,6 @@ class Firebase {
     docRef.onSnapshot((snap) => {
       // Websocket listening to subscription updates
       const { user, dispatch } = snapshotStuff
-      console.log('Fired snapshot successfully.')
       const basicType = { type: 'basic' }
       if (!snap.empty) {
         const data = snap.docs[0].data()
@@ -169,7 +171,7 @@ class Firebase {
           })
         }
       } else {
-        console.log('empty subscription.')
+        console.log('No Subscription Found')
         // if not subscriptions exist
         this.setMembership(basicType)
         dispatch({

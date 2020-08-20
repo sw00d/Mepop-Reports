@@ -24,7 +24,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
       <Row title='true' onClick={() => minify(!isMini)}>
         <Title isMini={isMini}>Mepop Reports</Title>
 
-        <IconButton isMini={isMini} onClick={() => minify(!isMini)} title>
+        <IconButton isMini={isMini} onClick={() => minify(!isMini)} title='true'>
           <i
             onClick={() => minify(!isMini)}
             className='fa fa-bars'
@@ -221,7 +221,8 @@ const RowText = styled(Text)`
     user-select: none;
     white-space: nowrap;
     ${({ theme, signout }) => signout ? theme.scrollbars.light : null};
-    overflow: auto;
+    ${({ theme, signout }) => signout ? 'overflow: auto;' : null};
+    
     > i {
         color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.white}; 
     }

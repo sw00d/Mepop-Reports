@@ -2,6 +2,7 @@ import React from 'react'
 import BarChart from '../../../styles/reporting/BarChart'
 import styled from 'styled-components'
 import { getProfitsByMonth } from '../util'
+import { formatNum } from '../../reports/util/general'
 
 // styles
 
@@ -24,9 +25,11 @@ const Barchart = ({
       headerContent='Net Earnings By Month'
       data={monthlyNetProfit}
       formatTooltip={(t, l) => formatTooltip(t, l, data)}
+      ytickFormattter={(num) => formatNum(data.currency_type, num, 0)}
       xdataKey='month'
+      ydataKey='Net Profit'
       bars={[
-        { dataKey: 'Net Profit', size: 50, color: 'pastelPurple' }
+        { dataKey: 'Net Profit', size: 30, color: 'teal' }
       ]}
     />
   )

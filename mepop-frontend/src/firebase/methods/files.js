@@ -1,7 +1,8 @@
 import { readString } from 'react-papaparse'
 import axios from 'axios'
 import { headers } from '../../assets/exampleBuyers'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/storage'
 
 export const getFileMethod = (auth, storage, resolve) => {
   const UID = auth.currentUser.uid
@@ -119,7 +120,11 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
         }
         if (i === files.length - 1) {
           if (rejectedFiles.length) {
-            err(`The following files were not processed because they are not Depop files: ${rejectedFiles.join(', ')}. If this seems to be an error, please contact samote.wood@gmail.com for support.`)
+            err(
+              <>
+              The following files were not processed because they are not Depop files: {rejectedFiles.join(', ')}. If this seems to be an error, please contact <a href='mailto:mepopreports@gmail.com'>mepopreports@gmail.com</a> for support.
+              </>
+            )
           }
         }
       }

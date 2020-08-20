@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -6,22 +6,28 @@ import Card from '../../styles/elements/Card'
 import Text from '../../styles/elements/Text'
 import Tooltip from '../../styles/elements/Tooltip'
 
-import { UPDATE_FILES } from '../../store/generalReducer'
 import { withFirebase } from '../../firebase'
 import Spinner from '../../styles/elements/Loading/Spinner'
 import { rowStyle } from '../../styles/elements/Table'
+import { fetchFiles } from '../../store/actions/files'
+import { UPDATE_FILES } from '../../store/generalReducer'
 
 const FileTable = withFirebase(({ firebase }) => {
   const { files } = useSelector(state => state.generalReducer)
   const dispatch = useDispatch()
   const [buttonDisable, disableBtns] = useState(false)
   const [activeBtn, activateBtn] = useState(null)
+
+  const updateData = useCallback(() => {
+    fetchFiles({ firebase, dispatch }, () => disableBtns(false))
+  }, [])
+
   const deleteFile = (filename) => {
     disableBtns(true)
     firebase.deleteFile(filename, (file) => {
-      disableBtns(false)
-      const newFiles = [...files].filter(item => item.filename !== filename)
-      dispatch({ type: UPDATE_FILES, payload: newFiles })
+      // const newFiles = [...files].filter(item => item.filename !== filename)
+      // dispatch({ type: UPDATE_FILES, payload: newFiles })
+      updateData()
     })
   }
   return (
