@@ -14,6 +14,7 @@ const InfoModal = ({ modalIsOpen, toggleModal }) => {
           <li><Text>Click 'Profile' (top right corner)</Text></li>
           <li><Text>Click 'Download Sales' (top right corner)</Text></li>
           <li><Text>Select date range and click 'Download'</Text></li>
+          <li><Text>Upload those files to Mepop Reports!</Text></li>
         </ol>
         <img src='/get-files.gif' />
       </Flex>

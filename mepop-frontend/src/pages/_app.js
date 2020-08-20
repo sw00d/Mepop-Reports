@@ -76,7 +76,6 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
             type: UPDATE_USER,
             payload: userObj
           })
-          console.log('fire')
           fetchFiles({ firebase, dispatch }, () => {
             setupLocationKeys({ firebase, dispatch }, () => {
               // after fetching files/keys, this fires

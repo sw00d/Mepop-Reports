@@ -22,23 +22,29 @@ const ChooseMembership = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.generalReducer)
   const [activeModal, setModal] = useState(null)
+  const [isLoading, setLoading] = useState(null)
   const { hasSignedIn } = user.profile
-  const onChoose = (type) => {
+  const onChoose = async (type) => {
     const newProfile = { ...user.profile, hasSignedIn: true }
     const newMembership = { ...user.membership, type: type }
-    firebase.setMembership(newMembership)
+    if (type === 'basic') {
+      firebase.setMembership(newMembership)
+    } else {
+      setLoading('premium')
+      await firebase.startSubscription(window.location.origin + '/settings')
+    }
 
     firebase.setProfile(newProfile).then(() => {
       dispatch({
         type: UPDATE_USER,
         payload: { ...user, profile: newProfile, membership: newMembership }
       })
-      if (!hasSignedIn) {
+      if (!hasSignedIn && type === 'basic') {
         addToast(<div>Everything is good to go! Now let's upload some files.</div>, {
           appearance: 'success'
         })
         router.push('/files')
-      } else {
+      } else if (type === 'basic') {
         router.push('/dashboard')
       }
     }).catch((err) => {
@@ -57,10 +63,16 @@ const ChooseMembership = withFirebase(({ firebase }) => {
 
         <Table flexDirection='column' alignItems='flex-end' mb='20px'>
           <Flex width={[1]}>
-            <Cell />
-            {tiers.map(({ title, icon, price }) => {
+            <Cell bg='greyDisabled' />
+            {tiers.map(({ title, icon, price }, i) => {
               return (
-                <Cell key={title} alignItems='center' flexDirection='column' justifyContent='center'>
+                <Cell
+                  key={i}
+                  alignItems='center'
+                  flexDirection='column'
+                  justifyContent='center'
+                  bg='greyDisabled'
+                >
                   <Flex alignItems='center' fontSize='18px' mb='15px' mt='2px'>
                     <Text mr='5px'>{title}</Text>
                     <i className={`fa fa-${icon}`} />
@@ -81,6 +93,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
                     px='10px'
                     cursor={cursor}
                     onClick={() => html ? setModal(html) : null}
+                    bg={i % 2 ? 'whiteDark' : 'greyLightest'}
                   >
                     <Tooltip
                       title={tooltip}
@@ -101,7 +114,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
                     tiers.map((tier, j) => {
                       return (
 
-                        <Cell key={j} justifyContent='center'>
+                        <Cell key={j} justifyContent='center' bg={i % 2 ? 'whiteDark' : 'greyLightest'}>
                           <I
                             good={tier[ref]}
                             className={`fa fa-${!tier[ref] ? 'times-circle' : 'check-circle'}`}
@@ -116,22 +129,24 @@ const ChooseMembership = withFirebase(({ firebase }) => {
             })
           }
           <Flex width={[1]}>
-            <Cell />
+            <Cell bg='greyDisabled' />
             {tiers.map(({ title, type }) => {
               return (
-                <Cell key={title} justifyContent='center'>
+                <Cell key={title} justifyContent='center' bg='greyDisabled'>
                   <Button
                     bg='success'
                     minWidth='150px'
                     onClick={() => onChoose(type)}
-                  >Go {title}!
+                    isLoading={isLoading === type}
+                  >
+                    Go {title}!
                   </Button>
                 </Cell>
               )
             })}
           </Flex>
         </Table>
-        <Text mb='10px' width={[1]} justifyContent='flex-start'>* By choosing a plan, you automatically agree to our 'terms of service'</Text>
+        {/* <Text mb='10px' width={[1]} justifyContent='flex-start'>* By choosing a plan, you automatically agree to our 'terms of service'</Text> */}
       </TableContainer>
     </Card>
   )
@@ -159,11 +174,11 @@ const Cell = styled(Flex)`
     cursor: ${({ cursor }) => cursor};
     transition: .2s;
     &:hover {
-      background: ${({ theme, cursor }) => cursor === 'pointer' ? theme.colors.mainBg : null};
+      background: ${({ theme, cursor }) => cursor === 'pointer' ? theme.colors.greyLighter : null};
     }
 `
 const Table = styled(Flex)`
-    border: 1px solid ${({ theme }) => theme.colors.greyLightest};
+    /* border: 1px solid ${({ theme }) => theme.colors.greyLightest}; */
     border-radius: ${({ theme }) => theme.borderRadius.normal};
     width:100%;
     overflow: auto;
