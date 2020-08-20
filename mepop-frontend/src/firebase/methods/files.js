@@ -1,7 +1,8 @@
 import { readString } from 'react-papaparse'
 import axios from 'axios'
 import { headers } from '../../assets/exampleBuyers'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/storage'
 
 export const getFileMethod = (auth, storage, resolve) => {
   const UID = auth.currentUser.uid

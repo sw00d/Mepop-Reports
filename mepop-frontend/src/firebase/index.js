@@ -1,7 +1,11 @@
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/storage'
+import 'firebase/firestore'
+import 'firebase/functions'
+import 'firebase/analytics'
+
 import FirebaseContext, { withFirebase } from './context'
 import { getFileMethod, deleteFileMethod, uploadFilesMethod } from './methods/files'
 import { UPDATE_USER } from '../store/generalReducer'
@@ -66,7 +70,7 @@ class Firebase {
   }
 
   createStripeClient () {
-    const createStripeClientFunction = firebase.functions().httpsCallable('createStripeClient')
+    const createStripeClientFunction = this.functions().httpsCallable('createStripeClient')
     const { email, uid } = this.auth.currentUser
     createStripeClientFunction({ email, uid }).then(() => {
       console.log('Created Stripe Client')
