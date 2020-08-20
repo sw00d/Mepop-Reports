@@ -1,5 +1,5 @@
 ## Getting Started
-[![Netlify Status](https://api.netlify.com/api/v1/badges/8f9c9ab0-c560-410e-a574-061d26cb2da3/deploy-status)](https://app.netlify.com/sites/dev-mepop/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6e73184d-64ff-474e-83f2-2377c7856c8e/deploy-status)](https://app.netlify.com/sites/prod-mepop/deploys)
 
 Dev:
 ```
