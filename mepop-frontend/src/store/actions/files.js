@@ -9,7 +9,7 @@ export const fetchFiles = ({ firebase, dispatch }, resolve) => {
       dispatch({ type: UPDATE_DATA, payload: processedFiles })
       dispatch({ type: UPDATE_FILES, payload: files })
     }
-    resolve()
+    if (resolve) resolve()
   })
   return null
 }

@@ -1,10 +1,13 @@
 import ValueBox from '../../../styles/reporting/ValueBox'
 import Flex from '../../../styles/layout/Flex'
 
-const TopValueBoxes = ({ data, minWidth }) => {
+const TopValueBoxes = ({ data, minWidth, ...props }) => {
   return (
     <Flex
-      flexWrap='wrap' mt='5px' sx={{
+      flexWrap='wrap'
+      mt='5px'
+      {...props}
+      sx={{
         '@media only screen and (max-width: 950px)': {
           flexDirection: 'column'
         }

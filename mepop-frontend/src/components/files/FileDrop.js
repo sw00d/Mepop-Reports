@@ -15,19 +15,14 @@ const Dropzone = withFirebase(({ firebase }) => {
   const { addToast } = useToasts()
   const [modalIsOpen, toggleModal] = useState(false)
   const [loading, setLoading] = useState(false)
+
   const startFetch = useCallback(() => {
     setLoading(true)
     fetchFiles({ firebase, dispatch }, () => {
       setLoading(false)
-      // disableBtns(false)
-      // activateBtn(null)
     })
   }, [])
-  // useEffect(() => {
-  //   console.log(files)
-  //   setLoading(true)
-  //   // startFetch()
-  // }, [])
+
   const onError = (msg, dismiss) => {
     addToast(<div>{msg || 'Error Occurred'}</div>, {
       appearance: 'error',

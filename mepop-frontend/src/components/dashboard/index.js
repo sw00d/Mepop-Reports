@@ -13,14 +13,13 @@ import { useSelector } from 'react-redux'
 
 // utils
 import { getAvgProfits, bestTimeToList, avgItemsPerDay } from './util'
+import NoDataFound from '../../styles/elements/NoDataFound'
 
 const Dashboard = () => {
   const { allData } = useSelector(state => state.generalReducer)
   const data = allData
-
-  if (!data) {
-    console.log('Returning null')
-    return null
+  if (!data || JSON.stringify(data) === '{}') {
+    return <NoDataFound />
   }
   const avgNetProfit = getAvgProfits(data)
   const whenToList = bestTimeToList(data)

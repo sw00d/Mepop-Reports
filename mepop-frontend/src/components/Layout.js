@@ -103,12 +103,13 @@ const Layout = (props) => {
                   headerSize={JSON.stringify(compareData) !== '{}' ? 110 : 45}
                 >
                   {
-                    noData && routeRequiresData && !loading ? <NoDataFound />
-                      : loading ? (
-                        <Flex justifyContent='center' height='90vh' alignItems='center'>
-                          <Loading />
-                        </Flex>
-                      ) : props.children
+                    // noData && routeRequiresData && !loading ? <NoDataFound />
+                    //   :
+                    loading ? (
+                      <Flex justifyContent='center' height='90vh' alignItems='center'>
+                        <Loading />
+                      </Flex>
+                    ) : props.children
                   }
 
                 </Body>

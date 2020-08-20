@@ -78,14 +78,17 @@ const DateContainer = memo(({ page }) => {
     setTimeout(() => {
       if (allData.sales && compareDateRange.startDate && compareDateRange.endDate) {
         showWarning()
-        const rangedData = getRangedData(allData, {
+        let compareData = getRangedData(allData, {
           startDate: compareDateRange.startDate,
           endDate: compareDateRange.endDate
         })
         // console.log(rangedData)
+        if (JSON.stringify(compareData) === '{}') {
+          compareData = { msg: 'No compare data' }
+        }
         dispatch({
           type: UPDATE_COMPARE_DATA,
-          payload: rangedData
+          payload: compareData
         })
       }
       if (!showCompareDate) {

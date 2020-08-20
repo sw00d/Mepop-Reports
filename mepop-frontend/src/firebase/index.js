@@ -108,7 +108,7 @@ class Firebase {
         }
       } else {
         window.alert(
-          'Oh no! It looks like an error occurred. Please email samote.wood@gmail.com for support.'
+          'Oh no! It looks like an error occurred. Please email mepopreports@gmail.com for support.'
         )
       }
     })
