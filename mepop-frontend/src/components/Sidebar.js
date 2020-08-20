@@ -221,7 +221,8 @@ const RowText = styled(Text)`
     user-select: none;
     white-space: nowrap;
     ${({ theme, signout }) => signout ? theme.scrollbars.light : null};
-    overflow: auto;
+    ${({ theme, signout }) => signout ? 'overflow: auto;' : null};
+    
     > i {
         color: ${({ theme, isMini }) => isMini ? 'transparent' : theme.colors.white}; 
     }

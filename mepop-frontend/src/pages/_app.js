@@ -87,7 +87,6 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
           })
         })
       } else {
-        console.log(!unprotectedRoute)
         if (!unprotectedRoute) router.push({ pathname: '/sign-in' })
         dispatch({
           type: UPDATE_USER,

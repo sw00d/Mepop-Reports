@@ -30,7 +30,6 @@ export default (state = initialState, action) => {
       return { ...state, notification: { ...action.payload } }
     }
     case UPDATE_USER: {
-      console.log('updated user')
       return { ...state, user: action.payload }
     }
     case UPDATE_RANGED_DATA: {

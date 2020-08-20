@@ -1,7 +1,8 @@
 {
-  "name": "mepop-next",
+  "name": "mepop-frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "Samuel Wood",
   "scripts": {
     "dev": "next dev ./src -p 2999",
     "build": "next build ./src && next export ./src",
