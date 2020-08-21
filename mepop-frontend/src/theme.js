@@ -73,6 +73,8 @@ let colors = {
   greyLighter: '#DADADA',
   greyLightest: '#E1E1E1',
   greyDisabled: '#ededed',
+  green: '#069f06',
+  greenDark: '#006644',
   greenSoftDarkest: '#133531',
   greenSoftDark: '#506A67',
   greenSoft: '#309F87',
@@ -92,7 +94,6 @@ let colors = {
   redDark: '#9C0013',
   redLight: '#FDC0C7',
   redDisabled: '#C19C9C',
-  green: '#069f06',
   purple: '#86529A',
 
   // Pastel Colors
