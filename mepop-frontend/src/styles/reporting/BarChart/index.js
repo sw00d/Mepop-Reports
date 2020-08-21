@@ -64,6 +64,7 @@ const Barchart = ({
               bars.map(({ size, dataKey, color }, i) => {
                 return (
                   <Bar
+                    radius={[4, 4, 0, 0]}
                     isAnimationActive={typeof disableAnimation !== 'boolean'}
                     key={i}
                     barSize={size}

@@ -35,6 +35,7 @@ const VertBarChart = ({
             <Bar
               dataKey={xdataKey}
               isAnimationActive={typeof disableAnimation !== 'boolean'}
+              radius={[0, 4, 4, 0]}
             >
               {
           	    data.map((entry, index) => {
