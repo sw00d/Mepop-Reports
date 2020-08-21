@@ -17,9 +17,12 @@ const Dropzone = withFirebase(({ firebase }) => {
   const [loading, setLoading] = useState(false)
 
   const startFetch = useCallback(() => {
-    setLoading(true)
     fetchFiles({ firebase, dispatch }, () => {
       setLoading(false)
+      addToast(<div>Success! <A href='/dashboard'>Go to sales dashboard.</A></div>, {
+        appearance: 'success'
+        // autoDismiss: true
+      })
     })
   }, [])
 
@@ -31,6 +34,7 @@ const Dropzone = withFirebase(({ firebase }) => {
   }
   const onDrop = useCallback(acceptedFiles => {
     if (acceptedFiles.length) {
+      setLoading(true)
       firebase.uploadFiles(acceptedFiles, startFetch, onError)
     } else {
       onError('File appears to be of wrong format.', true)
@@ -99,4 +103,7 @@ const H2 = styled.h2`
     margin: 0;
     margin-top: 10px;
     font-weight: ${({ theme }) => theme.fontWeights.regular};
+`
+const A = styled.a`
+  color: ${({ theme }) => theme.colors.greenDark};
 `

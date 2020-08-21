@@ -77,7 +77,6 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
         counter++
       } else {
         const rows = readString(fileReader.result).data
-        counter++
 
         if (rows[0].length !== 22) {
           // checks row length for length of 22
@@ -97,19 +96,24 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
                   console.log('Upload is paused')
                   break
                 case firebase.storage.TaskState.RUNNING:
-                  // console.log('Upload is running')
+                  if (snapshot.metadata) {
+                    counter++
+                  }
                   break
               }
             }, (error) => {
               switch (error.code) {
                 case 'storage/unauthorized':
-                  window.alert("You don't have permission to execute this action.")
+                  err("You don't have permission to execute this action.")
+                  counter++
                   break
                 case 'storage/canceled':
-                  window.alert('Unknown Error. Operation canceled')
+                  err('Unknown Error. Operation canceled')
+                  counter++
                   break
                 case 'storage/unknown':
-                  window.alert('Unknown Error')
+                  err('Unknown Error')
+                  counter++
                   break
               }
             }, () => {
