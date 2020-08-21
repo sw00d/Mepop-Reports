@@ -6,6 +6,7 @@ import LineChart from '../../../styles/reporting/LineChart'
 import { groupByDate } from '../util/grouping'
 import Flex from '../../../styles/layout/Flex'
 import Button from '../../../styles/elements/Button'
+import { formatNum } from '../util/general'
 
 const VariableLineChart = memo(({ data, isBasic }) => {
   const [variables, updateVars] = useState([
@@ -61,13 +62,10 @@ export default (VariableLineChart)
 const formatXAxis = (tickItem) => { return moment(tickItem, 'MM/DD/YYYY').format('M/D') }
 const formatLabel = (tickItem) => { return moment(tickItem, 'MM/DD/YYYY').format('MMM Do YYYY') }
 
-const formatTooltip = (value, name, props) => {
+const formatTooltip = (value, name, { currency_type }) => {
   if (name !== 'Items Sold') {
-    const num = value.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    })
-    return `$${num}`
+    const num = formatNum(currency_type, value)
+    return num
   }
   return value
 }
