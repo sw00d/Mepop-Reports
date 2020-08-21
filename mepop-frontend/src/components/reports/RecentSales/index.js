@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { getRecentSales } from '../util/tables'
 import Table from '../../../styles/elements/Table'
@@ -10,11 +10,7 @@ const RecentSales = ({ data }) => {
   const tableData = getRecentSales(data)
   const [activeRow, activateRow] = useState(tableData[0])
   const [idx, activateIdx] = useState(0)
-  useEffect(() => {
-    if (JSON.stringify(activeRow) !== JSON.stringify(tableData[0])) {
-      activateRow(tableData[0])
-    }
-  }, [tableData])
+
   return (
     <Flex flexWrap='wrap'>
 
@@ -46,6 +42,3 @@ const RecentSales = ({ data }) => {
 }
 
 export default (RecentSales)
-
-// const formatXAxis = (tickItem) => { return moment(tickItem, 'MM/DD/YYYY').format('M/D') }
-// const formatTooltip = (tickItem) => { return moment(tickItem, 'MM/DD/YYYY').format('MMM Do YYYY') }
