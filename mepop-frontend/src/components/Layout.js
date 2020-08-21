@@ -6,7 +6,6 @@ import Sidebar from './Sidebar'
 import DateContainer from './DateContainer'
 
 import Flex from '../styles/layout/Flex'
-import NoDataFound from '../styles/elements/NoDataFound'
 import Loading from '../styles/elements/Loading'
 
 import { unprotectedRoutes } from '../pages/_app'
@@ -34,7 +33,6 @@ const Layout = (props) => {
   const heading = getheaderContent(router.pathname)
   const noData = !files.length || JSON.stringify(rangedData) === '{}'
   const noUser = JSON.stringify(user) === '{}' || !user
-  const routeRequiresData = heading === 'Reports' || heading === 'Dashboard'
   const centerContent = loading || noData
   const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
   const hideSideBar = router.pathname === '/settings/membership/'
@@ -103,8 +101,7 @@ const Layout = (props) => {
                   headerSize={JSON.stringify(compareData) !== '{}' ? 110 : 45}
                 >
                   {
-                    // noData && routeRequiresData && !loading ? <NoDataFound />
-                    //   :
+
                     loading ? (
                       <Flex justifyContent='center' height='90vh' alignItems='center'>
                         <Loading />

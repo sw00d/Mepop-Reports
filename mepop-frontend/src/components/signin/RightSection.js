@@ -50,8 +50,8 @@ const LearnMore = (props) => {
             color='primary'
             borderColor='primary'
             width={[1]}
-            mt='20px'
-            mr='4px'
+            mt='5px'
+            mr='20px'
             height='40px'
             sx={{ display: 'flex' }}
           >
@@ -61,7 +61,7 @@ const LearnMore = (props) => {
             Sign Up
           </Button>
         </Link>
-        <Button
+        {/* <Button
           bg='white'
           color='primary'
           borderColor='primary'
@@ -74,8 +74,8 @@ const LearnMore = (props) => {
           <Box mr='10px'>
             <i className='fa fa-info-circle' />
           </Box>
-Learn More
-        </Button>
+          Learn More
+        </Button> */}
       </Flex>
     </>
   )
