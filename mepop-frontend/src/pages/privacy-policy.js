@@ -1,25 +1,29 @@
 import styled from 'styled-components'
 import HorzDivider from '../styles/elements/HorzDivider'
 import Box from '../styles/layout/Box'
+import Link from 'next/link'
+import { useSelector } from 'react-redux'
+
 import Text from '../styles/elements/Text'
 import Button from '../styles/elements/Button'
-import { useSelector } from 'react-redux'
 
 export default () => {
   const { user } = useSelector(state => state.generalReducer)
 
   return (
     <Container p='20px 50px 20px 50px' bg='white' m='20px' overflow='auto' height='93vh'>
-      <A href={user.user ? '/dashboard' : '/sign-in'}>
-        <Button style={{ display: 'flex' }}>
-          <Box mr='10px'>
+      <Link href={user.user ? '/dashboard' : '/sign-in'}>
+        <A>
+          <Button style={{ display: 'flex' }}>
+            <Box mr='10px'>
 
-            <i className='fa fa-chevron-left' />
-          </Box>
+              <i className='fa fa-chevron-left' />
+            </Box>
 
-          <Text color='white'>Back</Text>
-        </Button>
-      </A>
+            <Text color='white'>Back</Text>
+          </Button>
+        </A>
+      </Link>
       <Text as='h1'>Mepop Report's Privacy Policy</Text>
       <HorzDivider />
       <Text as='h2' mb='0px' pb='0px'>Our Commitment to Privacy</Text>

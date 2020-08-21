@@ -63,6 +63,7 @@ const Layout = (props) => {
       justifyContent='center'
       bg='mainBg'
       flex={[1]}
+      sx={{ position: 'relative' }}
     >
       {
         unprotectedRoute ? (

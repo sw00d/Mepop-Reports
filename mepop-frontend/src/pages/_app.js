@@ -46,7 +46,6 @@ export const MyApp = (props) => {
 
           <FirebaseContext.Provider value={new Firebase()}>
             <ToastProvider>
-              <CookieConsent location='bottom'>By using this site, you are agreeing to our <a href='/privacy-policy' style={{ color: 'white' }}>Privacy Policy</a>.</CookieConsent>
 
               <Setup {...props} />
             </ToastProvider>
@@ -122,6 +121,12 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   }, [user.user])
   return (
     <Layout>
+      <CookieConsent
+        style={{ right: 'unset', left: 'unset', width: 'unset' }}
+        buttonStyle={{ background: theme.colors.warning }}
+        location='bottom'
+      >By using this site, you are agreeing to our <a href='/privacy-policy' style={{ color: 'white' }}>Privacy Policy</a>.
+      </CookieConsent>
       <Notification />
       {
         <PageTransition timeout={300} classNames='page-transition'>

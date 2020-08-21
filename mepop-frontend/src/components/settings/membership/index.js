@@ -13,7 +13,7 @@ import { useToasts } from 'react-toast-notifications'
 import { useRouter } from 'next/router'
 
 import FeatureToolTip from './FeatureTooltip'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from '../../../styles/elements/Modal'
 
 const ChooseMembership = withFirebase(({ firebase }) => {
@@ -23,7 +23,16 @@ const ChooseMembership = withFirebase(({ firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
   const [activeModal, setModal] = useState(null)
   const [isLoading, setLoading] = useState(null)
+  const [btnsDisabled, disableBtn] = useState(false)
   const { hasSignedIn } = user.profile
+
+  useEffect(() => {
+    if (user.membership) {
+      if (user.membership.type === 'premium') {
+        router.push('/dashboard')
+      } else { disableBtn(false) }
+    } else { disableBtn(false) }
+  }, [user.membership])
   const onChoose = async (type) => {
     const newProfile = { ...user.profile, hasSignedIn: true }
     const newMembership = { ...user.membership, type: type }
@@ -134,6 +143,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
               return (
                 <Cell key={title} justifyContent='center' bg='greyDisabled'>
                   <Button
+                    disabled={btnsDisabled}
                     bg='success'
                     minWidth='150px'
                     onClick={() => onChoose(type)}
@@ -199,7 +209,7 @@ const tiers = [
     title: 'Basic',
     type: 'basic',
     icon: 'home',
-    price: 'Totally Free',
+    price: 'Free',
     saveCSV: true,
     feeCalculator: true,
     salesDashboard: true,
