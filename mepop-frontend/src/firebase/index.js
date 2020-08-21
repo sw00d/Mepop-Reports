@@ -81,7 +81,7 @@ class Firebase {
       .app()
       .functions('us-central1')
       .httpsCallable('ext-firestore-stripe-subscriptions-createPortalLink')
-    const { data } = await functionRef({ returnUrl: window.location.origin })
+    const { data } = await functionRef({ returnUrl: window.location.origin + '/settings' })
     window.open(data.url)
   }
 
