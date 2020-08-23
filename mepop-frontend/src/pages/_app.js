@@ -149,4 +149,4 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   )
 })
 
-export const unprotectedRoutes = ['/sign-in', '/sign-up', '/privacy-policy']
+export const unprotectedRoutes = ['/sign-in', '/sign-up', '/privacy-policy', '/terms-of-service']

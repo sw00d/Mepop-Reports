@@ -36,6 +36,7 @@ const Layout = (props) => {
   const centerContent = loading || noData
   const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
   const hideSideBar = router.pathname === '/settings/membership/'
+  const isLegalRoute = router.pathname === '/privacy-policy' || router.pathname === 'terms-of-service'
   if (noUser && !unprotectedRoute) {
     return null
   }
@@ -72,7 +73,7 @@ const Layout = (props) => {
             headerSize={0}
           >
             {
-              loading && router.pathname !== '/privacy-policy' ? (
+              loading && !isLegalRoute ? (
                 <Flex justifyContent='center' height='90vh' alignItems='center'>
                   <Loading />
                 </Flex>
