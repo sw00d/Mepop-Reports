@@ -161,6 +161,7 @@ const Labels = styled.div`
   align-items:center;
   font-weight: ${props => props.theme.fontWeights.medium};
   color: ${props => props.theme.colors.textSubtle};
+  font-style: italic;
 `
 const Value = styled.div`
   font-size: ${props => props.smallText ? 25 : 20}px;

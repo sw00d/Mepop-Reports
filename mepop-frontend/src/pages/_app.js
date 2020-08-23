@@ -23,7 +23,7 @@ import '../globalStyle.css'
 // Util
 import theme from '../theme'
 import store from '../store'
-import Firebase, { FirebaseContext, withFirebase } from '../firebase'
+import Firebase, { FirebaseContext, withFirebase, stripeKey } from '../firebase'
 import { UPDATE_USER, TOGGLE_LOADING, NOTIFICATION } from '../store/generalReducer'
 import { fetchFiles } from '../store/actions/files'
 import Head from 'next/head'
@@ -33,7 +33,8 @@ import Notification from '../components/general/Notification'
 import Layout from '../components/Layout'
 import { setupLocationKeys } from '../store/actions/keySetup'
 
-const stripePromise = loadStripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
+const isProduction = process.env.NODE_ENV === 'production'
+const stripePromise = loadStripe(stripeKey)
 export const MyApp = (props) => {
   return (
     <Elements stripe={stripePromise}>
@@ -66,16 +67,16 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
-
   useEffect(() => {
     firebase.auth.onAuthStateChanged((persistedUser) => {
       if (persistedUser) {
-        console.log('Persisting user...')
+        console.log('Persisting user...', persistedUser)
         dispatch({
           type: TOGGLE_LOADING,
           payload: true
         })
-        firebase.handleMembership(persistedUser, { dispatch, user }).then((userObj) => {
+        firebase.handleMembership(persistedUser, (userObj) => {
+          console.log('Updating user:', userObj)
           dispatch({
             type: UPDATE_USER,
             payload: userObj
@@ -103,7 +104,9 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
       }
     })
   }, [])
+  useEffect(() => {
 
+  }, [])
   useEffect(() => {
     if (user.user) {
       if (!user.user.emailVerified) {
@@ -119,15 +122,23 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
       })
     }
   }, [user.user])
+
   return (
     <Layout>
-      <CookieConsent
-        style={{ right: 'unset', left: 'unset', width: 'unset' }}
-        buttonStyle={{ background: theme.colors.warning }}
-        location='bottom'
-      >By using this site, you are agreeing to our <a href='/privacy-policy' style={{ color: 'white' }}>Privacy Policy</a>.
-      </CookieConsent>
-      <Notification />
+      {
+        isProduction ? (
+          <>
+            <CookieConsent
+              style={{ right: 'unset', left: 'unset', width: 'unset' }}
+              buttonStyle={{ background: theme.colors.warning }}
+              location='bottom'
+            >
+            By using this site, you are agreeing to our <a href='/privacy-policy' style={{ color: 'white' }}>Privacy Policy</a>.
+            </CookieConsent>
+            <Notification />
+          </>
+        ) : null
+      }
       {
         <PageTransition timeout={300} classNames='page-transition'>
           <Component {...pageProps} key={router.pathname} />

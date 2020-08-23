@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "mepop-app"
+    "default": "mepop-app",
+    "staging": "mepop-dev"
   }
 }

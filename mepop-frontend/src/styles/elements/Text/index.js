@@ -16,4 +16,5 @@ export default Text
 
 const StyledText = styled(TextComponent)`
   color: ${({ theme, color }) => theme.colors[color]};
+  font-style: ${({ italic }) => italic ? 'italic' : null};
 `

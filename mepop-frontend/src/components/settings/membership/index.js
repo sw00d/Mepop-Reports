@@ -32,17 +32,15 @@ const ChooseMembership = withFirebase(({ firebase }) => {
         router.push('/dashboard')
       } else { disableBtn(false) }
     } else { disableBtn(false) }
-  }, [user.membership])
+  }, [])
+
   const onChoose = async (type) => {
     const newProfile = { ...user.profile, hasSignedIn: true }
     const newMembership = { ...user.membership, type: type }
-    if (type === 'basic') {
-      firebase.setMembership(newMembership)
-    } else {
+    if (type === 'premium') {
       setLoading('premium')
       await firebase.startSubscription(window.location.origin + '/settings')
     }
-
     firebase.setProfile(newProfile).then(() => {
       dispatch({
         type: UPDATE_USER,
@@ -50,7 +48,8 @@ const ChooseMembership = withFirebase(({ firebase }) => {
       })
       if (!hasSignedIn && type === 'basic') {
         addToast(<div>Everything is good to go! Now let's upload some files.</div>, {
-          appearance: 'success'
+          appearance: 'success',
+          autoDismiss: true
         })
         router.push('/files')
       } else if (type === 'basic') {

@@ -1,5 +1,6 @@
 import moment from 'moment'
 import currency from 'currency.js'
+import { formatNum } from './general'
 
 export const formatSalesTable = ({ sales, currency_type }, currencyType) => {
   const newSales = []
@@ -14,7 +15,7 @@ export const formatSalesTable = ({ sales, currency_type }, currencyType) => {
       'item price': sale.item_price,
       'buyer-paid shipping': sale.buyer_shipping_cost,
       'seller-paid shipping': sale.usps_cost,
-      'depop fees': `${currency_type || currencyType}${currency(sale.depop_fee).value + currency(sale.depop_payments_fee).value}`,
+      'depop fees': `${formatNum(currency_type || currencyType, currency(sale.depop_fee).value + currency(sale.depop_payments_fee).value)}`,
       'date listed': moment(sale.date_of_listing).format('MM/DD/YYYY'),
       'days listed': days, // converts from ms to days
       'item description': formatDescription(sale.description),

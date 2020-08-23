@@ -14,17 +14,24 @@ import Box from '../../../styles/layout/Box'
 
 const UserSettings = withFirebase(({ firebase }) => {
   const [loading, setLoading] = useState(false)
+  const [stripeLoading, setStripeLoading] = useState(false)
+  const [passwordSuccess, setPasswordSuccess] = useState(false)
   const { addToast } = useToasts()
   const { user } = useSelector(state => state.generalReducer)
   const dispatch = useDispatch()
-  const [passwordSuccess, setPasswordSuccess] = useState(false)
 
   const plan = {
     title: user.membership.type === 'basic' ? 'Free Plan' : 'Premium Plan',
     btnText: user.membership.type === 'basic' ? 'Upgrade' : 'Manage',
     handleClick: user.membership.type === 'basic'
-      ? () => firebase.startSubscription()
-      : () => firebase.openCustomerPortal()
+      ? () => {
+        setStripeLoading(true)
+        firebase.startSubscription()
+      }
+      : () => {
+        setStripeLoading(true)
+        firebase.openCustomerPortal(() => setStripeLoading(false))
+      }
   }
 
   const updateProfile = (key, value) => {
@@ -115,6 +122,7 @@ const UserSettings = withFirebase(({ firebase }) => {
               minWidth='100px'
               p='0px'
               height='25px'
+              isLoading={stripeLoading}
             >
               {plan.btnText}
             </Button>
@@ -163,7 +171,7 @@ const UserSettings = withFirebase(({ firebase }) => {
             <Text>
             Need support? Email us here: <A href='mailto:mepopreports@gmail.com'>
               mepopreports@gmail.com
-              </A>
+                                         </A>
             </Text>
           </Flex>
           <Text>
