@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import FeatureToolTip from './FeatureTooltip'
 import { useState, useEffect } from 'react'
 import Modal from '../../../styles/elements/Modal'
+import Link from 'next/link'
 
 const ChooseMembership = withFirebase(({ firebase }) => {
   const router = useRouter()
@@ -66,7 +67,15 @@ const ChooseMembership = withFirebase(({ firebase }) => {
       <Modal isOpen={!!activeModal} onRequestClose={() => setModal(null)}>
         {activeModal}
       </Modal>
-      <Text as='h2' color='greyDarker'>Continue with a Plan</Text>
+      <Flex width='90%'>
+
+        <Text
+          as='h2'
+          color='primary'
+        >
+          Continue with a Plan
+        </Text>
+      </Flex>
       <TableContainer>
 
         <Table flexDirection='column' alignItems='flex-end' mb='20px'>
@@ -87,12 +96,12 @@ const ChooseMembership = withFirebase(({ firebase }) => {
                   </Flex>
                   <Flex mb='2px'>
                     <Text fontSize='15px' fontWeight={500}>{price}</Text>
-
                   </Flex>
                 </Cell>
               )
             })}
           </Flex>
+
           {
             options.map(({ title, ref, tooltip, html, icon, cursor }, i) => {
               return (
@@ -136,6 +145,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
               )
             })
           }
+
           <Flex width={[1]}>
             <Cell bg='greyDisabled' />
             {tiers.map(({ title, type }) => {
@@ -154,8 +164,13 @@ const ChooseMembership = withFirebase(({ firebase }) => {
               )
             })}
           </Flex>
+
         </Table>
-        {/* <Text mb='10px' width={[1]} justifyContent='flex-start'>* By choosing a plan, you automatically agree to our 'terms of service'</Text> */}
+
+        <Text mb='10px' width={[1]} justifyContent='flex-start'>
+          * By choosing a plan, you automatically agree to our <Link href='/terms-of-service'><A>terms of service</A></Link>.
+        </Text>
+
       </TableContainer>
     </Card>
   )
@@ -169,6 +184,11 @@ const TableContainer = styled.div`
 const I = styled.i`
     color: ${({ good, theme }) => good ? theme.colors.good : theme.colors.bad};
     font-size: 25px;
+`
+const A = styled.a`
+  text-decoration: underline;
+  cursor: pointer;
+  /* color: ${({ theme })} */
 `
 const Cell = styled(Flex)`
     min-height: 50px;
@@ -222,7 +242,7 @@ const tiers = [
     title: 'Premium',
     type: 'premium',
     icon: 'diamond',
-    price: '$14.99 / month',
+    price: '$14.99 / month - ( 7 Day Trial )',
     saveCSV: true,
     feeCalculator: true,
     salesDashboard: true,

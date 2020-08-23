@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <Container p='20px 50px 20px 50px' bg='white' m='20px' overflow='auto' height='93vh'>
-      <Link href={user.user ? '/dashboard' : '/sign-in'}>
+      <Link href={user.user ? '/settings/membership' : '/sign-in'}>
         <A>
           <Button style={{ display: 'flex' }}>
             <Box mr='10px'>
