@@ -94,7 +94,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
                     <Text mr='5px'>{title}</Text>
                     <i className={`fa fa-${icon}`} />
                   </Flex>
-                  <Flex mb='2px'>
+                  <Flex mb='2px' sx={{ whiteSpace: 'nowrap' }}>
                     <Text fontSize='15px' fontWeight={500}>{price}</Text>
                   </Flex>
                 </Cell>
@@ -242,7 +242,7 @@ const tiers = [
     title: 'Premium',
     type: 'premium',
     icon: 'diamond',
-    price: '$14.99 / month - ( 7 Day Trial )',
+    price: '$14.99 / Month - ( 7 Day Trial )',
     saveCSV: true,
     feeCalculator: true,
     salesDashboard: true,

@@ -70,13 +70,12 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   useEffect(() => {
     firebase.auth.onAuthStateChanged((persistedUser) => {
       if (persistedUser) {
-        console.log('Persisting user...', persistedUser)
+        console.log('Persisting user...')
         dispatch({
           type: TOGGLE_LOADING,
           payload: true
         })
         firebase.handleMembership(persistedUser, (userObj) => {
-          console.log('Updating user:', userObj)
           dispatch({
             type: UPDATE_USER,
             payload: userObj

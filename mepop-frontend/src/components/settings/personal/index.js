@@ -171,12 +171,16 @@ const UserSettings = withFirebase(({ firebase }) => {
             <Text>
             Need support? Email us here: <A href='mailto:mepopreports@gmail.com'>
               mepopreports@gmail.com
-                                         </A>
+              </A>
             </Text>
           </Flex>
           <Text>
             <A href='/privacy-policy'>
               Privacy Policy
+            </A>
+            {' '}
+            <A href='/terms-of-service'>
+              Terms Of Service
             </A>
           </Text>
         </Flex>

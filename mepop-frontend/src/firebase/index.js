@@ -165,7 +165,6 @@ class Firebase {
       .collection('subscriptions')
       .where('status', 'in', ['trialing', 'active'])
       .onSnapshot(async (snapshot) => {
-        console.log(snapshot.docs)
         if (!snapshot.empty) {
           // In this implementation we only expect one active or trialing subscription to exist.
           this.handleProfile({ user, membership: { type: 'premium' } }).then((newUserObject) => {
