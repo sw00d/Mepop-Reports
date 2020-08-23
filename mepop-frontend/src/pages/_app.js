@@ -33,9 +33,9 @@ import Notification from '../components/general/Notification'
 import Layout from '../components/Layout'
 import { setupLocationKeys } from '../store/actions/keySetup'
 
-const isProduction = process.env.NODE_ENV === 'production' && process.env.NETLIFY_ENVIRONMENT !== 'development'
-console.log(process.env.NETLIFY_ENVIRONMENT)
+const isProduction = process.env.NODE_ENV === 'production'
 const stripePromise = loadStripe(stripeKey)
+
 export const MyApp = (props) => {
   return (
     <Elements stripe={stripePromise}>
