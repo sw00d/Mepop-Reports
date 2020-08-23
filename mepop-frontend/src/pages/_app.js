@@ -43,12 +43,11 @@ export const MyApp = (props) => {
         <Head>
           <title>Reports for Depop Sellers</title>
           <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
+          <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         </Head>
         <ReduxProvider store={store}>
-
           <FirebaseContext.Provider value={new Firebase()}>
             <ToastProvider>
-
               <Setup {...props} />
             </ToastProvider>
           </FirebaseContext.Provider>
