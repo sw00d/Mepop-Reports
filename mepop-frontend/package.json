@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "author": "Samuel Wood",
+  
   "scripts": {
     "dev": "next dev ./src -p 2999",
     "build": "next build ./src && next export ./src",
     "start": "next start ./src",
-    "test": "jest"
+    "test": "wait-on http://localhost:2999 & cypress run",
+    "cypress": "cypress open",
+    "jest": "jest"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.5",
@@ -53,9 +56,12 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "stripe": "^8.84.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "wait-on": "^5.2.0"
   },
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.10.7"
+    "babel-plugin-styled-components": "^1.10.7",
+    "cypress": "^5.0.0"
   }
+  
 }

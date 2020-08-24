@@ -71,6 +71,7 @@ const Login = withFirebase(({ firebase }) => {
               <Text fontSize='14px' color='depopRed'>{error}</Text>
               <Flex mb='15px'>
                 <Input
+                  className='test_target_email'
                   placeholder='Email'
                   label='Email'
                   bg='greyDisabled'
@@ -85,6 +86,7 @@ const Login = withFirebase(({ firebase }) => {
                 />
               </Flex>
               <Input
+                className='test_target_password'
                 placeholder='Password'
                 label='Password'
                 bg='greyDisabled'
@@ -98,6 +100,7 @@ const Login = withFirebase(({ firebase }) => {
                 }}
               />
               <Button
+                className='test_target_signinBtn'
                 m='2px'
                 isLoading={isLoading}
                 type='button'
