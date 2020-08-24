@@ -8,6 +8,7 @@ const stripe = new Stripe(functions.config().stripe.secret, {
   });
 admin.initializeApp();
 
+
 // utils
 interface CustomerData {
     metadata: {

@@ -11,6 +11,7 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
   const chartData = useMemo(() => groupByCategory(data, revenue), [revenue, data])
   const max = { gross: chartData[0], sold: chartData[0] }
   const min = { gross: chartData[0], sold: chartData[0] }
+
   chartData.forEach((current, i) => {
     if (current['Gross Earnings'] > max.gross['Gross Earnings']) max.gross = current
     if (current['Items Sold'] > max.sold['Items Sold']) max.sold = current
@@ -18,6 +19,7 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
     if (current['Items Sold'] < min.sold['Items Sold']) min.sold = current
   })
   if (!chartData.length) return null
+
   if (halfSize) {
     return (
       <VertComposedChart
@@ -69,7 +71,6 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
       {
         !hideBoxes ? (
           <Flex
-            
             justifyContent='space-between'
             flexWrap='wrap'
             alignItems='stretch'
@@ -98,7 +99,7 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
                       title='Lowest Earning Category'
                       string
                       smallText
-                      value={`${min.gross.Category} -${formatNum(data.currency_type, min.gross['Gross Earnings'])} Gross Profit`}
+                      value={`${min.gross.Category} - ${formatNum(data.currency_type, min.gross['Gross Earnings'])} Gross Profit`}
                     />
                     <ValueBox
                       minWidth='50px'
@@ -122,7 +123,7 @@ export default (SalesByCategory)
 
 const formatTooltip = (tickItem, label, data) => {
   if (label === 'Gross Earnings') {
-    return `${data.currency_type}${tickItem.toFixed(2)}`
+    return formatNum(data.currency_type, tickItem)
   }
   return tickItem
 }

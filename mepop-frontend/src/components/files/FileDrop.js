@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { useToasts } from 'react-toast-notifications'
+import Link from 'next/link'
+import { useDispatch } from 'react-redux'
 
 import { withFirebase } from '../../firebase'
 import Flex from '../../styles/layout/Flex'
@@ -9,7 +11,7 @@ import Button from '../../styles/elements/Button'
 import Tooltip from '../../styles/elements/Tooltip'
 import InfoModal from './InfoModal'
 import { fetchFiles } from '../../store/actions/files'
-import { useDispatch } from 'react-redux'
+
 const Dropzone = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
   const { addToast } = useToasts()
@@ -19,9 +21,9 @@ const Dropzone = withFirebase(({ firebase }) => {
   const startFetch = useCallback(() => {
     fetchFiles({ firebase, dispatch }, () => {
       setLoading(false)
-      addToast(<div>Success! <A href='/dashboard'>Go to sales dashboard.</A></div>, {
-        appearance: 'success'
-        // autoDismiss: true
+      addToast(<div>Success! <Link href='/dashboard'><A>Go to sales dashboard.</A></Link></div>, {
+        appearance: 'success',
+        autoDismiss: true
       })
     })
   }, [])
@@ -106,4 +108,10 @@ const H2 = styled.h2`
 `
 const A = styled.a`
   color: ${({ theme }) => theme.colors.greenDark};
+  text-decoration: underline;
+  cursor: pointer;
+  transition: .2s;
+  &:hover {
+    opacity: .7;
+  }
 `

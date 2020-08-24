@@ -23,12 +23,14 @@ const DateContainer = memo(({ page }) => {
 
   const min = useMemo(() => allData.sales ? allData.sales[0].date_of_sale : null, [allData])
   const max = useMemo(() => allData.sales ? allData.sales[allData.sales.length - 1].date_of_sale : null, [allData])
+
   const [dateRange, setDates] = useState({ startDate: min, endDate: max }) // stored in MM-DD-YYYY format
   const [compareDateRange, setCompareDates] = useState({ startDate: min, endDate: max }) // stored in MM-DD-YYYY format
   const [preset, setPreset] = useState({ label: 'Full Range', value: 'full' })
   const [comparePreset, setComparePreset] = useState({ label: 'Full Range', value: 'full' })
   const [showCompareDate, toggleCompare] = useState(false)
   const [isLoading, setLoading] = useState(false)
+
   const isBasic = !user.membership ? 'basic' : user.membership.type === 'basic'
 
   const showWarning = () => {
@@ -315,7 +317,9 @@ const getDatePreset = (preset, min, max) => {
     }
     case 'past_three_months': {
       const newStart = moment(moment().subtract(3, 'months')).format('MM-DD-YYYY')
-      return { startDate: newStart, endDate: max }
+      const newEnd = moment().format('MM-DD-YYYY')
+
+      return { startDate: newStart, endDate: newEnd }
     }
     default: {
       return {}

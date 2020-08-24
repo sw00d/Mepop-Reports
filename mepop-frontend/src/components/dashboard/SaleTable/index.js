@@ -9,6 +9,8 @@ import SaleDetails from '../../general/SaleDetails'
 import Text from '../../../styles/elements/Text'
 import { formatSalesTable } from '../../reports/util/tables'
 
+const allColumns = ['date sold', 'username', 'name', 'item price', 'buyer-paid shipping', 'seller-paid shipping', 'depop fees', 'item description', 'category']
+const someColumns = ['date sold', 'username', 'name', 'item price']
 const SaleTable = ({ data, getUrl }) => {
   const formattedData = formatSalesTable(data)
   const [searchTerm, setTerm] = useState('')
@@ -25,11 +27,13 @@ const SaleTable = ({ data, getUrl }) => {
         item['date sold'].includes(searchTerm) ||
         item['item price'].includes(searchTerm) ||
         item.name.includes(searchTerm) ||
+        item.category.includes(searchTerm) ||
         item['item description'].includes(searchTerm)
       )
     })
     setTableData(filtered)
   }, [searchTerm, data])
+
   return (
     <Flex mb='30px' flexWrap='wrap'>
       <Table
@@ -39,8 +43,8 @@ const SaleTable = ({ data, getUrl }) => {
         data={tableData}
         columnLabels={
           !activeRow
-            ? ['date sold', 'username', 'name', 'item price', 'buyer-paid shipping', 'seller-paid shipping', 'depop fees', 'item description']
-            : ['date sold', 'username', 'name', 'item price']
+            ? allColumns
+            : someColumns
         }
         handleRowClick={(row, i) => {
           activateRow(row.rowData)

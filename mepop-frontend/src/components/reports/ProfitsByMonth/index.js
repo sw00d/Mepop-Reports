@@ -3,6 +3,7 @@ import { memo } from 'react'
 import Barchart from '../../../styles/reporting/BarChart'
 
 import { getProfitsByMonth } from '../../dashboard/util'
+import { formatNum } from '../util/general'
 
 const ProfitsByMonth = memo(({ data }) => {
   const chartData = getProfitsByMonth(data)
@@ -13,7 +14,7 @@ const ProfitsByMonth = memo(({ data }) => {
       headerBorder='none'
       headerContent='Profits By Month'
       data={chartData}
-      formatTooltip={(t, l) => formatTooltip(t, l, data)}
+      formatTooltip={(val) => formatNum(data.currency_type, val)}
       xdataKey='month'
       bars={[
         { dataKey: 'Net Profit', size: 40, color: 'pastelPurple' },
@@ -25,7 +26,3 @@ const ProfitsByMonth = memo(({ data }) => {
 })
 
 export default (ProfitsByMonth)
-
-const formatTooltip = (tickItem, label, data) => {
-  return `${data.currency_type}${tickItem.toFixed(2)}`
-}

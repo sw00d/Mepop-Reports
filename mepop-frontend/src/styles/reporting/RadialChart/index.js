@@ -33,6 +33,7 @@ const RadialGraph = ({
             paddingAngle={5}
             dataKey='value'
             onMouseEnter={(_, i) => setIndex(i)}
+
           >
             {
               data.map((set, index) => {
@@ -78,6 +79,7 @@ const ActiveShape = (props) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        radius={[0, 4, 4, 0]}
       />
 
     </g>

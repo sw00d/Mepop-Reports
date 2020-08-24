@@ -8,6 +8,7 @@ import Flex from '../../styles/layout/Flex'
 import styled from 'styled-components'
 import BlurBackground from './BlurBackground'
 import { useSelector } from 'react-redux'
+import { formatNum } from '../reports/util/general'
 
 const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props }) => {
   const { user } = useSelector(state => state.generalReducer)
@@ -74,10 +75,10 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
               <Description>
                 {row['item description']}<br /><br />
                 <strong>Buyer:</strong> {row.name}<br />
-                <strong>Sale Price:</strong> {currencyType}{currency(row['item price']).value}<br />
-                <strong>Buyer-Paid Shipping:</strong> {currencyType}{currency(row['buyer-paid shipping']).value}<br />
-                <strong>Seller-Paid Shipping:</strong> {currencyType}{currency(row['seller-paid shipping']).value}<br />
-                <strong>Depop Fees:</strong> {currencyType}{currency(row['depop fees']).value}<br />
+                <strong>Sale Price:</strong> {formatNum(currencyType, currency(row['item price']).value)}<br />
+                <strong>Buyer-Paid Shipping:</strong> {formatNum(currencyType, currency(row['buyer-paid shipping']).value)}<br />
+                <strong>Seller-Paid Shipping:</strong> {formatNum(currencyType, currency(row['seller-paid shipping']).value)}<br />
+                <strong>Depop Fees:</strong> {formatNum(currencyType, currency(row['depop fees']).value)}<br />
                 <strong>Address:</strong> {row.address}<br />
               </Description>
             )}

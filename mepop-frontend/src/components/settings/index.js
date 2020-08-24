@@ -21,6 +21,7 @@ const Settings = ({ tab }) => {
         maxWidth='700px'
         p='20px 40px 0px 40px'
         mt='0px'
+        borderTop='primary'
       >
 
         {

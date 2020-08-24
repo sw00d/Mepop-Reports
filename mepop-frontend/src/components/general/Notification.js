@@ -57,7 +57,6 @@ const getContent = (type, firebase) => {
               sx={{
                 display: 'flex',
                 '@media only screen and (max-width: 500px)': {
-                  paddingTop: '40px',
                   margin: 0,
                   marginTop: '10px'
                 }

@@ -1,4 +1,7 @@
+import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+
 import { withFirebase } from '../../firebase'
 
 import Flex from '../../styles/layout/Flex'
@@ -8,11 +11,9 @@ import Form from '../../styles/elements/Form'
 import Button from '../../styles/elements/Button'
 import Text from '../../styles/elements/Text'
 import VertDivider from '../../styles/elements/VertDivider'
-import { useSelector } from 'react-redux'
-import { useRouter } from 'next/router'
-import LearnMore from './LearnMore'
-import ForgotPass from './ForgotPass'
 import Box from '../../styles/layout/Box'
+import RightSection from './RightSection'
+import ForgotPass from './ForgotPass'
 
 const Login = withFirebase(({ firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
@@ -150,7 +151,7 @@ const Login = withFirebase(({ firebase }) => {
               }
             }}
           >
-            <LearnMore />
+            <RightSection />
           </Flex>
         </Flex>
       </Card>

@@ -8,9 +8,14 @@ import 'firebase/analytics'
 
 import FirebaseContext, { withFirebase } from './context'
 import { getFileMethod, deleteFileMethod, uploadFilesMethod } from './methods/files'
-import { UPDATE_USER } from '../store/generalReducer'
 
-const firebaseConfig = {
+const isProduction = process.env.NODE_ENV === 'production'
+
+// Stripe specifics
+export const stripeKey = isProduction ? 'pk_live_c9rOKGsnQdeKY5fmn2gYNbiL' : 'pk_test_KHpQTtgimPnyoIoWSyW98Lac'
+const stripePrice = isProduction ? 'price_1HGtWiI6QogDwA7GZcdXzmxg' : 'price_1HAkcLI6QogDwA7GDj1WDk1z'
+
+const firebaseConfig = isProduction ? {
   apiKey: 'AIzaSyB04NiM6bapVV6Jd2ZRw5vUVLy3Cu7o0x0',
   authDomain: 'mepop-app.firebaseapp.com',
   databaseURL: 'https://mepop-app.firebaseio.com',
@@ -19,13 +24,22 @@ const firebaseConfig = {
   messagingSenderId: '619885550344',
   appId: '1:619885550344:web:28a8d730b1ca91a5f6aabd',
   measurementId: 'G-WM4LPLQMKX'
+} : {
+  apiKey: 'AIzaSyD1hcZCd-_RgDYrwmYK2l77kkSj6-UaPuw',
+  authDomain: 'mepop-dev.firebaseapp.com',
+  databaseURL: 'https://mepop-dev.firebaseio.com',
+  projectId: 'mepop-dev',
+  storageBucket: 'mepop-dev.appspot.com',
+  messagingSenderId: '861002171305',
+  appId: '1:861002171305:web:079a2b115da7246d6e7ab8',
+  measurementId: 'G-8JMFKFVKS9'
 }
 
 class Firebase {
   constructor () {
     try {
       firebase.initializeApp(firebaseConfig)
-      firebase.analytics()
+      if (isProduction) firebase.analytics()
       // uncomment this if running functions in emulator
       // if (window.location.href.includes('localhost')) {
       //   console.log('Dev env')
@@ -76,25 +90,27 @@ class Firebase {
     })
   }
 
-  async openCustomerPortal () {
+  async openCustomerPortal (res) {
     const functionRef = firebase
       .app()
       .functions('us-central1')
       .httpsCallable('ext-firestore-stripe-subscriptions-createPortalLink')
-    const { data } = await functionRef({ returnUrl: window.location.origin })
+    const { data } = await functionRef({ returnUrl: window.location.origin + '/settings' })
+    if (res) res()
     window.open(data.url)
   }
 
-  async startSubscription (successUrl) {
+  async startSubscription (successUrl = window.location.origin + '/settings') {
     const docRef = await this.db
       .collection('stripeClients')
       .doc(this.auth.currentUser.uid)
       .collection('checkout_sessions')
       .add({
-        price: 'price_1HGtWiI6QogDwA7GZcdXzmxg',
-        success_url: successUrl || window.location.origin + '/settings',
+        price: stripePrice,
+        success_url: successUrl,
         cancel_url: window.location.origin + '/settings'
       })
+
     // Wait for the CheckoutSession to get attached by the extension
     docRef.onSnapshot((snap) => {
       if (snap.data) {
@@ -102,7 +118,7 @@ class Firebase {
         if (sessionId) {
           // We have a session, let's redirect to Checkout
           // Init Stripe
-          const stripe = window.Stripe('pk_live_c9rOKGsnQdeKY5fmn2gYNbiL')
+          const stripe = window.Stripe(stripeKey)
           stripe.redirectToCheckout({ sessionId })
         }
       } else {
@@ -142,68 +158,24 @@ class Firebase {
   }
 
   // memberships
-  handleMembership (user, snapshotStuff) {
-    // This allows real time updates
-    const docRef = this.db
-      .collection('stripeClients')
+
+  handleMembership (user, cb) {
+    return this.db.collection('stripeClients')
       .doc(this.auth.currentUser.uid)
       .collection('subscriptions')
-
-    docRef.onSnapshot((snap) => {
-      // Websocket listening to subscription updates
-      const { user, dispatch } = snapshotStuff
-      const basicType = { type: 'basic' }
-      if (!snap.empty) {
-        const data = snap.docs[0].data()
-        if (data.status === 'active') {
-          // updates user if subscription is live
-          this.setMembership({ type: 'premium' })
-          dispatch({
-            type: UPDATE_USER,
-            payload: { ...user, membership: { type: 'premium' } }
+      .where('status', 'in', ['trialing', 'active'])
+      .onSnapshot(async (snapshot) => {
+        if (!snapshot.empty) {
+          // In this implementation we only expect one active or trialing subscription to exist.
+          this.handleProfile({ user, membership: { type: 'premium' } }).then((newUserObject) => {
+            cb(newUserObject)
           })
         } else {
-          // if subscription isn't active
-          this.setMembership(basicType)
-          dispatch({
-            type: UPDATE_USER,
-            payload: { ...user, membership: basicType }
+          this.handleProfile({ user, membership: { type: 'basic' } }).then((newUserObject) => {
+            cb(newUserObject)
           })
         }
-      } else {
-        console.log('No Subscription Found')
-        // if not subscriptions exist
-        this.setMembership(basicType)
-        dispatch({
-          type: UPDATE_USER,
-          payload: { ...user, membership: basicType }
-        })
-      }
-    })
-
-    // this initializes membership etc
-    return this.db.collection('memberships').doc(this.auth.currentUser.uid).get().then((doc) => {
-      this.handleStripeClients()
-      if (!doc.exists) {
-        return this.setMembership().then((newDoc) => {
-          // creates new membership if it doesn't exist (only on first login/signup ever)
-          return this.handleProfile({ user, membership: newDoc }).then((newUserObject) => {
-            return newUserObject
-          })
-        })
-      } else {
-        return this.handleProfile({ user, membership: doc.data() }).then((newUserObject) => {
-          return newUserObject
-        })
-      }
-    })
-  }
-
-  setMembership (incomingDoc) {
-    const newDoc = { type: 'basic' }
-    return this.db.collection('memberships').doc(this.auth.currentUser.uid).set(incomingDoc || newDoc).then(() => {
-      return incomingDoc || newDoc
-    }).catch(() => window.alert('Error Occurred Creating Membership'))
+      })
   }
 
   // auth
