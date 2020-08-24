@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 // Third party
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { ThemeProvider } from 'styled-components'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { ToastProvider } from 'react-toast-notifications'
@@ -8,6 +8,7 @@ import { PageTransition } from 'next-page-transitions'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import CookieConsent from 'react-cookie-consent'
+import withGA from 'next-ga'
 
 // Initialize Date Picker
 import 'react-dates/initialize'
@@ -58,7 +59,7 @@ export const MyApp = (props) => {
   )
 }
 
-export default MyApp
+export default withGA('UA-162984588-1', Router)(MyApp)
 
 // This persists user sessions and sets up app from there.
 const Setup = withFirebase(({ Component, pageProps, firebase }) => {
