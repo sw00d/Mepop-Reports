@@ -36,11 +36,11 @@ const Layout = (props) => {
   const centerContent = loading || noData
   const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
   const hideSideBar = router.pathname === '/settings/membership/'
-  const isLegalRoute = router.pathname === '/privacy-policy' || router.pathname === 'terms-of-service'
+  const isLegalRoute = router.pathname === '/privacy-policy' || router.pathname === '/terms-of-service'
   if (noUser && !unprotectedRoute) {
     return null
   }
-  if (user.profile && router.pathname !== '/settings/membership') {
+  if (user.profile && router.pathname !== '/settings/membership' && !isLegalRoute) {
     // this pushes user to membership decision on initial sign-in
     if (!user.profile.hasSignedIn) {
       router.push('/settings/membership')
