@@ -68,6 +68,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
+
   useEffect(() => {
     firebase.auth.onAuthStateChanged((persistedUser) => {
       if (persistedUser) {
