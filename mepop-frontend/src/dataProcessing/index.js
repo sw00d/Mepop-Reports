@@ -104,10 +104,10 @@ const cleanAndSort = (originalFiles) => {
       const val = () => {
         if (keyStr === 'date_of_sale' || keyStr === 'date_of_listing') {
           // converts UTC to local time
-          const utc = moment.utc(`${row[i]} ${row[1]}`, 'DD-MM-YYYY h:mm A').format()
-          return moment.utc(utc).local().format('MM-DD-YYYY')
+          const utc = moment.utc(`${row[i]} ${row[1]}`, 'DD/MM/YYYY h:mm A').format()
+          return moment.utc(utc).local().format('MM/DD/YYYY')
         } else if (keyStr === 'time_of_sale') {
-          const utc = moment.utc(`${row[0]} ${row[i]}`, 'DD-MM-YYYY h:mm A').format()
+          const utc = moment.utc(`${row[0]} ${row[i]}`, 'DD/MM/YYYY h:mm A').format()
           return moment.utc(utc).local().format('hh:mm A')
         }
         return row[i]

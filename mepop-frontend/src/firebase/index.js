@@ -97,7 +97,8 @@ class Firebase {
       .httpsCallable('ext-firestore-stripe-subscriptions-createPortalLink')
     const { data } = await functionRef({ returnUrl: window.location.origin + '/settings' })
     if (res) res()
-    window.open(data.url)
+    window.location.assign(data.url)
+
   }
 
   async startSubscription (successUrl = window.location.origin + '/settings') {

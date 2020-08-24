@@ -71,6 +71,7 @@ export const bestTimeToList = (data) => {
   }
   data.sales.forEach(({ date_of_listing, date_of_sale }) => {
     const listDay = moment(date_of_listing).format('dddd')
+
     if (obj.list[listDay]) obj.list[listDay] += 1
     else obj.list[listDay] = 1
 
