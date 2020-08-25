@@ -57,7 +57,7 @@ const ChooseMembership = withFirebase(({ firebase }) => {
         router.push('/dashboard')
       }
     }).catch((err) => {
-      addToast(<div>{err.message}. Please email mepopreports@gmail.com</div>, {
+      addToast(<div>{err.message}. Please email support@mepopreports.com</div>, {
         appearance: 'error'
       })
     })

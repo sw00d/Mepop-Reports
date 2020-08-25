@@ -55,7 +55,7 @@ export default () => {
       <p>
         We use this information you provide to keep track of user sessions, authentication, as well as access saved files from our database.
         We do not sell any of your personal information to third party marketers or advertisers. At any point, if you feel the need to remove your
-        account from our site, feel free to reach out to <a href='mailto:mepopreports@gmail.com'>mepopreports@gmail.com </a>and we will assist you in deleting your account and all records
+        account from our site, feel free to reach out to <a href='mailto:support@mepopreports.com'>support@mepopreports.com </a>and we will assist you in deleting your account and all records
         associated with said records. Our site is hosted by Firebase. You can read more about their privacy
         guidelines <a target='_blank' rel='noopener noreferrer' href='https://firebase.google.com/support/privacy'>here</a>. Thank you for using Mepop
         Reports.
