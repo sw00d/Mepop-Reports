@@ -25,6 +25,7 @@ const Barchart = ({
   hideLegend,
   ...props
 }) => {
+  // console.log(data)
   return (
     <Card {...props}>
       {!hideLegend ? (
@@ -34,7 +35,7 @@ const Barchart = ({
               return (
                 <Flex key={i} mr='10px' fontSize='14px'>
                   <Box mr='5px' color={color}>
-                    <i class='fa fa-circle' aria-hidden='true' />
+                    <i className='fa fa-circle' aria-hidden='true' />
                   </Box>
                   <Text color='greyDark'>{dataKey}</Text>
                 </Flex>

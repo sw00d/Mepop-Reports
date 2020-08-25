@@ -160,15 +160,11 @@ const DateContainer = memo(({ page }) => {
           disabled={fixedFullRange}
           isOutsideRange={() => false}
           enableOutsideDays
-          // isOutsideRange={(day) => {
-          //   return (day.isBefore(moment(min)) || day.isAfter(moment(max)))
-          // }}
-          // enableOutsideDays={false}
           onDatesChange={({ startDate, endDate }) => {
             setPreset({ label: 'Custom', value: null })
             setDates({
-              startDate: startDate ? startDate.format('MM-DD-YYYY') : null,
-              endDate: endDate ? endDate.format('MM-DD-YYYY') : null
+              startDate: startDate || null,
+              endDate: endDate || null
             })
           }}
         />
@@ -189,14 +185,13 @@ const DateContainer = memo(({ page }) => {
                 startDate={compareDateRange.startDate ? moment(fixedFullRange ? min : compareDateRange.startDate) : null}
                 endDate={compareDateRange.endDate ? moment(fixedFullRange ? max : compareDateRange.endDate) : null}
                 disabled={fixedFullRange}
-                isOutsideRange={(day) => {
-                  return (day.isBefore(min) || day.isAfter(max))
-                }}
+                isOutsideRange={() => false}
+                enableOutsideDays
                 onDatesChange={({ startDate, endDate }) => {
                   setComparePreset({ label: 'Custom', value: null })
                   setCompareDates({
-                    startDate: startDate ? startDate.format('MM-DD-YYYY') : null,
-                    endDate: endDate ? endDate.format('MM-DD-YYYY') : null
+                    startDate: startDate || null,
+                    endDate: endDate || null
                   })
                 }}
               />
@@ -299,16 +294,16 @@ const getDatePreset = (preset, min, max) => {
       return { startDate: min, endDate: max }
     }
     case 'this_month': {
-      const newStart = moment(moment().startOf('month')).format('MM-DD-YYYY')
-      const newEnd = moment(moment().endOf('month')).format('MM-DD-YYYY')
+      const newStart = moment(moment().startOf('month')).format()
+      const newEnd = moment(moment().endOf('month')).format()
       return {
         startDate: newStart,
         endDate: newEnd
       }
     }
     case 'last_month': {
-      const newStart = moment(moment().subtract(1, 'months').startOf('month')).format('MM-DD-YYYY')
-      const newEnd = moment(moment().subtract(1, 'months').endOf('month')).format('MM-DD-YYYY')
+      const newStart = moment(moment().subtract(1, 'months').startOf('month')).format()
+      const newEnd = moment(moment().subtract(1, 'months').endOf('month')).format()
 
       return {
         startDate: newStart,
@@ -316,8 +311,8 @@ const getDatePreset = (preset, min, max) => {
       }
     }
     case 'past_three_months': {
-      const newStart = moment(moment().subtract(3, 'months')).format('MM-DD-YYYY')
-      const newEnd = moment().format('MM-DD-YYYY')
+      const newStart = moment(moment().subtract(3, 'months')).format()
+      const newEnd = moment().format()
 
       return { startDate: newStart, endDate: newEnd }
     }
