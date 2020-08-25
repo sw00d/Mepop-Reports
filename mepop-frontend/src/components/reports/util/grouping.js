@@ -16,8 +16,8 @@ export const groupByDay = (data) => {
   if (data.sales) {
     // groups data
     data.sales.forEach((file) => {
-      const saleDay = moment(file.date_of_sale, 'MM/DD/YYYY').format('ddd')
-      const listingDay = moment(file.date_of_listing, 'MM/DD/YYYY').format('ddd')
+      const saleDay = moment(file.date_of_sale).format('ddd')
+      const listingDay = moment(file.date_of_listing).format('ddd')
       groupedData[listingDay].listings++
       groupedData[saleDay].sales++
     })
@@ -36,24 +36,24 @@ export const groupByDate = (data, showEmptyDates) => {
       const gross = currency(total).value
       const net = gross - currency(buyer_shipping_cost).value - currency(usps_cost).value
       const latest = newData[newData.length - 1]
-      if (!newData.length || latest['Date Sold'] !== date_of_sale) {
+      if (!newData.length || latest['Date Sold'] !== moment(date_of_sale).format('MM/DD/YYYY')) {
         if (latest && showEmptyDates) {
           const milisecs =
-              new Date(moment(date_of_sale, 'MM-DD-YYYY').format()).getTime() -
-              new Date(moment(latest['Date Sold'], 'MM-DD-YYYY').format()).getTime()
+          new Date(moment(date_of_sale).format('MM/DD/YYYY')).getTime() -
+          new Date(moment(latest['Date Sold']).format('MM/DD/YYYY')).getTime()
           const diff = milisecs / (1000 * 3600 * 24)
-          if (diff !== 1) {
+          if (diff > 1) {
             for (let i = 1; i < diff; i++) {
-              const day = new Date(moment(latest['Date Sold'], 'MM-DD-YYYY').format()).getDate() + i
-              const date = new Date(moment(latest['Date Sold'], 'MM-DD-YYYY').format())
-              const formatted = moment(date.setDate(day)).format('MM-DD-YYYY')
+              const day = new Date(moment(latest['Date Sold']).format()).getDate() + i
+              const date = new Date(moment(latest['Date Sold']).format())
+              const formatted = moment(date.setDate(day)).format('MM/DD/YYYY')
 
               newData.push({ 'Date Sold': formatted, 'Items Sold': 0, Gross: 0, Net: 0 })
             }
           }
         }
 
-        newData.push({ 'Date Sold': date_of_sale, 'Items Sold': 1, Gross: gross, Net: net })
+        newData.push({ 'Date Sold': moment(date_of_sale).format('MM/DD/YYYY'), 'Items Sold': 1, Gross: gross, Net: net })
       } else {
         latest['Items Sold'] += 1
         latest.Net += net

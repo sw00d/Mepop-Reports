@@ -59,8 +59,8 @@ export const setUpState = (files, currencyType) => {
   data.free_shipping = 0
   data.currency_type = currencyType || files[0].item_price[0]
   files.forEach((file) => {
-    const miliSeconds = new Date(moment(file.date_of_sale, 'MM-DD-YYYY').format()).getTime() -
-      new Date(moment(file.date_of_listing, 'MM-DD-YYYY').format()).getTime()
+    const miliSeconds = new Date(moment(file.date_of_sale).format()).getTime() -
+      new Date(moment(file.date_of_listing).format()).getTime()
     data.avg_price += currency(file.item_price).value
     data.avg_shipping += currency(file.buyer_shipping_cost).value
     data.avg_total += currency(file.total).value
@@ -87,7 +87,6 @@ export const setUpState = (files, currencyType) => {
   data.depop_fees = parseFloat(data.depop_fees).toFixed(2)
   data.paypal_fees = parseFloat(data.paypal_fees).toFixed(2)
   data.getUrl = slug => `https://www.depop.com/${slug}/`
-
   return data
 }
 // Util function that cleans up format and sorts our files
@@ -105,7 +104,7 @@ const cleanAndSort = (originalFiles) => {
         if (keyStr === 'date_of_sale' || keyStr === 'date_of_listing') {
           // converts UTC to local time
           const utc = moment.utc(`${row[i]} ${row[1]}`, 'DD/MM/YYYY h:mm A').format()
-          return moment.utc(utc).local().format('MM/DD/YYYY')
+          return moment.utc(utc).local().format()
         } else if (keyStr === 'time_of_sale') {
           const utc = moment.utc(`${row[0]} ${row[i]}`, 'DD/MM/YYYY h:mm A').format()
           return moment.utc(utc).local().format('hh:mm A')
@@ -127,10 +126,10 @@ const sort = (sales) => {
   // Sorts by date
   const sorted = sales.sort((a, b) => {
     const fullDateA = new Date(
-      moment(`${a.date_of_sale} ${a.time_of_sale}`, 'MM-DD-YYYY hh:mm A').format()
+      moment(`${a.date_of_sale} ${a.time_of_sale}`, 'MM/DD/YYYY hh:mm A').format()
     )
     const fullDateB = new Date(
-      moment(`${b.date_of_sale} ${b.time_of_sale}`, 'MM-DD-YYYY hh:mm A').format()
+      moment(`${b.date_of_sale} ${b.time_of_sale}`, 'MM/DD/YYYY hh:mm A').format()
     )
     return fullDateA - fullDateB
   })
