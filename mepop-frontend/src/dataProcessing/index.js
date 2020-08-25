@@ -58,6 +58,17 @@ export const setUpState = (files, currencyType) => {
   data.avg_time_listed = 0
   data.free_shipping = 0
   data.currency_type = currencyType || files[0].item_price[0]
+  data.date_format = data.currency_type === '$' ? ({
+    standard: 'MM/DD/YYYY',
+    shorthand: 'M/D',
+    longhand: 'MMM Do YYYY'
+  })
+    : ({
+      standard: 'DD/MM/YYYY',
+      shorthand: 'D/M',
+      longhand: 'D, MMM YYYY'
+    })
+
   files.forEach((file) => {
     const miliSeconds = new Date(moment(file.date_of_sale).format()).getTime() -
       new Date(moment(file.date_of_listing).format()).getTime()

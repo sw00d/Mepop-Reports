@@ -155,6 +155,7 @@ const DateContainer = memo(({ page }) => {
       <Flex flexDirection='column'>
 
         <DateRangePicker
+          displayFormat={allData.date_format.standard}
           startDate={dateRange.startDate ? moment(fixedFullRange ? min : dateRange.startDate) : null}
           endDate={dateRange.endDate ? moment(fixedFullRange ? max : dateRange.endDate) : null}
           disabled={fixedFullRange}
@@ -182,6 +183,7 @@ const DateContainer = memo(({ page }) => {
               vs.
               </Text>
               <DateRangePicker
+                displayFormat={allData.date_format.standard}
                 startDate={compareDateRange.startDate ? moment(fixedFullRange ? min : compareDateRange.startDate) : null}
                 endDate={compareDateRange.endDate ? moment(fixedFullRange ? max : compareDateRange.endDate) : null}
                 disabled={fixedFullRange}

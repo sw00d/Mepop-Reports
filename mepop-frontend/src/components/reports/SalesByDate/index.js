@@ -20,8 +20,8 @@ const SalesByDate = memo(({ data }) => {
       bars={[
         { dataKey: 'Items Sold', size: 70, color: 'pastelGreen' }
       ]}
-      tickFormatter={formatXAxis}
-      labelFormatter={formatTooltip}
+      tickFormatter={(e) => formatXAxis(e, data)}
+      labelFormatter={(e) => formatTooltip(e, data)}
       switchLabel={switchDisable ? null : 'Show dates with no sales'}
       switchCheck={allDates}
       switchEvent={() => showAllDates(!allDates)}
@@ -31,5 +31,5 @@ const SalesByDate = memo(({ data }) => {
 
 export default (SalesByDate)
 
-const formatXAxis = (tickItem) => { return moment(tickItem, 'MM/DD/YYYY').format('M/D') }
-const formatTooltip = (tickItem) => { return moment(tickItem, 'MM/DD/YYYY').format('MMM Do YYYY') }
+const formatXAxis = (tickItem, data) => { return moment(tickItem, 'MM/DD/YYYY').format(data.date_format.shorthand) }
+const formatTooltip = (tickItem, data) => { return moment(tickItem, 'MM/DD/YYYY').format(data.date_format.longhand) }
