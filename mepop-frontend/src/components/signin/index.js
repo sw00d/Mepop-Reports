@@ -169,7 +169,7 @@ const translateError = (err) => {
     case 'auth/invalid-email':
       return 'Please ensure that your email is correct.'
     case 'auth/user-disabled':
-      return 'Account temporarily disabled. Please email mepopreports@gmail.com for support.'
+      return 'Account temporarily disabled. Please email support@mepopreports.com for support.'
     case 'auth/user-not-found':
       return 'No account found with this email.'
     case 'auth/wrong-password':
@@ -177,7 +177,7 @@ const translateError = (err) => {
     case 'auth/email-already-in-use':
       return 'An account associated with this email already exists. Try logging in.'
     case 'auth/operation-not-allowed':
-      return 'Error Occurred. Please email mepopreports@gmail.com for support'
+      return 'Error Occurred. Please email support@mepopreports.com for support'
     case 'auth/weak-password':
       return err.message
     default:
