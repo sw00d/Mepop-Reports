@@ -8,9 +8,8 @@
     "dev": "next dev ./src -p 2999",
     "build": "next build ./src && next export ./src",
     "start": "next start ./src",
-    "test": "wait-on http://localhost:2999 & cypress run",
-    "cypress": "cypress open",
-    "jest": "jest"
+    "cypress": "wait-on http://localhost:2999 & cypress run",
+    "test": "jest"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.5",
