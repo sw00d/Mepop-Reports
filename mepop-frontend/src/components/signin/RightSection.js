@@ -10,7 +10,13 @@ import Box from '../../styles/layout/Box'
 const LearnMore = (props) => {
   return (
     <>
-      <Flex sx={{ position: 'relative' }}>
+      <Flex sx={{
+        position: 'relative',
+        '@media only screen and (max-width: 650px)': {
+          display: 'none'
+        }
+      }}
+      >
         <Flex flexDirection='column' sx={{ position: 'absolute', zIndex: 2 }} p='10px' pl='30px'>
           <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]} mb='5px'>
             🌟 Monitor your sales.
@@ -22,7 +28,7 @@ const LearnMore = (props) => {
             🌟 Grow your shop.
           </Text>
         </Flex>
-        <Card boxShadow='none' m={0} minHeight='150px'>
+        <Card boxShadow='none' m={0} minHeight='150px' mt='20px'>
           <AreaChart
             boxShadow='none'
             data={data}
@@ -39,7 +45,6 @@ const LearnMore = (props) => {
         pl='30px'
         sx={{
           '@media only screen and (max-width: 650px)': {
-            marginTop: '20px',
             paddingLeft: '0px'
           }
         }}
