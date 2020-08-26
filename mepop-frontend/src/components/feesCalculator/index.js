@@ -83,7 +83,7 @@ function FeeCalculator (props) {
           }
         }}
       >
-        <Text fontWeight={600} fontSize='40px' mb='25px' color='primary'>Calculate Your Fees</Text>
+        <Text fontWeight={600} fontSize='30px' mb='25px' color='primary' alignSelf='flex-start'>Calculate Your Fees</Text>
         <Flex
           justifyContent='space-between'
           width={[1]}
