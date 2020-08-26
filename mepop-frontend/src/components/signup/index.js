@@ -99,7 +99,7 @@ const SignUp = withFirebase(({ firebase }) => {
             <Form>
               <Text fontSize='14px' color='depopRed'>{error}</Text>
               {
-                fields.map(({ label, validate, type, ref }, i) => {
+                fields.map(({ label, validate, type, ref, info }, i) => {
                   return (
 
                     <Flex mb='5px' key={i}>
@@ -111,6 +111,7 @@ const SignUp = withFirebase(({ firebase }) => {
                         type={type}
                         borderRadius='4px'
                         value={form[ref]}
+                        info={info}
                         // onKeyPress={e => e.key === 'Enter' ? login() : null}
                         onChange={(e) => {
                           updateForm({ ...form, [ref]: e.target.value })
@@ -192,9 +193,9 @@ const fields = [
     ref: 'lastName'
   },
   {
-    label: 'Depop Shop Name',
+    label: 'Depop Shop Name (Optional)',
     type: 'text',
-    validate: (val) => val.length,
+    validate: (val) => true,
     ref: 'depopShopName'
   },
   {
@@ -204,10 +205,11 @@ const fields = [
     ref: 'email'
   },
   {
-    label: 'Password',
+    label: 'Create Password',
     type: 'password',
     validate: (val) => val.length >= 6,
-    ref: 'password'
+    ref: 'password',
+    info: 'The password you are creating here should be unique to Mepop Reports. It should in no way be associated to your Depop Account.'
   }
 
 ]
