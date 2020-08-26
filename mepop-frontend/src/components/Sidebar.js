@@ -76,7 +76,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
               </Row>
             </Link>
           </Tooltip>
-          <Tooltip
+          {/* <Tooltip
             title='Fee Calculator'
             disabled={!isMini}
             distance={0}
@@ -95,7 +95,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
                 <RowText isMini={isMini}>Fees Calculator</RowText>
               </Row>
             </Link>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip
             title='Files'
             disabled={!isMini}
