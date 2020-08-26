@@ -61,6 +61,7 @@ const LearnMore = (props) => {
             Sign Up
           </Button>
         </Link>
+
         {/* <Button
           bg='white'
           color='primary'
@@ -77,6 +78,7 @@ const LearnMore = (props) => {
           Learn More
         </Button> */}
       </Flex>
+
     </>
   )
 }

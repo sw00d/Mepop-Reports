@@ -45,7 +45,7 @@ const Login = withFirebase(({ firebase }) => {
   return (
     <Flex alignItems='center' width={[1]} maxWidth='1200px'>
       <ForgotPass modalIsOpen={modalIsOpen} onRequestClose={() => openModal(false)} email={form.email} />
-      <Card p={30} pr='0px' justifyContent='flex-start' width={[1]}>
+      <Card p={30} pr='0px' justifyContent='flex-start' width={[1]} flexDirection='column' alignItems='flex-end'>
         <Text fontSize={30} fontWeight={600} color='primary' width={[1]} mb={2}><i>Mepop Reports</i></Text>
         <Text fontSize={18} fontWeight={500} color='greyDark' width={[1]} mb={20}>A tool for Depop sellers.</Text>
         <Flex
@@ -55,6 +55,7 @@ const Login = withFirebase(({ firebase }) => {
               flexDirection: 'column'
             }
           }}
+
         >
 
           <Flex
@@ -156,6 +157,30 @@ const Login = withFirebase(({ firebase }) => {
           >
             <RightSection />
           </Flex>
+        </Flex>
+        <Flex my='10px' justifyContent='space-between'>
+          <Flex mr='15px'>
+            <Box mr='10px'>
+              <i className='fa fa-envelope' />
+            </Box>
+            <Text fontSize='13px'>
+            Need support? <a href='mailto:support@mepopreports.com'>
+              support@mepopreports.com
+                          </a>
+            </Text>
+          </Flex>
+        </Flex>
+        <Flex mr='15px'>
+
+          <Text fontSize='12px'>
+            <a href='/privacy-policy'>
+            Privacy Policy
+            </a>
+            {' '}
+            <a href='/terms-of-service'>
+            Terms Of Service
+            </a>
+          </Text>
         </Flex>
       </Card>
     </Flex>
