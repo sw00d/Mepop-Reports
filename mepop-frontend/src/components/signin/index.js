@@ -68,8 +68,10 @@ const Login = withFirebase(({ firebase }) => {
               }
             }}
           >
+
             <Form>
-              <Text fontSize='14px' color='depopRed'>{error}</Text>
+              <Text fontSize='14px' color='depopRed' mt='5px'>{error}</Text>
+
               <Flex mb='15px'>
                 <Input
                   className='test_target_email'
@@ -100,13 +102,15 @@ const Login = withFirebase(({ firebase }) => {
                   updateForm({ ...form, password: e.target.value })
                 }}
               />
+              <Text fontSize='14px' mt='10px' ml='5px'>*You should NOT use your Depop account credentials to sign in.</Text>
+
               <Button
                 className='test_target_signinBtn'
                 m='2px'
                 isLoading={isLoading}
                 type='button'
                 width={[1]}
-                mt='30px'
+                mt='20px'
                 height='40px'
                 onClick={login}
                 bg='primary'
@@ -166,12 +170,11 @@ const Login = withFirebase(({ firebase }) => {
             <Text fontSize='13px'>
             Need support? <a href='mailto:support@mepopreports.com'>
               support@mepopreports.com
-                          </a>
+              </a>
             </Text>
           </Flex>
         </Flex>
         <Flex mr='15px'>
-
           <Text fontSize='12px'>
             <a href='/privacy-policy'>
             Privacy Policy

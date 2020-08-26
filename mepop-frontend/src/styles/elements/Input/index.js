@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import { Input as RebassInput } from '@rebass/forms'
 import Label from '../Form/Label'
 import Flex from '../../layout/Flex'
+import Tooltip from '../Tooltip'
 
-const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, hideEye, ...rest }) => {
+const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, hideEye, info, ...rest }) => {
   const [showPassword, togglePassword] = useState(false)
   const [labelIsShown, showLabel] = useState(!!rest.value || !!rest.defaultValue || alwaysShowLabel)
   const handleFocus = (e) => {
@@ -58,6 +59,24 @@ const Input = ({ htmlfor, label, alwaysShowLabel, boxProps, hideEye, ...rest }) 
               </Flex>
             )
             : null
+        }
+        {
+          info ? (
+            <Tooltip title={info}>
+              <Flex
+                ml='3px'
+                // color='greyDisabled'
+                height='100%'
+                py='8px'
+                px='5px'
+                onMouseOver={() => hoverIcon('enter')}
+                onMouseLeave={() => hoverIcon('leave')}
+              >
+
+                <i className='fa fa-question-circle' />
+              </Flex>
+            </Tooltip>
+          ) : null
         }
       </Flex>
     </Flex>
