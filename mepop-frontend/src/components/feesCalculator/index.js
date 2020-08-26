@@ -42,10 +42,10 @@ function FeeCalculator (props) {
     }
   }
   useEffect(() => {
-    if (form.sellerCountry.label === form.buyerCountry.label) {
-      updateForm({ ...form, paypalFee: form.sellerCountry.value })
+    if (form.sellerCountry.label === 'United States' && form.buyerCountry.label === 'United States') {
+      updateForm({ ...form, paypalFee: 2.9 })
     } else {
-      updateForm({ ...form, paypalFee: add(form.sellerCountry.value, form.buyerCountry.value) })
+      updateForm({ ...form, paypalFee: 4.4 })
     }
   }, [form.sellerCountry, form.buyerCountry])
   const totalRevenue = add(
@@ -83,7 +83,7 @@ function FeeCalculator (props) {
           }
         }}
       >
-        <Text fontWeight={600} fontSize='40px' mb='25px' color='depopRed'>Depop Fees Calculator</Text>
+        <Text fontWeight={600} fontSize='40px' mb='25px' color='primary'>Calculate Your Fees</Text>
         <Flex
           justifyContent='space-between'
           width={[1]}
@@ -114,7 +114,7 @@ function FeeCalculator (props) {
             />
             <Input
               label='Listing Price'
-              placeholder='Item Listing Price'
+              placeholder='Listing Price'
               name='listingPrice'
               onChange={updateVal}
               type='number'
@@ -127,8 +127,8 @@ function FeeCalculator (props) {
             />
 
             <Input
-              label='Postage/Shipping'
-              placeholder='Postage/Shipping'
+              label='Shipping'
+              placeholder='Shipping'
               name='shipping'
               onChange={updateVal}
               type='number'
@@ -138,15 +138,6 @@ function FeeCalculator (props) {
               borderColor='greyDisabled'
               pl='10px'
               borderRadius
-            />
-
-            <Input
-              label='Depop Fee (%)'
-              placeholder='Depop Fee (%)'
-              type='number'
-              value='10'
-              disabled
-              mb='4px'
             />
             <Select
               rebass
@@ -181,19 +172,24 @@ function FeeCalculator (props) {
             mb='10px'
           >
             <Breakdown>
-              <Text textAlign='center' fontWeight={600} fontSize={18}>Breakdown</Text>
               <Flex mt='30px' justifyContent='space-between'>
-                <Text fontWeight={500} fontSize={17}>Total Revenue:</Text>
+                <Text fontWeight={500} fontSize={17}>Calculated Revenue:</Text>
                 <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Span>
+                  {/* <Span>
                     {form.listingPrice ? `${formatNum(symbol, form.listingPrice)}` : null}
                     {form.listingPrice && form.shipping ? ' + ' : null}
                     {form.shipping !== '0' ? ` ${formatNum(symbol, form.shipping)} ` : null}
                     {form.listingPrice || form.shipping !== '0' ? ' = ' : null}
-                  </Span>
+                  </Span> */}
                   <SpanValue>{formatNum(symbol, totalRevenue)}</SpanValue>
                 </Text>
 
+              </Flex>
+              <Flex mt='20px' justifyContent='space-between'>
+                <Text fontWeight={500} fontSize={17}>Shipping:</Text>
+                <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
+                  <SpanValue>{formatNum(symbol, shipping)}</SpanValue>
+                </Text>
               </Flex>
               <Flex mt='20px' justifyContent='space-between'>
                 <Text fontWeight={500} fontSize={17}>Depop Fee ({parseFloat(form.depopFee)}%):</Text>
@@ -214,12 +210,7 @@ function FeeCalculator (props) {
                   <SpanValue>{formatNum(symbol, form.paypalCurrencyFee)}</SpanValue>
                 </Text>
               </Flex>
-              <Flex mt='20px' justifyContent='space-between'>
-                <Text fontWeight={500} fontSize={17}>Shipping:</Text>
-                <Text fontWeight={500} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <SpanValue>{formatNum(symbol, shipping)}</SpanValue>
-                </Text>
-              </Flex>
+
               {
                 costOfItem !== '0.00' ? (
                   <Flex mt='20px' justifyContent='space-between'>
@@ -231,7 +222,7 @@ function FeeCalculator (props) {
               }
               <Divider />
               <Flex mt='30px' justifyContent='space-between'>
-                <Text fontSize={20} fontWeight={600}>Profit:</Text>
+                <Text fontSize={20} fontWeight={600}>Total Profit:</Text>
                 <Text sx={{ display: 'flex', alignItems: 'center' }}>
                   <SpanValue>{formatNum(symbol, profit)} </SpanValue>
                 </Text>
@@ -280,5 +271,5 @@ const Divider = styled.div`
   width: 100%;
   height: 2px;
   margin: 30px 0px;
-  background: ${({ theme }) => theme.colors.depopRed};
+  background: ${({ theme }) => theme.colors.primary};
 `
