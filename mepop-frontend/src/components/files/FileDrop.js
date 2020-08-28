@@ -29,6 +29,8 @@ const Dropzone = withFirebase(({ firebase }) => {
   }, [])
 
   const onError = (msg, dismiss) => {
+    setLoading(false)
+
     addToast(<div>{msg || 'Error Occurred'}</div>, {
       appearance: 'error',
       autoDismiss: dismiss
