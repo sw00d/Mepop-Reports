@@ -98,7 +98,6 @@ class Firebase {
     const { data } = await functionRef({ returnUrl: window.location.origin + '/settings' })
     if (res) res()
     window.location.assign(data.url)
-
   }
 
   async startSubscription (successUrl = window.location.origin + '/settings') {
@@ -222,7 +221,7 @@ class Firebase {
   }
 
   uploadFiles (files, fetchFiles, err) {
-    uploadFilesMethod(this.auth, this.storage, files, fetchFiles, err)
+    uploadFilesMethod(this.auth, this.storage, files, fetchFiles, err, this.db)
   }
 }
 

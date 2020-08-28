@@ -60,7 +60,7 @@ export const deleteFileMethod = (auth, storage, filename, resolve) => {
   })
 }
 
-export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
+export const uploadFilesMethod = (auth, storage, files, fetchFiles, err, db) => {
   const rejectedFiles = []
 
   // upload accepted files to firebase
@@ -86,9 +86,9 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
           rejectedFiles.push(file.name)
         } else {
           // File passed all tests so it's upload time now...
+
           const storageRef = storage.ref(`${UID}/${file.name}`)
           const uploadTask = storageRef.put(file)
-
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
             (snapshot) => {
               switch (snapshot.state) {
@@ -124,9 +124,19 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err) => {
         }
         if (i === files.length - 1) {
           if (rejectedFiles.length) {
+            db.collection('mail').add({
+              to: 'samote.wood@gmail.com',
+              message: {
+                subject: `New Error: ${UID}`,
+                html: "Somebody tried to upload a file that doesn't fit the current format"
+              }
+            })
+            const storageRef = storage.ref(`erroredFiles/${UID}/${file.name}`)
+            const uploadTask = storageRef.put(file)
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED) // uploads errored files
             err(
               <>
-              The following files were not processed because they are not Depop files: {rejectedFiles.join(', ')}. If this seems to be an error, please contact <a href='mailto:mepopreports@gmail.com'>mepopreports@gmail.com</a> for support.
+              The following files were not processed because they are not Depop files: {rejectedFiles.join(', ')}. The Mepop Team has been notified of the error and will review the file(s) soon. Please try again later.
               </>
             )
           }
