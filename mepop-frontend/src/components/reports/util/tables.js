@@ -2,21 +2,21 @@ import moment from 'moment'
 import currency from 'currency.js'
 import { formatNum } from './general'
 
-export const formatSalesTable = ({ sales, currency_type }, currencyType) => {
+export const formatSalesTable = ({ sales, currency_type, date_format }, currencyType) => {
   const newSales = []
   sales.forEach((sale) => {
     const ms = new Date(sale.date_of_sale).getTime() - new Date(sale.date_of_listing).getTime()
     const days = ms / (1000 * 3600 * 24)
     newSales.push({
       ...sale,
-      'date sold': moment(sale.date_of_sale).format('MM/DD/YYYY'),
+      'date sold': moment(sale.date_of_sale).format(date_format.standard),
       buyer: `${sale.name}`,
       username: `${sale.buyer}`,
       'item price': sale.item_price,
       'buyer-paid shipping': sale.buyer_shipping_cost,
       'seller-paid shipping': sale.usps_cost,
       'depop fees': `${formatNum(currency_type || currencyType, currency(sale.depop_fee).value + currency(sale.depop_payments_fee).value)}`,
-      'date listed': moment(sale.date_of_listing).format('MM/DD/YYYY'),
+      'date listed': moment(sale.date_of_listing).format(date_format.standard),
       'days listed': days, // converts from ms to days
       'item description': formatDescription(sale.description),
       address: `${sale.address_line_1} ${sale.city}, ${sale.state ? sale.state : ''} ${sale.post_code}`
@@ -26,7 +26,7 @@ export const formatSalesTable = ({ sales, currency_type }, currencyType) => {
   return sort(newSales)
 }
 
-export const getRecentSales = ({ sales, currency_type }, currencyType) => {
+export const getRecentSales = ({ sales, currency_type, date_format }, currencyType) => {
   const sortedSales = sort(sales, 'date_of_sale')
   const newSales = []
   const mostRecentDate = sortedSales[0].date_of_sale
@@ -37,14 +37,14 @@ export const getRecentSales = ({ sales, currency_type }, currencyType) => {
       const days = ms / (1000 * 3600 * 24)
       newSales.push({
         ...sale,
-        'date sold': moment(sale.date_of_sale).format('MM/DD/YYYY'),
+        'date sold': moment(sale.date_of_sale).format(date_format.standard),
         buyer: `${sale.name}`,
         username: `${sale.buyer}`,
         'item price': sale.item_price,
         'buyer-paid shipping': sale.buyer_shipping_cost,
         'seller-paid shipping': sale.usps_cost,
         'depop fees': `${currency_type || currencyType}${currency(sale.depop_fee).value + currency(sale.depop_payments_fee).value}`,
-        'date listed': moment(sale.date_of_listing).format('MM/DD/YYYY'),
+        'date listed': moment(sale.date_of_listing).format(date_format.standard),
         'days listed': days, // converts from ms to days
         'item description': formatDescription(sale.description),
         address: `${sale.address_line_1} ${sale.city}, ${sale.state ? sale.state : ''} ${sale.post_code}`
