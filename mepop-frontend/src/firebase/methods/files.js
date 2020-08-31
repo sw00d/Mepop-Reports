@@ -86,20 +86,14 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err, db) => 
           rejectedFiles.push(file.name)
         } else {
           // File passed all tests so it's upload time now...
-
           const storageRef = storage.ref(`${UID}/${file.name}`)
           const uploadTask = storageRef.put(file)
+
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
             (snapshot) => {
-              switch (snapshot.state) {
-                case firebase.storage.TaskState.PAUSED:
-                  console.log('Upload is paused')
-                  break
-                case firebase.storage.TaskState.RUNNING:
-                  if (snapshot.metadata) {
-                    counter++
-                  }
-                  break
+              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              if (progress === 100) {
+                counter++
               }
             }, (error) => {
               switch (error.code) {
