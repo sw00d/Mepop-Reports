@@ -4,9 +4,11 @@ import Flex from '../../styles/layout/Flex'
 import Table from '../../styles/elements/Table'
 import Text from '../../styles/elements/Text'
 import { formatSalesTable } from '../reports/util/tables'
+import { useSelector } from 'react-redux'
 
 function SalesTable ({ data, labels, onClose, title, currencyType, ...props }) {
-  const tableData = formatSalesTable(data.sales ? data : { sales: data }, currencyType)
+  const { allData } = useSelector(state => state.generalReducer)
+  const tableData = formatSalesTable(data.sales ? data : { sales: data, date_format: allData.date_format }, currencyType)
   return (
     <>
       {
