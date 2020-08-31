@@ -22,6 +22,7 @@ const yLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const SalesByDate = memo(({ data }) => {
   const [coords, activateCoords] = useState(null)
   const chartData = useMemo(() => groupByTime(data), [data])
+
   return (
     <Flex flexWrap='wrap'>
 
