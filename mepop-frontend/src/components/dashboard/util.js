@@ -107,9 +107,10 @@ export const bestTimeToList = (data) => {
 export const avgItemsPerDay = data => {
   const obj = {}
   data.sales.forEach(({ date_of_sale }) => {
-    if (obj[date_of_sale]) {
-      obj[date_of_sale] += 1
-    } else obj[date_of_sale] = 1
+    const dateOfSale = moment.utc(date_of_sale).format('DD-MM-YYYY')
+    if (obj[dateOfSale]) {
+      obj[dateOfSale] += 1
+    } else obj[dateOfSale] = 1
   })
   const sales = data.sales.length
   const days = Object.keys(obj).length
