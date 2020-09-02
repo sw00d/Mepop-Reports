@@ -14,7 +14,6 @@ const RevenueOverview = memo(({ data, isBasic, fakeData }) => {
   const chartData = fakeData || groupByWeek(data)
   const [week, setWeek] = useState(chartData[chartData.length - 1].week)
   const [revenue, setRevenue] = useState({ gross: chartData[chartData.length - 1].Gross, net: chartData[chartData.length - 1].Net })
-
   const onHover = (val1, val2) => {
     if (val2 === 'Gross') {
       if (revenue.gross !== val1) {
@@ -24,7 +23,7 @@ const RevenueOverview = memo(({ data, isBasic, fakeData }) => {
       if (revenue.net !== val1) {
         setRevenue({ ...revenue, net: val1 })
       }
-    } else {
+    } else if (week !== val1) {
       setWeek(val1)
     }
   }
