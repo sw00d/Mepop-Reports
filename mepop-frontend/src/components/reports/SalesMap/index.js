@@ -80,7 +80,6 @@ const SalesMap = memo(({ data, styles, isBasic }) => {
               m='0'
               minWidth='50%'
               data={salesToShow}
-              currencyType={data.currency_type}
               headerContent={getTitle(salesToShow)}
               handleRowClick={(row, i) => {
                 activateSale(row.rowData)

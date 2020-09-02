@@ -6,9 +6,14 @@ import Text from '../../styles/elements/Text'
 import { formatSalesTable } from '../reports/util/tables'
 import { useSelector } from 'react-redux'
 
-function SalesTable ({ data, labels, onClose, title, currencyType, ...props }) {
+function SalesTable ({ data, labels, onClose, title, ...props }) {
   const { allData } = useSelector(state => state.generalReducer)
-  const tableData = formatSalesTable(data.sales ? data : { sales: data, date_format: allData.date_format }, currencyType)
+
+  const tableData = formatSalesTable(
+    { sales: data.sales || data },
+    allData.date_format,
+    allData.currency_type
+  )
   return (
     <>
       {
