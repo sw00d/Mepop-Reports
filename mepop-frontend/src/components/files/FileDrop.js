@@ -37,12 +37,11 @@ const Dropzone = withFirebase(({ firebase }) => {
     })
   }
   const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles)
     let warningThreshold = 0
 
     if (acceptedFiles.length) {
       acceptedFiles.forEach(({ size }) => { warningThreshold += size })
-      if (warningThreshold > 400000) {
+      if (warningThreshold > 1000000) {
         addToast(<div>Due to the amount/size of the file(s) uploaded, this may take a some time.</div>, {
           appearance: 'warning',
           autoDismiss: true

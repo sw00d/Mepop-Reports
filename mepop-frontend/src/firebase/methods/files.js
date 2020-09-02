@@ -16,6 +16,7 @@ export const getFileMethod = (auth, storage, resolve) => {
     })
 
     const calls = []
+
     // resolves getting the download URL's then pushes axios call to calls array
     Promise.all(getDownloadPromises).then((responses) => {
       responses.forEach((url) => {
