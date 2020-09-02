@@ -5,10 +5,11 @@ import { formatNum } from '../reports/util/general'
 import Card from '../../styles/elements/Card'
 import Input from '../../styles/elements/Input'
 import Select from '../../styles/elements/Select'
+import Checkbox from '../../styles/elements/Checkbox'
 import Text from '../../styles/elements/Text'
 import Flex from '../../styles/layout/Flex'
 
-import { currencies, countries } from './utils'
+import { currencies } from './utils'
 
 const initVals = {
   pricePaid: '',
@@ -17,8 +18,7 @@ const initVals = {
   depopFee: '10',
   paypalFee: '2.9',
   paypalCurrencyFee: '0.30',
-  sellerCountry: { label: 'United States', value: '2.9' },
-  buyerCountry: { label: 'United States', value: '2.9' }
+  usaBased: true
 }
 function FeeCalculator (props) {
   // (listing price+shipping-pricepaid) - all fees
@@ -32,22 +32,16 @@ function FeeCalculator (props) {
       updateForm({ ...form, paypalCurrencyFee: JSON.parse(field.target.value).value.val })
       updateSymbol(JSON.parse(field.target.value).value.symbol)
     }
-
-    if (field.target.name === 'sellerCountry' || field.target.name === 'buyerCountry') {
-      const fieldObj = JSON.parse(field.target.value)
-      updateForm({
-        ...form,
-        [field.target.name]: { label: fieldObj.label, value: fieldObj.value }
-      })
-    }
   }
+
   useEffect(() => {
-    if (form.sellerCountry.label === 'United States' && form.buyerCountry.label === 'United States') {
+    if (form.usaBased) {
       updateForm({ ...form, paypalFee: 2.9 })
     } else {
       updateForm({ ...form, paypalFee: 4.4 })
     }
-  }, [form.sellerCountry, form.buyerCountry])
+  }, [form.usaBased])
+
   const totalRevenue = add(
     form.listingPrice || 0,
     form.shipping || 0
@@ -70,6 +64,7 @@ function FeeCalculator (props) {
     parseFloat(shipping) -
     parseFloat(costOfItem)
   ).toFixed(2)
+
   return (
     <Flex flexDirection='column' alignItems='center' width={[1]}>
 
@@ -147,25 +142,15 @@ function FeeCalculator (props) {
               onChange={handleSelect}
               mb='4px'
             />
-            <Select
-              rebass
-              label="Seller's Country"
-              name='sellerCountry'
-              options={countries}
-              onChange={handleSelect}
-              mb='4px'
-
+            <Checkbox
+              label='Shipping AND Buying from United States'
+              onChange={() => {
+                updateForm({ ...form, usaBased: !form.usaBased })
+              }}
+              containerProps={{ mt: '10px' }}
+              color={form.usaBased ? 'primary' : null}
+              checked={form.usaBased}
             />
-            <Select
-              rebass
-              label="Buyer's Country"
-              name='buyerCountry'
-              options={countries}
-              onChange={handleSelect}
-              mb='4px'
-
-            />
-
           </Flex>
           <Flex
             width={[1]}

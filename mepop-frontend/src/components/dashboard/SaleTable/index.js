@@ -13,7 +13,8 @@ import { formatSalesTable } from '../../reports/util/tables'
 const allColumns = ['date sold', 'username', 'name', 'item price', 'buyer-paid shipping', 'seller-paid shipping', 'depop fees', 'item description', 'category']
 const someColumns = ['date sold', 'username', 'name', 'item price']
 const SaleTable = ({ data, getUrl }) => {
-  const formattedData = formatSalesTable(data)
+  const formattedData = formatSalesTable(data, data.date_format, data.currency_type)
+
   const [searchTerm, setTerm] = useState('')
   const [tableData, setTableData] = useState(formattedData)
   const [activeRow, activateRow] = useState(tableData[0])
