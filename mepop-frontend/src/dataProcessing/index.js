@@ -40,7 +40,6 @@ export const initState = (originalFiles, err) => {
       i--
     }
   }
-
   const files = cleanAndSort(cleanedFiles)
   const sorted = sort(files)
   return setUpState(sorted)
@@ -100,20 +99,23 @@ export const setUpState = (files, currencyType) => {
   data.getUrl = slug => `https://www.depop.com/${slug}/`
   return data
 }
+
 // Util function that cleans up format and sorts our files
 const cleanAndSort = (originalFiles) => {
   // gets rid of header row
-  const filesToMap = originalFiles.slice().filter(row => row[0] !== headers[0])
+  const mapHeaders = originalFiles.slice().filter(row => row[0] !== headers[0])
   const newFiles = []
   // get's rid of duplicates and converts arrays to objects
-  filesToMap.forEach((row, i) => {
+  for (let j = 0; j < mapHeaders.length; j++) {
+    const row = mapHeaders[j]
     const item = {}
     // this loops through the first file to get headers
-    originalFiles[0].forEach((key, i) => {
+    for (let i = 0; i < originalFiles[0].length; i++) {
+      const key = originalFiles[0][i]
       const keyStr = key.toLowerCase().replace(/ /g, '_')
       const val = () => {
         if (keyStr === 'date_of_sale' || keyStr === 'date_of_listing') {
-          // converts UTC to local time
+        // converts UTC to local time
           const utc = moment.utc(`${row[i]} ${row[1]}`, 'DD/MM/YYYY h:mm A').format()
           return moment.utc(utc).local().format()
         } else if (keyStr === 'time_of_sale') {
@@ -124,12 +126,31 @@ const cleanAndSort = (originalFiles) => {
       }
 
       item[keyStr] = val()
-    })
-    const existsAlready = newFiles.find(e => JSON.stringify(e) === JSON.stringify(item))
+    }
+
+    let existsAlready = false
+    // this loop checks for duplicates and ignores them
+    for (let i = 0; i < newFiles.length; i++) {
+      if (
+        newFiles[i].address_line_1 === item.address_line_1 &&
+        newFiles[i].address_line_2 === item.address_line_2 &&
+        newFiles[i].date_of_listing === item.date_of_listing &&
+        newFiles[i].date_of_sale === item.date_of_sale &&
+        newFiles[i].time_of_sale === item.time_of_sale &&
+        newFiles[i].description === item.description &&
+        newFiles[i].total === item.total &&
+        newFiles[i].category === item.category
+      ) {
+        existsAlready = true
+        break
+      }
+    }
+
     if (!existsAlready) {
       newFiles.push(item)
     }
-  })
+  }
+
   return newFiles
 }
 
