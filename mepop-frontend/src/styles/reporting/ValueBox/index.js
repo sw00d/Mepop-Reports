@@ -15,6 +15,7 @@ const ValueBox = ({
   lessIsGood,
   hideCompare,
   string,
+  formattingFn,
   smallText,
   ...rest
 }) => {
@@ -61,10 +62,11 @@ const ValueBox = ({
               value
             )
               : <CountUp
+                formattingFn={formattingFn}
                 decimals={float ? 2 : 0}
                 start={noAnimate ? value : 0}
                 end={float ? parseFloat(value) : typeof value === 'number' ? value : 0}
-                />
+              />
 
           }
         </Value>
@@ -102,6 +104,7 @@ const ValueBox = ({
                   ) : (
 
                     <CountUp
+                      formattingFn={formattingFn}
                       decimals={float ? 2 : 0}
                       start={noAnimate ? value2 : 0}
                       end={float ? parseFloat(value2) : typeof value2 === 'number' ? 100 : 0}
