@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 // utils
 import { getAvgProfits, bestTimeToList, avgItemsPerDay } from './util'
 import NoDataFound from '../../styles/elements/NoDataFound'
+import { formatNum } from '../reports/util/general'
 
 const Dashboard = () => {
   const { allData } = useSelector(state => state.generalReducer)
@@ -24,6 +25,7 @@ const Dashboard = () => {
   const avgNetProfit = getAvgProfits(data)
   const whenToList = bestTimeToList(data)
   const itemsSoldPerDay = avgItemsPerDay(data)
+
   return (
     <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg' width={[1]}>
       <Flex width={[1]} flexDirection='column'>
@@ -37,6 +39,7 @@ const Dashboard = () => {
           <ValueBox
             minWidth='167px' // for mobile. Should change
             title='Average Net Profit'
+            formattingFn={(val) => formatNum(null, val)}
             value={avgNetProfit.weekly}
             value2={avgNetProfit.monthly}
             float

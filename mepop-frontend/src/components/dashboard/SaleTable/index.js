@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 
 import Table from '../../../styles/elements/Table'
 import Input from '../../../styles/elements/Input'
@@ -22,13 +23,12 @@ const SaleTable = ({ data, getUrl }) => {
     if (!searchTerm) setTableData(data)
     const filtered = formattedData.filter((item) => {
       return (
-        item.username.includes(searchTerm) ||
-        item.name.includes(searchTerm) ||
-        item['date sold'].includes(searchTerm) ||
-        item['item price'].includes(searchTerm) ||
-        item.name.includes(searchTerm) ||
-        item.category.includes(searchTerm) ||
-        item['item description'].includes(searchTerm)
+        item.username.toLowerCase().includes(searchTerm) ||
+      item.name.toLowerCase().includes(searchTerm) ||
+      item['date sold'].includes(searchTerm) ||
+      item['item price'].includes(searchTerm) ||
+      item.category.toLowerCase().includes(searchTerm) ||
+      item['item description'].toLowerCase().includes(searchTerm)
       )
     })
     setTableData(filtered)
@@ -64,6 +64,9 @@ const SaleTable = ({ data, getUrl }) => {
 export default SaleTable
 
 const Header = ({ data, setTerm, term }) => {
+  const updateTerm = _.debounce((value) => {
+    setTerm(value)
+  }, 500)
   return (
     <Flex alignItems='center' justifyContent='space-between' width={[1]}>
       <Text mr='5px'>
@@ -75,8 +78,7 @@ const Header = ({ data, setTerm, term }) => {
           borderColor='greyLight'
           placeholder='Search...'
           pl='10px'
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
+          onChange={(e) => updateTerm(e.target.value)}
         />
       </Flex>
     </Flex>
