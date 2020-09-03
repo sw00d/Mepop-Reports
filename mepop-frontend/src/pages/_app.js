@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // Third party
 import Router, { useRouter } from 'next/router'
 import { ThemeProvider } from 'styled-components'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
-import { ToastProvider } from 'react-toast-notifications'
+import { ToastProvider, useToasts } from 'react-toast-notifications'
 import { PageTransition } from 'next-page-transitions'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -31,6 +31,8 @@ import Head from 'next/head'
 
 // Components
 import Notification from '../components/general/Notification'
+import Button from '../styles/elements/Button'
+import Flex from '../styles/layout/Flex'
 import Layout from '../components/Layout'
 import { setupLocationKeys } from '../store/actions/keySetup'
 
@@ -63,7 +65,8 @@ export default withGA('UA-162984588-1', Router)(MyApp)
 
 // This persists user sessions and sets up app from there.
 const Setup = withFirebase(({ Component, pageProps, firebase }) => {
-  // const { notification, user = {} } = {}
+  const { addToast } = useToasts()
+
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const dispatch = useDispatch()
@@ -106,8 +109,17 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
     })
   }, [])
   useEffect(() => {
-
-  }, [])
+    if (user.membership) {
+      if (user.membership.type === 'basic') {
+        addToast((
+          <SaleToast action={() => firebase.startSubscription()} />
+        )
+        , {
+          appearance: 'info'
+        })
+      }
+    }
+  }, [user.membership])
   useEffect(() => {
     if (user.user) {
       if (!user.user.emailVerified) {
@@ -150,3 +162,24 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
 })
 
 export const unprotectedRoutes = ['/sign-in', '/sign-up', '/privacy-policy', '/terms-of-service']
+
+const SaleToast = ({ action }) => {
+  const [btnLoading, setBtnLoading] = useState(false)
+
+  return (
+    <Flex flexDirection='column'>
+      <div>
+        We're having a sale on <i>Premium</i> 🎉 You can now enjoy all <i>Premium</i> features for just <strong>$4.99/month</strong>!
+      </div>
+      <Button
+        onClick={() => { setBtnLoading(true); action() }}
+        p='0px'
+        mt='4px'
+        bg='blue'
+        height='25px'
+        isLoading={btnLoading}
+      >
+    🌟 Upgrade Now! 🌟
+      </Button>
+    </Flex>)
+}

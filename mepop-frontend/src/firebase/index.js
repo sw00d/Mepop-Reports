@@ -13,7 +13,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 // Stripe specifics
 export const stripeKey = isProduction ? 'pk_live_c9rOKGsnQdeKY5fmn2gYNbiL' : 'pk_test_KHpQTtgimPnyoIoWSyW98Lac'
-const stripePrice = isProduction ? 'price_1HGtWiI6QogDwA7GZcdXzmxg' : 'price_1HAkcLI6QogDwA7GDj1WDk1z'
+const stripePrice = isProduction ? 'price_1HN7OvI6QogDwA7GhWfD98Pc' : 'price_1HN7HOI6QogDwA7GrAVjyFaL'
 
 const firebaseConfig = isProduction ? {
   apiKey: 'AIzaSyB04NiM6bapVV6Jd2ZRw5vUVLy3Cu7o0x0',

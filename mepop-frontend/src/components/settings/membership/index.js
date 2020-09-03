@@ -242,7 +242,7 @@ const tiers = [
     title: 'Premium',
     type: 'premium',
     icon: 'diamond',
-    price: '$14.99 / Month - ( 7 Day Trial )',
+    price: '$4.99/month - (7 Day Trial)',
     saveCSV: true,
     feeCalculator: true,
     salesDashboard: true,
