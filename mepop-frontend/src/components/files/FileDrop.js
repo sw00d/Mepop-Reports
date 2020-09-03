@@ -82,7 +82,7 @@ const Dropzone = withFirebase(({ firebase }) => {
             Drop files here
         </H2>
         <p>or</p>
-        <Button isLoading={loading} minWidth='115px' color='blue' bg='white' size='lg'>Select Files</Button>
+        <Button isLoading={loading} minWidth='115px' color='primary' bg='white' size='lg'>Select Files</Button>
         <p>Files must be from Depop to be valid</p>
       </DropZone>
 
