@@ -158,12 +158,13 @@ const sort = (sales) => {
   // Sorts by date
   const sorted = sales.sort((a, b) => {
     const fullDateA = new Date(
-      moment(`${a.date_of_sale} ${a.time_of_sale}`, 'MM/DD/YYYY hh:mm A').format()
+      moment(a.date_of_sale)
     )
     const fullDateB = new Date(
-      moment(`${b.date_of_sale} ${b.time_of_sale}`, 'MM/DD/YYYY hh:mm A').format()
+      moment(b.date_of_sale)
     )
     return fullDateA - fullDateB
   })
+
   return sorted
 }
