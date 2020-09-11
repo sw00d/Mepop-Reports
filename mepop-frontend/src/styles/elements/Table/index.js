@@ -71,9 +71,15 @@ const headerRenderer = ({ sortBy, label, sortDirection }) => {
   return (
     <div>
       {label}
-      {sortBy[0] === label ? (
-        sortDirection === 'ASC' ? <Icon className='fa fa-caret-up' /> : <Icon className='fa fa-caret-down' />
-      ) : null}
+      {
+        sortBy && sortDirection ? (
+          <>
+            {sortBy[0] === label ? (
+              sortDirection === 'ASC' ? <Icon className='fa fa-caret-up' /> : <Icon className='fa fa-caret-down' />
+            ) : null}
+          </>
+        ) : null
+      }
     </div>
   )
 }
