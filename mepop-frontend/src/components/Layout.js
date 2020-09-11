@@ -8,35 +8,21 @@ import DateContainer from './DateContainer'
 import Flex from '../styles/layout/Flex'
 import Loading from '../styles/elements/Loading'
 
-import { unprotectedRoutes } from '../pages/_app'
-
-const getheaderContent = pathname => {
-  switch (pathname) {
-    case '/dashboard':
-      return 'Dashboard'
-    case '/reports':
-      return 'Reports'
-    case '/files':
-      return 'Files'
-    case '/settings':
-      return 'Settings'
-    case '/fees-calculator':
-      return 'Fees Calculator'
-    default:
-      return 'Mepop Reports'
-  }
-}
+import { routes } from './routes'
 
 const Layout = (props) => {
   const { loading, compareData, files, rangedData, user } = useSelector(state => state.generalReducer)
   const router = useRouter()
-  const heading = getheaderContent(router.pathname)
+  const route = routes[router.pathname]
+  const heading = route.title || 'Mepop Reports'
   const noData = !files.length || JSON.stringify(rangedData) === '{}'
   const noUser = JSON.stringify(user) === '{}' || !user
   const centerContent = loading || noData
-  const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
-  const hideSideBar = router.pathname === '/settings/membership/'
-  const isLegalRoute = router.pathname === '/privacy-policy' || router.pathname === '/terms-of-service'
+
+  const unprotectedRoute = route.unprotectedRoute
+  const hideSideBar = route.hideSideBar
+  const isLegalRoute = route.isLegalRoute
+
   if (noUser && !unprotectedRoute) {
     return null
   }

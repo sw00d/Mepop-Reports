@@ -8,6 +8,7 @@ import { withFirebase } from '../firebase'
 
 import Tooltip from '../styles/elements/Tooltip'
 import Text from '../styles/elements/Text'
+import { routes } from './routes'
 
 const Sidebar = withFirebase(({ firebase, ...props }) => {
   const [isMini, minify] = useState(true)
@@ -18,6 +19,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
   useEffect(() => {
     updateRoute(router.pathname)
   }, [router.pathname])
+
   return (
     <Container isMini={isMini}>
 
@@ -38,6 +40,33 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
       <SubContainer>
 
         <Nav>
+          {/* {
+            Object.keys(routes).map((key, i) => {
+              const { title, route, icon } = routes[key]
+              return title && icon ? (
+                <Tooltip
+                  key={i}
+                  title={title}
+                  disabled={!isMini}
+                  distance={0}
+                  position='right-start'
+                  arrow={false}
+                >
+
+                  <Link href={route}>
+                    <Row
+                      isMini={isMini}
+                      onClick={() => updateRoute(route)}
+                      isActive={activeRoute === route}
+                    >
+                      <I className={`fa fa-${icon}`} />
+                      <RowText isMini={isMini}>{title}</RowText>
+                    </Row>
+                  </Link>
+                </Tooltip>
+              ) : null
+            })
+          } */}
           <Tooltip
             title='Dashboard'
             disabled={!isMini}

@@ -1,11 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Column, Table as TableComp } from 'react-virtualized' // https://github.com/bvaughn/react-virtualized
 import Card from '../Card'
 import theme from '../../../theme'
+import styled from 'styled-components'
 
 const Table = (props) => {
-  const { data, columnLabels, tableHeight, tableWidth, handleRowClick, background, activeRow } = props
+  const { data, columnLabels, tableHeight, tableWidth, handleRowClick, background, activeRow, sort = null, sortBy, sortDirection } = props
   return (
     <Card {...props}>
 
@@ -29,10 +29,14 @@ const Table = (props) => {
           borderRadius: theme.borderRadius.normal,
           transition: '.2s'
         }}
+        sort={sort}
+        sortBy={sortBy}
+        sortDirection={sortDirection}
       >
         {columnLabels.map((label, i) => {
           return (
             <Column
+              headerRenderer={headerRenderer}
               key={label + i}
               label={label}
               dataKey={[label]}
@@ -48,17 +52,6 @@ const Table = (props) => {
 }
 export default Table
 
-Table.propTypes = {
-  tableHeight: PropTypes.number, // specificies table height
-  tableWidth: PropTypes.number,
-  height: PropTypes.string, // specificies card height
-  width: PropTypes.string,
-  data: PropTypes.array,
-  columnLabels: PropTypes.array
-  // There's a lot more potentially because of rebass's styling system that we pass to
-  // the card wrapper, but that'll do for now.
-}
-
 export const rowStyle = (props, activeRow) => {
   return (
     {
@@ -73,3 +66,20 @@ export const rowStyle = (props, activeRow) => {
     }
   )
 }
+
+const headerRenderer = ({ sortBy, label, sortDirection }) => {
+  return (
+    <div>
+      {label}
+      {sortBy[0] === label ? (
+        sortDirection === 'ASC' ? <Icon className='fa fa-caret-up' /> : <Icon className='fa fa-caret-down' />
+      ) : null}
+    </div>
+  )
+}
+
+const Icon = styled.div`
+  position: absolute;
+  margin-left: 3px;
+  font-size: 14px;
+`
