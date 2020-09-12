@@ -10,7 +10,7 @@ import Flex from '../../../styles/layout/Flex'
 import SaleDetails from '../../general/SaleDetails'
 import Text from '../../../styles/elements/Text'
 import { formatSalesTable } from '../../reports/util/tables'
-import { SortIndicator } from 'react-virtualized'
+import { useSelector } from 'react-redux'
 
 const allColumns = ['date sold', 'username', 'name', 'item price', 'buyer-paid shipping', 'seller-paid shipping', 'depop fees', 'item description', 'category']
 const someColumns = ['date sold', 'username', 'name', 'item price']
@@ -20,12 +20,16 @@ const sortObj = {
 }
 
 const SaleTable = ({ data, getUrl }) => {
+  const { user } = useSelector(state => state.generalReducer)
+
   const formattedData = formatSalesTable(data, data.date_format, data.currency_type)
+  const isBasic = user.membership.type === 'basic'
 
   const [searchTerm, setTerm] = useState('')
   const [tableData, setTableData] = useState(formattedData)
   const [activeRow, activateRow] = useState(tableData[0])
   const [sortInfo, setSortInfo] = useState(sortObj)
+
   const idx = tableData.indexOf(activeRow)
 
   useEffect(() => {
@@ -54,7 +58,7 @@ const SaleTable = ({ data, getUrl }) => {
 
     setSortInfo(newSortInfo)
   }
-  console.log(data)
+
   return (
     <Flex mb='30px' flexWrap='wrap'>
       <Table
@@ -72,9 +76,9 @@ const SaleTable = ({ data, getUrl }) => {
         }}
         p='0px'
         tableHeight={420 - 40}
-        sort={sortByColumn}
-        sortBy={[sortInfo.by]}
-        sortDirection={sortInfo.ASC ? 'ASC' : 'DESC'}
+        sort={!isBasic ? sortByColumn : null}
+        sortBy={!isBasic ? [sortInfo.by] : null}
+        sortDirection={!isBasic ? (sortInfo.ASC ? 'ASC' : 'DESC') : null}
       />
       {activeRow
         ? (
