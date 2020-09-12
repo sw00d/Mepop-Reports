@@ -35,10 +35,12 @@ import Button from '../styles/elements/Button'
 import Flex from '../styles/layout/Flex'
 import Layout from '../components/Layout'
 import { setupLocationKeys } from '../store/actions/keySetup'
+import { routes } from '../components/routes'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const stripePromise = loadStripe(stripeKey)
 
+// Main Root
 export const MyApp = (props) => {
   return (
     <Elements stripe={stripePromise}>
@@ -61,16 +63,17 @@ export const MyApp = (props) => {
   )
 }
 
+// This adds Google Analytics to the app
 export default withGA('UA-162984588-1', Router)(MyApp)
 
 // This persists user sessions and sets up app from there.
 const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   const { addToast } = useToasts()
-
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const dispatch = useDispatch()
-  const unprotectedRoute = unprotectedRoutes.includes(router.pathname)
+  const route = routes[router.pathname]
+  const unprotectedRoute = route.unprotectedRoute
 
   useEffect(() => {
     firebase.auth.onAuthStateChanged((persistedUser) => {
@@ -160,8 +163,6 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
     </Layout>
   )
 })
-
-export const unprotectedRoutes = ['/sign-in', '/sign-up', '/privacy-policy', '/terms-of-service']
 
 const SaleToast = ({ action }) => {
   const [btnLoading, setBtnLoading] = useState(false)
