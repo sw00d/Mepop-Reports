@@ -1,5 +1,8 @@
 
 export const routes = {
+  default: {
+    route: '/'
+  },
   '/dashboard': {
     icon: 'home',
     route: '/dashboard',
