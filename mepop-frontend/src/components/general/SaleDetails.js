@@ -1,6 +1,7 @@
 import currency from 'currency.js'
 import ValueBox from '../../styles/reporting/ValueBox'
 import Card from '../../styles/elements/Card'
+import HorzDivider from '../../styles/elements/HorzDivider'
 import Tooltip from '../../styles/elements/Tooltip'
 import Text from '../../styles/elements/Text'
 import RadialChart from '../../styles/reporting/RadialChart'
@@ -73,7 +74,8 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
             string
             value={(
               <Description>
-                {row['item description']}<br /><br />
+                {row['item description']}
+                <HorzDivider my='10px' color='success' />
                 <strong>Buyer:</strong> {row.name}<br />
                 <strong>Sale Price:</strong> {formatNum(currencyType, currency(row['item price']).value)}<br />
                 <strong>Buyer-Paid Shipping:</strong> {formatNum(currencyType, currency(row['buyer-paid shipping']).value)}<br />
