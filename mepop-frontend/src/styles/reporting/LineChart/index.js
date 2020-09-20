@@ -34,7 +34,6 @@ const Linechart = ({
                     key={i}
                     isAnimationActive={typeof disableAnimation !== 'boolean'}
                     dataKey={dataKey}
-                    type='monotone'
                     dot={!hideDot}
                     stroke={theme.colors[color] || theme.colors.primary}
                     strokeWidth={2}

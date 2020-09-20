@@ -70,7 +70,6 @@ const Barchart = ({
                     key={i}
                     barSize={size}
                     dataKey={dataKey}
-                    type='monotone'
                     fill={theme.colors[color] || theme.colors.primary}
                   />)
               })
