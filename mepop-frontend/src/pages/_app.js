@@ -72,7 +72,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const dispatch = useDispatch()
-  const route = routes[router.pathname || 'default']
+  const route = routes[router.pathname]
   const unprotectedRoute = route.unprotectedRoute
 
   useEffect(() => {

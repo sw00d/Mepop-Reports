@@ -131,7 +131,7 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err, db) => 
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED) // uploads errored files
             err(
               <>
-              The following files were not processed because they are not Depop files: {rejectedFiles.join(', ')}. The Mepop Team has been notified of the error and will review the file(s) soon. Please try again later.
+              The following file(s) were not processed because they are not Depop files: {rejectedFiles.join(', ')}. The Mepop Team has been notified of the error and will review the file(s) soon. Please try again later.
               </>
             )
           }

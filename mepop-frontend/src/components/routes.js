@@ -1,6 +1,6 @@
 
 export const routes = {
-  default: {
+  '/': {
     route: '/'
   },
   '/dashboard': {
