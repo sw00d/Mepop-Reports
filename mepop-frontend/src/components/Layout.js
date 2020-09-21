@@ -22,7 +22,6 @@ const Layout = (props) => {
   const unprotectedRoute = route.unprotectedRoute
   const hideSideBar = route.hideSideBar
   const isLegalRoute = route.isLegalRoute
-
   if (noUser && !unprotectedRoute) {
     return null
   }
