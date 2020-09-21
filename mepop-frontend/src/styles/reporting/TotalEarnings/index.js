@@ -15,7 +15,7 @@ import {
   BoxValue
 } from './styles'
 
-const COLORS = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.pastelBlueLight]
+const COLORS = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.blue]
 
 const TotalEarnings = ({
   title,

@@ -40,6 +40,7 @@ const RadialGraph = ({
                 return (
                   <Cell
                     key={`cell-${index}`}
+                    stroke='none'
                     fill={theme.colors[set.fill] || COLORS[index % COLORS.length]}
                   />
                 )

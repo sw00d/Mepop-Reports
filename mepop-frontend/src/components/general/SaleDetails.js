@@ -14,20 +14,37 @@ import { formatNum } from '../reports/util/general'
 const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props }) => {
   const { user } = useSelector(state => state.generalReducer)
   const isBasic = user.membership.type === 'basic'
+  const paymentFee = currency(row.depop_payments_fee).value !== 0
+    ? {
+      type: 'Depop Payments Fee',
+      value: formatNum(currencyType, currency(row.depop_payments_fee).value),
+      graphValue: currency(row.depop_payments_fee).value
+    }
+    // calculates PayPal fee
+    : {
+      type: 'PayPal Fee',
+      value: formatNum(currencyType, (currency(row['item price']).value * 0.029 + 0.30)),
+      graphValue: parseFloat(currency(row['item price']).value * 0.029 + 0.30)
+    }
   const chartData = [
     {
       name: 'Sale Price', value: currency(row['item price']).value, fill: 'green'
     },
     {
-      name: 'Buyer Shipping', value: currency(row['buyer-paid shipping']).value, fill: 'blueLight'
+      name: 'Buyer Shipping', value: currency(row['buyer-paid shipping']).value, fill: 'blue'
     },
     {
       name: 'Seller Shipping', value: currency(row['seller-paid shipping']).value, fill: 'bluePastel'
     },
     {
       name: 'Depop Fees', value: currency(row['depop fees']).value, fill: 'red'
+    },
+
+    {
+      name: paymentFee.type, value: paymentFee.graphValue, fill: 'pastelRose'
     }
   ]
+
   return (
     <Card
       minWidth='500px'
@@ -77,11 +94,12 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
                 {row['item description']}
                 <HorzDivider my='10px' color='success' />
                 <strong>Buyer:</strong> {row.name}<br />
+                <strong>Address:</strong> {row.address}<br />
                 <strong>Sale Price:</strong> {formatNum(currencyType, currency(row['item price']).value)}<br />
                 <strong>Buyer-Paid Shipping:</strong> {formatNum(currencyType, currency(row['buyer-paid shipping']).value)}<br />
                 <strong>Seller-Paid Shipping:</strong> {formatNum(currencyType, currency(row['seller-paid shipping']).value)}<br />
-                <strong>Depop Fees:</strong> {formatNum(currencyType, currency(row['depop fees']).value)}<br />
-                <strong>Address:</strong> {row.address}<br />
+                <strong>Depop Fee:</strong> {formatNum(currencyType, currency(row['depop fees']).value)}<br />
+                <strong>{paymentFee.type}:</strong> {paymentFee.value}<br />
               </Description>
             )}
             value2='-'
