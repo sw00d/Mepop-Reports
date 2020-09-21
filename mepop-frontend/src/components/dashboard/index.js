@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux'
 import { getAvgProfits, bestTimeToList, avgItemsPerDay } from './util'
 import NoDataFound from '../../styles/elements/NoDataFound'
 import { formatNum } from '../reports/util/general'
+import FeeBreakdown from '../general/FeeBreakdown'
 
 const Dashboard = () => {
   const { allData } = useSelector(state => state.generalReducer)
@@ -28,6 +29,7 @@ const Dashboard = () => {
 
   return (
     <Flex justifyContent='space-between' flexWrap='wrap' alignItems='center' bg='mainBg' width={[1]}>
+      <FeeBreakdown />
       <Flex width={[1]} flexDirection='column'>
         <ValueContainer sx={{
           '@media only screen and (max-width: 950px)': {
@@ -83,12 +85,12 @@ const Dashboard = () => {
             title='Total Earnings'
             value={data.total_earnings}
             netValue={
-              (data.total_earnings - data.total_shipping_cost - data.depop_fees).toFixed(2)
+              (data.total_earnings - data.total_shipping_cost - data.depop_fees - data.paypal_fees).toFixed(2)
             }
             data={[
               {
                 name: 'Net Earnings',
-                value: parseFloat(data.total_earnings - data.total_shipping_cost - data.depop_fees)
+                value: parseFloat(data.total_earnings - data.total_shipping_cost - data.depop_fees - data.paypal_fees)
               },
               { name: 'Depop Fees', value: parseFloat(data.depop_fees) },
               { name: 'Paypal Fees', value: parseFloat(data.paypal_fees) },
