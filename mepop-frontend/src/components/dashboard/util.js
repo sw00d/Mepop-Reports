@@ -1,29 +1,37 @@
 import moment from 'moment'
 import currency from 'currency.js'
 
+export const getProfits = (sale) => {
+  const fees = cleanNumber(sale.depop_fee) + cleanNumber(sale.depop_payments_fee)
+  const shipping = cleanNumber(sale.usps_cost) + cleanNumber(sale.buyer_shipping_cost)
+  return {
+    net: currency(cleanNumber(sale.total) - fees - shipping).value,
+    gross: currency(cleanNumber(sale.total)).value
+  }
+}
 export const getProfitsByMonth = (data) => {
   const months = {}
   const monthArray = []
-  data.sales.forEach(({ date_of_sale, item_price, depop_fee, depop_payments_fee, usps_cost }) => {
-    const month = moment(date_of_sale).format('MMM')
-    const date = moment(date_of_sale).format('MM/DD/yyyy')
+  data.sales.forEach((sale) => {
+    const month = moment(sale.date_of_sale).format('MMM')
+    const date = moment(sale.date_of_sale).format('MM/DD/yyyy')
 
-    const fees = cleanNumber(depop_fee) + cleanNumber(depop_payments_fee)
-    const sellerPaidShipping = cleanNumber(usps_cost)
-    const netProfit = currency(cleanNumber(item_price) - fees - sellerPaidShipping).value
+    const fees = cleanNumber(sale.depop_fee) + cleanNumber(sale.depop_payments_fee)
+    const shipping = cleanNumber(sale.usps_cost) + cleanNumber(sale.buyer_shipping_cost)
+    const netProfit = getProfits(sale).net
 
     if (months[month]) {
       months[month] = {
         ...months[month],
         net: currency(netProfit + months[month].net).value,
         depop_fees: currency(fees + months[month].depop_fees).value,
-        sellerPaidShipping: currency(sellerPaidShipping + months[month].sellerPaidShipping).value
+        shipping: currency(shipping + months[month].shipping).value
       }
     } else {
       months[month] = {
         net: netProfit || 0,
         depop_fees: fees || 0,
-        sellerPaidShipping: sellerPaidShipping || 0
+        shipping: shipping || 0
       }
     }
 
