@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { useToasts } from 'react-toast-notifications'
 import Link from 'next/link'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { withFirebase } from '../../firebase'
 import Flex from '../../styles/layout/Flex'
@@ -15,8 +15,9 @@ import { fetchFiles } from '../../store/actions/files'
 const Dropzone = withFirebase(({ firebase }) => {
   const dispatch = useDispatch()
   const { addToast } = useToasts()
-  const [modalIsOpen, toggleModal] = useState(false)
+  const [modalIsOpen, toggleModal] = useState(null)
   const [loading, setLoading] = useState(false)
+  const { files } = useSelector(state => state.generalReducer)
 
   const startFetch = useCallback(() => {
     fetchFiles({ firebase, dispatch }, () => {
@@ -63,17 +64,17 @@ const Dropzone = withFirebase(({ firebase }) => {
     <Container>
       <InfoModal modalIsOpen={modalIsOpen} toggleModal={toggleModal} />
       <Flex justifyContent='flex-end' px='10px'>
-        <Tooltip title="What's this?">
-          <Button
-            bg='transparent'
-            color='greyDarkest'
-            fontSize='20px'
-            onClick={() => toggleModal(!modalIsOpen)}
-
-          >
+        <Button
+          bg='transparent'
+          color='greyDarkest'
+          fontSize='20px'
+          onClick={() => toggleModal(!modalIsOpen)}
+          height='50px'
+        >
+          <Tooltip title="What's this?" position='left' open={modalIsOpen === null && files.length === 0}>
             <i className='fa fa-question-circle' />
-          </Button>
-        </Tooltip>
+          </Tooltip>
+        </Button>
       </Flex>
 
       <DropZone isDragActive={isDragActive} {...getRootProps()}>
@@ -105,7 +106,7 @@ const DropZone = styled(Flex)`
   align-items: center;
   margin: 15px;
   min-height: 250px;
-  margin-top: 10px;
+  margin-top: 0px;
   transition: .2s;
   position:relative;
   border: 5px dashed ${({ theme, isDragActive }) => isDragActive ? theme.colors.greyDark : theme.colors.greyLight};
