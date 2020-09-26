@@ -111,18 +111,7 @@ const Setup = withFirebase(({ Component, pageProps, firebase }) => {
       }
     })
   }, [])
-  useEffect(() => {
-    if (user.membership) {
-      if (user.membership.type === 'basic') {
-        addToast((
-          <SaleToast action={() => firebase.startSubscription()} />
-        )
-        , {
-          appearance: 'info'
-        })
-      }
-    }
-  }, [user.membership])
+
   useEffect(() => {
     if (user.user) {
       if (!user.user.emailVerified) {
