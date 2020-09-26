@@ -71,6 +71,18 @@ class Firebase {
     })
   }
 
+  // Util
+  sendEmail ({ subject, content, to, from }) {
+    return this.db.collection('mail').add({
+      from: from || this.auth.currentUser.email,
+      to: to || ['samote.wood@gmail.com', 'support@mepopreports.com'],
+      message: {
+        subject: `Contact Mepop: ${subject}`,
+        html: content
+      }
+    })
+  }
+
   // Stripe
   handleStripeClients () {
     // creates stripe client if doesn't exist (This handles people moving over from legacy app but who already have accounts)
