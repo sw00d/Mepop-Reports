@@ -52,6 +52,7 @@ export const setUpState = (files, currencyType) => {
   data.seller_shipping_cost = 0
   data.buyer_shipping_cost = 0
   data.depop_fees = 0
+  data.depop_payments_fees = 0
   data.paypal_fees = 0
   data.avg_price = 0
   data.avg_shipping = 0
@@ -82,13 +83,15 @@ export const setUpState = (files, currencyType) => {
     data.buyer_shipping_cost += currency(file.buyer_shipping_cost).value
     data.seller_shipping_cost += currency(file.usps_cost).value
 
-    data.depop_fees +=
-      parseFloat(currency(file.depop_fee).value) +
-      parseFloat(currency(file.depop_payments_fee).value)
+    data.depop_fees += parseFloat(currency(file.depop_fee).value)
+    data.depop_payments_fees += parseFloat(currency(file.depop_payments_fee).value)
+
     data.avg_time_listed += miliSeconds / (1000 * 3600 * 24)
+
     if (currency(file.buyer_shipping_cost).value === 0) {
       data.free_shipping++
     }
+
     if (file.payment_type === 'PAYPAL') {
       // TODO Make this dynamic to countries involved in sale (we need to know which country the sale originated from)
       // paypal fees are 2.9% + $0.30
@@ -104,6 +107,7 @@ export const setUpState = (files, currencyType) => {
   data.buyer_shipping_cost = parseFloat(data.buyer_shipping_cost).toFixed(2)
   data.seller_shipping_cost = parseFloat(data.seller_shipping_cost).toFixed(2)
   data.depop_fees = parseFloat(data.depop_fees).toFixed(2)
+  data.depop_payments_fees = parseFloat(data.depop_payments_fees).toFixed(2)
   data.paypal_fees = parseFloat(data.paypal_fees).toFixed(2)
   data.getUrl = slug => `https://www.depop.com/${slug}/`
   return data
