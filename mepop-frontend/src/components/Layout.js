@@ -18,6 +18,7 @@ const Layout = (props) => {
   const noData = !files.length || JSON.stringify(rangedData) === '{}'
   const noUser = JSON.stringify(user) === '{}' || !user
   const centerContent = loading || noData
+  const isBasic = !user.membership ? 'basic' : user.membership.type === 'basic'
 
   const unprotectedRoute = route.unprotectedRoute
   const hideSideBar = route.hideSideBar
@@ -79,7 +80,7 @@ const Layout = (props) => {
 
                 <Header>
                   {heading}
-                  {(heading === 'Reports' || heading === 'Dashboard') ? (
+                  {((heading === 'Reports' && !isBasic) || heading === 'Dashboard') ? (
                     <DateContainer page={heading} />
                   ) : null}
                 </Header>
