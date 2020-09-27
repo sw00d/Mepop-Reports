@@ -216,9 +216,16 @@ class Firebase {
     return this.auth.sendPasswordResetEmail(email)
   }
 
+  doEmailReset ({ email, password }) {
+    return this.auth.signInWithEmailAndPassword(this.auth.currentUser.email, password)
+      .then(() => {
+        return this.auth.currentUser.updateEmail(email)
+      })
+  }
+
   doPasswordUpdate (passwords) {
     return this.auth.signInWithEmailAndPassword(this.auth.currentUser.email, passwords.oldPassword)
-      .then(({ user }) => {
+      .then(() => {
         return this.auth.currentUser.updatePassword(passwords.newPassword)
       })
   }

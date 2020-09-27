@@ -8,17 +8,20 @@ import { UPDATE_USER } from '../../../store/generalReducer'
 import Text from '../../../styles/elements/Text'
 import Button from '../../../styles/elements/Button'
 import Flex from '../../../styles/layout/Flex'
-import { InputField, PasswordFields } from './inputs'
+import { InputField, PasswordFields, EmailFields } from './inputs'
 import styled from 'styled-components'
 import Box from '../../../styles/layout/Box'
 
 const UserSettings = withFirebase(({ firebase }) => {
-  const [loading, setLoading] = useState(false)
-  const [stripeLoading, setStripeLoading] = useState(false)
-  const [passwordSuccess, setPasswordSuccess] = useState(false)
-  const { addToast } = useToasts()
   const { user } = useSelector(state => state.generalReducer)
   const dispatch = useDispatch()
+  const { addToast } = useToasts()
+
+  const [passwordLoading, setLoading] = useState(false)
+  const [emailLoading, setEmailLoading] = useState(false)
+  const [stripeLoading, setStripeLoading] = useState(false)
+  const [passwordSuccess, setPasswordSuccess] = useState(false)
+  const [emailSuccess, setEmailSuccess] = useState(false)
 
   const plan = {
     title: user.membership.type === 'basic' ? 'Free Plan' : 'Premium Plan',
@@ -57,17 +60,37 @@ const UserSettings = withFirebase(({ firebase }) => {
       setLoading(false)
     })
   }
-  const updatePass = (passwords) => {
+
+  const updateEmail = (info) => {
+    setEmailLoading(true)
+    firebase.doEmailReset(info).then(() => {
+      updateProfile('email', info.email)
+      setEmailSuccess(true)
+      setEmailLoading(false)
+      setTimeout(() => setEmailSuccess(false), 100) // this is to reset the success value for the input fields in input.js
+    }).catch((err) => {
+      setEmailSuccess(false)
+      setEmailLoading(false)
+      console.log('error', err.message)
+      addToast(<div>{err.message || 'Oops! Something went wrong!'}</div>, {
+        appearance: 'error',
+        autoDismiss: true
+      })
+    })
+  }
+
+  const updatePass = (passwords, failedLogin) => {
     setLoading(true)
     firebase.doPasswordUpdate(passwords).then(() => {
       setPasswordSuccess(true)
       setLoading(false)
+      setTimeout(() => setPasswordSuccess(false), 100) // this is to reset the success value for the input fields in input.js
       addToast(<div>Successfully Updated Password</div>, {
         appearance: 'success',
         autoDismiss: true
       })
     }).catch((err) => {
-      console.log('error', err)
+      console.log('error', err.message)
       setPasswordSuccess(false)
       setLoading(false)
       addToast(<div>{err.message}</div>, {
@@ -76,6 +99,7 @@ const UserSettings = withFirebase(({ firebase }) => {
       })
     })
   }
+
   return (
 
     <Flex width={[1]}>
@@ -128,9 +152,9 @@ const UserSettings = withFirebase(({ firebase }) => {
             </Button>
           </MembershipContainer>
         </Flex>
+
         <InputField
           onClick={(val) => updateProfile('firstName', val)}
-          objKey='name'
           label='First Name'
           btnText='Save'
           defaultValue={user.profile.firstName}
@@ -139,7 +163,6 @@ const UserSettings = withFirebase(({ firebase }) => {
         />
         <InputField
           onClick={(val) => updateProfile('lastName', val)}
-          objKey='name'
           label='Last Name'
           btnText='Save'
           defaultValue={user.profile.lastName}
@@ -148,19 +171,25 @@ const UserSettings = withFirebase(({ firebase }) => {
         />
         <InputField
           onClick={(val) => updateProfile('depopShopName', val)}
-          objKey='depopShopName'
           label='Depop Shop Name'
           btnText='Save'
           placeholder='i.e. @marguillen'
           defaultValue={user.profile.depopShopName}
           alwaysShowLabel
         />
+        <EmailFields
+          onClick={updateEmail}
+          label='Email'
+          btnText='Update Email'
+          isLoading={emailLoading}
+          success={emailSuccess}
+        />
         <PasswordFields
           onClick={updatePass}
           btnText='Update Password'
           passwordSuccess={passwordSuccess}
           alwaysShowLabel
-          isLoading={loading}
+          isLoading={passwordLoading}
         />
         <Flex my='10px' fontSize='13px' justifyContent='space-between'>
           <Flex>
@@ -171,7 +200,7 @@ const UserSettings = withFirebase(({ firebase }) => {
             <Text>
             Need support? Email us here: <A href='mailto:support@mepopreports.com'>
               support@mepopreports.com
-                                         </A>
+              </A>
             </Text>
           </Flex>
           <Text>
@@ -184,13 +213,6 @@ const UserSettings = withFirebase(({ firebase }) => {
             </A>
           </Text>
         </Flex>
-        {/* <button onClick={() => firebase.startSubscription()}>
-          Start sub
-        </button>
-        <button onClick={() => firebase.openCustomerPortal()}>
-          open portal
-        </button> */}
-
       </Flex>
     </Flex>
 
