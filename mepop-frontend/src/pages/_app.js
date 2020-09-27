@@ -68,11 +68,10 @@ export default withGA('UA-162984588-1', Router)(MyApp)
 
 // This persists user sessions and sets up app from there.
 const Setup = withFirebase(({ Component, pageProps, firebase }) => {
-  const { addToast } = useToasts()
   const { user } = useSelector(state => state.generalReducer)
   const router = useRouter()
   const dispatch = useDispatch()
-  const route = routes[router.pathname]
+  const route = routes[router.pathname] || routes['/']
   const unprotectedRoute = route.unprotectedRoute
 
   useEffect(() => {

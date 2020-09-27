@@ -13,7 +13,7 @@ import { routes } from './routes'
 const Layout = (props) => {
   const { loading, compareData, files, rangedData, user } = useSelector(state => state.generalReducer)
   const router = useRouter()
-  const route = routes[router.pathname]
+  const route = routes[router.pathname] || routes['/']
   const heading = route.title || 'Mepop Reports'
   const noData = !files.length || JSON.stringify(rangedData) === '{}'
   const noUser = JSON.stringify(user) === '{}' || !user
