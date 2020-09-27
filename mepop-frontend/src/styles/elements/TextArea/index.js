@@ -19,7 +19,7 @@ const TextAreaView = ({ label, placeholder, onChange, value, ...props }) => {
       <Box>
         <StyledTextArea
           maxWidth='100%'
-          minHeight='150px'
+          minHeight='200px'
           value={value}
           onChange={onChange}
           placeholder={placeholder}
