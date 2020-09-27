@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 import { getAvgProfits, bestTimeToList, avgItemsPerDay } from './util'
 import NoDataFound from '../../styles/elements/NoDataFound'
 import { formatNum } from '../reports/util/general'
-import FeeBreakdown from '../general/FeeBreakdown'
+import FeeBreakdown from './FeeBreakdown'
 
 const Dashboard = () => {
   const { allData } = useSelector(state => state.generalReducer)

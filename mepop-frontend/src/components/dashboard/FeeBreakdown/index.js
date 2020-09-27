@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
 
-import { headers } from '../../assets/exampleBuyers'
-import Flex from '../../styles/layout/Flex'
-import Modal from '../../styles/elements/Modal'
-import Button from '../../styles/elements/Button'
-import Text from '../../styles/elements/Text'
+import { headers } from '../../../assets/exampleBuyers'
+import Flex from '../../../styles/layout/Flex'
+import Modal from '../../../styles/elements/Modal'
+import Button from '../../../styles/elements/Button'
+import Text from '../../../styles/elements/Text'
 
 const FeeBreakdown = () => {
   const { allData } = useSelector(state => state.generalReducer)
@@ -70,7 +70,7 @@ const FeeBreakdown = () => {
                   <Column width={[1]}>
                     <Text>
                       To calculate net profit, we subtract the <strong>Depop Fee</strong>, <strong>Depop Payments Fee</strong>, <strong>PayPal Fee</strong>
-                      , and the <strong>Seller Paid Shipping</strong> from the <strong>Gross Profit</strong>.
+                      , <strong>Buyer Paid Shipping</strong>, and the <strong>Seller Paid Shipping</strong> from the <strong>Gross Profit</strong>.
                     </Text>
                   </Column>
                 </Row>
