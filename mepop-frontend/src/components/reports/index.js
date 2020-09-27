@@ -1,4 +1,6 @@
 import Flex from '../../styles/layout/Flex'
+import Button from '../../styles/elements/Button'
+import Text from '../../styles/elements/Text'
 import { useSelector } from 'react-redux'
 
 import SalesByDate from './SalesByDate'
@@ -15,6 +17,7 @@ import { CompareView } from './CompareView'
 import TopValueBoxes from './TopValueBoxes'
 import VariableLineGraph from './VariableLineGraph'
 import NoDataFound from '../../styles/elements/NoDataFound'
+import Link from 'next/link'
 
 const Reports = (props) => {
   const { rangedData, allData, compareData, user } = useSelector(state => state.generalReducer)
@@ -22,7 +25,11 @@ const Reports = (props) => {
 
   const noData = data.sales ? !data.sales.length : true
   const isBasic = user.membership.type === 'basic'
-  if (JSON.stringify(compareData) !== '{}' && !isBasic) {
+
+  if (isBasic) {
+    return <NotPremiumUser />
+  }
+  if (JSON.stringify(compareData) !== '{}') {
     return <CompareView data={rangedData} compareData={compareData} />
   }
   return (
@@ -44,12 +51,12 @@ const Reports = (props) => {
                   }
                 }}
               >
-                <RevenueOverview data={data} isBasic={isBasic} />
-                <SalesByPaymentType data={data} isBasic={isBasic} />
+                <RevenueOverview data={data} />
+                <SalesByPaymentType data={data} />
               </Flex>
               <SalesByDate data={data} />
-              <SalesByCategory data={data} isBasic={isBasic} />
-              <SalesMap data={data} isBasic={isBasic} />
+              <SalesByCategory data={data} />
+              <SalesMap data={data} />
 
               <Flex
                 sx={{
@@ -61,7 +68,7 @@ const Reports = (props) => {
                 <SalesAndListingsByDay data={data} />
                 <ProfitsByMonth data={data} />
               </Flex>
-              <VariableLineGraph data={data} isBasic={isBasic} />
+              <VariableLineGraph data={data} />
               <RecentSales data={allData} />
               <SalesByTime data={data} />
             </>
@@ -72,17 +79,24 @@ const Reports = (props) => {
 }
 export default Reports
 
-const tempData = [
-  { time: '13:11', sales: 5 },
-  { time: '14:11', sales: 10 },
-  { time: '15:11', sales: 20 },
-  { time: '16:11', sales: 40 },
-  { time: '17:11', sales: 30 },
-  { time: 'May', sales: 30 },
-  { time: 'June', sales: 40 },
-  { time: 'July', sales: 50 },
-  { time: 'August', sales: 60 },
-  { time: 'September', sales: 70 },
-  { time: 'October', sales: 50 },
-  { time: 'November', sales: 100 }
-]
+const NotPremiumUser = () => {
+  const msg = (
+    <Flex alignItems='center' flexWrap='wrap'>
+      <Text mr='4px'>
+        You must have a Premium account to view this area.
+      </Text>
+      <Link href='/settings/membership'>
+        <a>
+          <Button>
+            Manage Account
+          </Button>
+        </a>
+      </Link>
+    </Flex>
+  )
+  return (
+    <Flex height='70vh'>
+      <NoDataFound title='Premium Only' msg={msg} />
+    </Flex>
+  )
+}

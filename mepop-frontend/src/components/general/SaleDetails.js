@@ -1,19 +1,19 @@
 import currency from 'currency.js'
-import ValueBox from '../../styles/reporting/ValueBox'
+import styled from 'styled-components'
+
+import { formatNum } from '../reports/util/general'
+
 import Card from '../../styles/elements/Card'
 import HorzDivider from '../../styles/elements/HorzDivider'
 import Tooltip from '../../styles/elements/Tooltip'
 import Text from '../../styles/elements/Text'
-import RadialChart from '../../styles/reporting/RadialChart'
+
 import Flex from '../../styles/layout/Flex'
-import styled from 'styled-components'
-import BlurBackground from './BlurBackground'
-import { useSelector } from 'react-redux'
-import { formatNum } from '../reports/util/general'
+
+import ValueBox from '../../styles/reporting/ValueBox'
+import RadialChart from '../../styles/reporting/RadialChart'
 
 const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props }) => {
-  const { user } = useSelector(state => state.generalReducer)
-  const isBasic = user.membership.type === 'basic'
   const paymentFee = currency(row.depop_payments_fee).value !== 0
     ? {
       type: 'Depop Payments Fee',
@@ -39,7 +39,6 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
     {
       name: 'Depop Fees', value: currency(row['depop fees']).value, fill: 'red'
     },
-
     {
       name: paymentFee.type, value: paymentFee.graphValue, fill: 'pastelRose'
     }
@@ -54,7 +53,6 @@ const SaleDetails = ({ row, getUrl, onClose, chartHeight, currencyType, ...props
       background='mainBg'
       {...props}
     >
-      {isBasic ? <BlurBackground component='Sale Details' /> : null}
 
       <Flex justifyContent='space-between' width={[1]} flexWrap='wrap'>
 

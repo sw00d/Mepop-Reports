@@ -23,7 +23,6 @@ const SaleTable = ({ data, getUrl }) => {
   const { user } = useSelector(state => state.generalReducer)
 
   const formattedData = formatSalesTable(data, data.date_format, data.currency_type)
-  const isBasic = user.membership.type === 'basic'
 
   const [searchTerm, setTerm] = useState('')
   const [tableData, setTableData] = useState(formattedData)
@@ -76,9 +75,9 @@ const SaleTable = ({ data, getUrl }) => {
         }}
         p='0px'
         tableHeight={420 - 40}
-        sort={!isBasic ? sortByColumn : null}
-        sortBy={!isBasic ? [sortInfo.by] : null}
-        sortDirection={!isBasic ? (sortInfo.ASC ? 'ASC' : 'DESC') : null}
+        sort={sortByColumn}
+        sortBy={[sortInfo.by]}
+        sortDirection={(sortInfo.ASC ? 'ASC' : 'DESC')}
       />
       {activeRow
         ? (
