@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev ./src -p 2999",
     "build": "next build ./src && next export ./src",
-    "start": "next start ./src",
+    "start": "next start ./src -p 2999",
     "cypress": "wait-on http://localhost:2999 & cypress run",
     "test": "jest"
   },
