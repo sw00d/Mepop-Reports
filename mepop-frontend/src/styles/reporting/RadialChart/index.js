@@ -57,7 +57,7 @@ const RadialGraph = ({
 
 export default RadialGraph
 
-const ActiveShape = (props) => {
+export const ActiveShape = (props) => {
   const {
     cx, cy, innerRadius, outerRadius, startAngle, endAngle,
     fill, payload, currency
@@ -66,9 +66,26 @@ const ActiveShape = (props) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })
+  const wordArr = payload.name.split(' ')
+  const names = [wordArr[0]]
+  wordArr.forEach((word, i) => {
+    if (i > 0) {
+      if (names[names.length - 1].length + word.length > 12) {
+        names.push(word)
+      } else {
+        names[names.length - 1] += ` ${word}`
+      }
+    }
+  })
+  const reversedNames = names.reverse()
   return (
     <g>
-      <text x={cx} y={cy - 10} dy={8} textAnchor='middle' fill={fill}>{payload.name}</text>
+      {
+        reversedNames.map((name, i) => {
+          const y = cy - (10 + (i * 17))
+          return <text key={i} x={cx} y={y} dy={8} textAnchor='middle' fill={fill}>{name}</text>
+        })
+      }
       <text x={cx} y={cy + 10} dy={8} textAnchor='middle' fill={fill}>
         {currency}{value}
       </text>
@@ -80,7 +97,6 @@ const ActiveShape = (props) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
-        radius={[0, 4, 4, 0]}
       />
 
     </g>
