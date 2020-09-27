@@ -5,7 +5,7 @@ import { formatNum } from '../../reports/util/general'
 
 // styles
 
-const Barchart = ({
+const MonthlyProfits = ({
   color,
   data,
   xdataKey,
@@ -15,7 +15,6 @@ const Barchart = ({
   ...props
 }) => {
   const monthlyNetProfit = getProfitsByMonth(data)
-
   return (
     <BarChart
       hideLegend
@@ -34,4 +33,4 @@ const Barchart = ({
   )
 }
 
-export default Barchart
+export default MonthlyProfits

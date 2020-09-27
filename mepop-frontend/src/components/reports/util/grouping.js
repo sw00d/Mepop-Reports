@@ -1,6 +1,7 @@
 import moment from 'moment'
 import currency from 'currency.js'
 import theme from '../../../theme'
+import { getProfits } from '../../dashboard/util'
 
 export const groupByDay = (data) => {
   const groupedData = {
@@ -32,14 +33,14 @@ export const groupByDay = (data) => {
 export const groupByDate = (data, showEmptyDates) => {
   const newData = []
   if (data.sales) {
-    data.sales.forEach(({ date_of_sale, total, buyer_shipping_cost, usps_cost }) => {
-      const gross = currency(total).value
-      const net = gross - currency(buyer_shipping_cost).value - currency(usps_cost).value
+    data.sales.forEach((sale) => {
+      const gross = getProfits(sale).gross
+      const net = getProfits(sale).net
       const latest = newData[newData.length - 1]
-      if (!newData.length || latest['Date Sold'] !== moment(date_of_sale).format('MM/DD/YYYY')) {
+      if (!newData.length || latest['Date Sold'] !== moment(sale.date_of_sale).format('MM/DD/YYYY')) {
         if (latest && showEmptyDates) {
           const milisecs =
-          new Date(moment(date_of_sale).format('MM/DD/YYYY')).getTime() -
+          new Date(moment(sale.date_of_sale).format('MM/DD/YYYY')).getTime() -
           new Date(moment(latest['Date Sold']).format('MM/DD/YYYY')).getTime()
           const diff = milisecs / (1000 * 3600 * 24)
           if (diff > 1) {
@@ -53,7 +54,7 @@ export const groupByDate = (data, showEmptyDates) => {
           }
         }
 
-        newData.push({ 'Date Sold': moment(date_of_sale).format('MM/DD/YYYY'), 'Items Sold': 1, Gross: gross, Net: net })
+        newData.push({ 'Date Sold': moment(sale.date_of_sale).format('MM/DD/YYYY'), 'Items Sold': 1, Gross: gross, Net: net })
       } else {
         latest['Items Sold'] += 1
         latest.Net += net
@@ -151,12 +152,13 @@ export const groupByPaymentType = (data) => {
   const newData = []
   const paymentTypes = {}
   if (data.sales) {
-    data.sales.forEach(({ payment_type, total }) => {
-      const totalNum = currency(total).value
-      if (paymentTypes[payment_type]) {
-        paymentTypes[payment_type].sold += 1
-        paymentTypes[payment_type].gross += totalNum
-      } else paymentTypes[payment_type] = { sold: 1, gross: totalNum }
+    data.sales.forEach((sale) => {
+      const gross = getProfits(sale).gross
+
+      if (paymentTypes[sale.payment_type]) {
+        paymentTypes[sale.payment_type].sold += 1
+        paymentTypes[sale.payment_type].gross += gross
+      } else paymentTypes[sale.payment_type] = { sold: 1, gross: gross }
     })
   }
   const colors = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.primary, theme.colors.pastelBlueLight]
@@ -177,14 +179,14 @@ export const groupByWeek = (data, showEmptyDates) => {
   const newData = []
   const obj = {}
   if (data.sales) {
-    data.sales.forEach(({ date_of_sale, total, buyer_shipping_cost, usps_cost }) => {
-      const { week, month } = getDateInfo(date_of_sale)
+    data.sales.forEach((sale) => {
+      const { week, month } = getDateInfo(sale.date_of_sale)
       const currentWeek = `${month} - Wk${week}`
 
       if (!obj[currentWeek]) obj[currentWeek] = { Gross: 0, Net: 0 }
 
-      const gross = currency(total).value
-      const net = gross - currency(buyer_shipping_cost).value - currency(usps_cost).value
+      const gross = getProfits(sale).gross
+      const net = getProfits(sale).net
       obj[currentWeek].Gross += gross
       obj[currentWeek].Net += net
     })

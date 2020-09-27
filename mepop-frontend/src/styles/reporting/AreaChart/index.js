@@ -40,7 +40,6 @@ const Areachart = ({ areas, xdataKey, data, onHover, disableAnimation, noToolTip
             return (
               <Area
                 key={i}
-                type='monotone'
                 isAnimationActive={typeof disableAnimation !== 'boolean'}
                 dataKey={key}
                 stroke={transparentize(0.7, theme.colors[color] || theme.colors.primary)}

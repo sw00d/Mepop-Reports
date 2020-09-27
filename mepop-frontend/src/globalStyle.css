@@ -91,6 +91,7 @@
   .ReactVirtualized__Table__rowColumn,
   .ReactVirtualized__Table__headerColumn {
     flex: 0 1 200px !important;
+    outline: none;
   }
   
   .ReactVirtualized__Table__headerRow {
@@ -102,4 +103,5 @@
     min-height: 40px;
     font-weight: normal;
   }
+  
   

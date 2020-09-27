@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import CountUp from 'react-countup'
 import {
-  PieChart, Pie, Cell, ResponsiveContainer, Sector
+  PieChart, Pie, Cell, ResponsiveContainer
 } from 'recharts'
 import Switch from '../../elements/Switch'
 import theme from '../../../theme'
-
+import { ActiveShape } from '../RadialChart'
 import {
   Container,
   ChartContainer,
@@ -15,7 +15,7 @@ import {
   BoxValue
 } from './styles'
 
-const COLORS = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.pastelBlueLight]
+const COLORS = [theme.colors.pastelOrange, theme.colors.pastelRose, theme.colors.greenSoft, theme.colors.pastelBlue, theme.colors.blueLight]
 
 const TotalEarnings = ({
   title,
@@ -105,32 +105,3 @@ const TotalEarnings = ({
 }
 
 export default TotalEarnings
-
-const ActiveShape = (props) => {
-  const {
-    cx, cy, innerRadius, outerRadius, startAngle, endAngle,
-    fill, payload, currency
-  } = props
-  const value = payload.value.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  })
-  return (
-    <g>
-      <text x={cx} y={cy - 10} dy={8} textAnchor='middle' fill={fill}>{payload.name}</text>
-      <text x={cx} y={cy + 10} dy={8} textAnchor='middle' fill={fill}>
-        {currency}{value}
-      </text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius + 5}
-        outerRadius={outerRadius + 5}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-
-    </g>
-  )
-}

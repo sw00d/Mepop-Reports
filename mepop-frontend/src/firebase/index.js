@@ -71,6 +71,18 @@ class Firebase {
     })
   }
 
+  // Util
+  sendEmail ({ subject, content, to, from }) {
+    return this.db.collection('mail').add({
+      from: from || this.auth.currentUser.email,
+      to: to || ['samote.wood@gmail.com', 'support@mepopreports.com'],
+      message: {
+        subject: `Contact Mepop: ${subject}`,
+        html: content
+      }
+    })
+  }
+
   // Stripe
   handleStripeClients () {
     // creates stripe client if doesn't exist (This handles people moving over from legacy app but who already have accounts)
@@ -204,9 +216,16 @@ class Firebase {
     return this.auth.sendPasswordResetEmail(email)
   }
 
+  doEmailReset ({ email, password }) {
+    return this.auth.signInWithEmailAndPassword(this.auth.currentUser.email, password)
+      .then(() => {
+        return this.auth.currentUser.updateEmail(email)
+      })
+  }
+
   doPasswordUpdate (passwords) {
     return this.auth.signInWithEmailAndPassword(this.auth.currentUser.email, passwords.oldPassword)
-      .then(({ user }) => {
+      .then(() => {
         return this.auth.currentUser.updatePassword(passwords.newPassword)
       })
   }

@@ -10,8 +10,8 @@ import Areachart from '../../../styles/reporting/AreaChart'
 import theme from '../../../theme'
 import { formatNum } from '../util/general'
 
-const RevenueOverview = memo(({ data, isBasic, fakeData }) => {
-  const chartData = fakeData || groupByWeek(data)
+const RevenueOverview = memo(({ data }) => {
+  const chartData = groupByWeek(data)
   const [week, setWeek] = useState(chartData[chartData.length - 1].week)
   const [revenue, setRevenue] = useState({ gross: chartData[chartData.length - 1].Gross, net: chartData[chartData.length - 1].Net })
   const onHover = (val1, val2) => {
@@ -31,11 +31,6 @@ const RevenueOverview = memo(({ data, isBasic, fakeData }) => {
     <Card
       sx={{ overflow: 'hidden', boxShadow: theme.shadows.normal }}
       minHeight='420px'
-
-      proOnly={isBasic && !fakeData ? {
-        component: 'Revenue Overview',
-        img: 'revenue-overview.png'
-      } : null}
     >
       <Flex flexDirection='column' width={[1]} p={50}>
 

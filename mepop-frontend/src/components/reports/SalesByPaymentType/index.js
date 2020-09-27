@@ -8,7 +8,7 @@ import PieChart from '../../../styles/reporting/PieChart'
 import Card from '../../../styles/elements/Card'
 import { formatNum } from '../util/general'
 
-const SalesByPaymentType = memo(({ data, isBasic }) => {
+const SalesByPaymentType = memo(({ data }) => {
   const [chartType, toggleChartType] = useState(false)
   const chartData = groupByPaymentType(data)
   return (
@@ -21,10 +21,6 @@ const SalesByPaymentType = memo(({ data, isBasic }) => {
           justifyContent: 'center'
         }
       }}
-      proOnly={isBasic ? {
-        component: 'Profits By Payment Type',
-        img: 'payment-type.png'
-      } : null}
     >
       <Flex
         height='40%'
