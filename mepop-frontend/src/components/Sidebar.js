@@ -8,6 +8,7 @@ import { withFirebase } from '../firebase'
 
 import Tooltip from '../styles/elements/Tooltip'
 import Text from '../styles/elements/Text'
+import { routes } from './routes'
 
 const Sidebar = withFirebase(({ firebase, ...props }) => {
   const [isMini, minify] = useState(true)
@@ -18,6 +19,7 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
   useEffect(() => {
     updateRoute(router.pathname)
   }, [router.pathname])
+
   return (
     <Container isMini={isMini}>
 
@@ -38,104 +40,33 @@ const Sidebar = withFirebase(({ firebase, ...props }) => {
       <SubContainer>
 
         <Nav>
-          <Tooltip
-            title='Dashboard'
-            disabled={!isMini}
-            distance={0}
-            position='right-start'
-            arrow={false}
-          >
+          {
+            Object.keys(routes).map((key, i) => {
+              const { title, route, icon } = routes[key]
+              return title && icon ? (
+                <Tooltip
+                  key={i}
+                  title={title}
+                  disabled={!isMini}
+                  distance={0}
+                  position='right-start'
+                  arrow={false}
+                >
 
-            <Link href='/dashboard'>
-              <Row
-                isMini={isMini}
-                onClick={() => updateRoute('/dashboard')}
-                isActive={activeRoute === '/dashboard'}
-              >
-                <I className='fa fa-home' />
-                <RowText isMini={isMini}>Dashboard</RowText>
-              </Row>
-            </Link>
-          </Tooltip>
-          <Tooltip
-            title='Reports'
-            disabled={!isMini}
-            distance={0}
-            position='right-start'
-
-            arrow={false}
-          >
-            <Link href='/reports'>
-              <Row
-                isMini={isMini}
-                onClick={() => updateRoute('/reports')}
-                isActive={activeRoute === '/reports'}
-              >
-                <I className='fa fa-area-chart' />
-                <RowText isMini={isMini}>Reports</RowText>
-              </Row>
-            </Link>
-          </Tooltip>
-          <Tooltip
-            title='Fee Calculator'
-            disabled={!isMini}
-            distance={0}
-            position='right-start'
-
-            arrow={false}
-          >
-
-            <Link href='/fees-calculator'>
-              <Row
-                isMini={isMini}
-                onClick={() => updateRoute('/fees-calculator')}
-                isActive={activeRoute === '/fees-calculator'}
-              >
-                <I className='fa fa-calculator' />
-                <RowText isMini={isMini}>Fees Calculator</RowText>
-              </Row>
-            </Link>
-          </Tooltip>
-          <Tooltip
-            title='Files'
-            disabled={!isMini}
-            distance={0}
-            position='right-start'
-
-            arrow={false}
-          >
-
-            <Link href='/files'>
-              <Row
-                isMini={isMini}
-                onClick={() => updateRoute('/files')}
-                isActive={activeRoute === '/files'}
-              >
-                <I className='fa fa-file' />
-                <RowText isMini={isMini}>Files</RowText>
-              </Row>
-            </Link>
-          </Tooltip>
-          <Tooltip
-            title='Settings'
-            disabled={!isMini}
-            distance={0}
-            position='right-start'
-
-            arrow={false}
-          >
-            <Link href='/settings'>
-              <Row
-                isMini={isMini}
-                onClick={() => updateRoute('/settings')}
-                isActive={activeRoute === '/settings'}
-              >
-                <I className='fa fa-cog' />
-                <RowText isMini={isMini}>Settings</RowText>
-              </Row>
-            </Link>
-
-          </Tooltip>
+                  <Link href={route}>
+                    <Row
+                      isMini={isMini}
+                      onClick={() => updateRoute(route)}
+                      isActive={activeRoute === route}
+                    >
+                      <I className={`fa fa-${icon}`} />
+                      <RowText isMini={isMini}>{title}</RowText>
+                    </Row>
+                  </Link>
+                </Tooltip>
+              ) : null
+            })
+          }
 
         </Nav>
         <Tooltip

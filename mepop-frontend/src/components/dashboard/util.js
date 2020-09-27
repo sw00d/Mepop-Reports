@@ -1,32 +1,56 @@
 import moment from 'moment'
 import currency from 'currency.js'
 
+export const getProfits = (sale) => {
+  const fees = cleanNumber(sale.depop_fee) +
+    cleanNumber(sale.depop_payments_fee) +
+    cleanNumber(getPaypalFee(sale))
+  const shipping = cleanNumber(sale.usps_cost) +
+    cleanNumber(sale.buyer_shipping_cost)
+  return {
+    net: currency(cleanNumber(sale.total) - fees - shipping).value,
+    gross: currency(cleanNumber(sale.total)).value
+  }
+}
+
+const getPaypalFee = (sale) => {
+  const num = (0.029 * currency(sale.item_price).value) + 0.30
+  return currency(num).value
+}
 export const getProfitsByMonth = (data) => {
   const months = {}
   const monthArray = []
-  data.sales.forEach(({ date_of_sale, item_price, depop_fee, depop_payments_fee, usps_cost }) => {
-    const month = moment(date_of_sale).format('MMM')
-    const date = moment(date_of_sale).format('MM/DD/yyyy')
+  data.sales.forEach((sale, i) => {
+    const month = moment(sale.date_of_sale).format('MMM')
+    const date = moment(sale.date_of_sale).format('MM/DD/yyyy')
 
-    const fees = cleanNumber(depop_fee) + cleanNumber(depop_payments_fee)
-    const sellerPaidShipping = cleanNumber(usps_cost)
-    const netProfit = currency(cleanNumber(item_price) - fees - sellerPaidShipping).value
+    const paymentfees = cleanNumber(sale.depop_payments_fee) +
+    cleanNumber(getPaypalFee(sale))
+    const depopFees = cleanNumber(sale.depop_fee)
+    const shipping = cleanNumber(sale.usps_cost) +
+      cleanNumber(sale.buyer_shipping_cost)
+
+    const netProfit = getProfits(sale).net
+    const grossProfit = getProfits(sale).gross
 
     if (months[month]) {
       months[month] = {
         ...months[month],
+        gross: currency(grossProfit + months[month].gross).value,
         net: currency(netProfit + months[month].net).value,
-        depop_fees: currency(fees + months[month].depop_fees).value,
-        sellerPaidShipping: currency(sellerPaidShipping + months[month].sellerPaidShipping).value
+        depopFees: currency(depopFees + months[month].depopFees).value,
+        paymentfees: currency(paymentfees + months[month].paymentfees).value,
+        shipping: currency(shipping + months[month].shipping).value
       }
     } else {
       months[month] = {
         net: netProfit || 0,
-        depop_fees: fees || 0,
-        sellerPaidShipping: sellerPaidShipping || 0
+        gross: grossProfit || 0,
+        depopFees: depopFees || 0,
+        shipping: shipping || 0,
+        paymentfees: paymentfees || 0
       }
     }
-
     // sets start dates
     if (months[month].start) {
       const start = new Date(months[month].start)
@@ -41,12 +65,15 @@ export const getProfitsByMonth = (data) => {
 
     months[month].end = date
   })
+
   Object.keys(months).forEach((key) => {
     monthArray.push({
       month: key,
       'Net Profit': months[key].net,
-      'Depop Fees': months[key].depop_fees,
-      'Seller-Paid-Shipping': months[key].sellerPaidShipping
+      'Gross Profit': months[key].gross,
+      'Depop Fees': months[key].depopFees,
+      'Payment Fees (Depop and Paypal)': months[key].paymentfees,
+      'Shipping (Seller and Buyer paid)': months[key].shipping
     })
   })
   return monthArray
@@ -162,6 +189,6 @@ export const avgItemsPerDay = data => {
 
 const cleanNumber = (num) => {
   if (!num || num === '-') return 0
-  const withoutCurrency = num.substring(1, num.length)
-  return parseFloat(withoutCurrency)
+  const withoutCurrency = num.toString().substring(1, num.length)
+  return currency(withoutCurrency).value
 }

@@ -11,7 +11,7 @@ import SaleDetails from '../../general/SaleDetails'
 import Flex from '../../../styles/layout/Flex'
 import { getGeopoints } from '../util/geopoints'
 
-const SalesMap = memo(({ data, styles, isBasic }) => {
+const SalesMap = memo(({ data, styles }) => {
   const [salesToMap, setSalesToMap] = useState([])
   const [salesToShow, setSalesToShow] = useState({})
   const [activeSale, activateSale] = useState(null)
@@ -33,12 +33,7 @@ const SalesMap = memo(({ data, styles, isBasic }) => {
   return (
     <Card
       headerContent='Map of Sales (US only)'
-      proOnly={isBasic ? {
-        component: 'Map of Sales (US only)',
-        img: 'sales-map.png',
-        style: { height: '400px' }
-      } : null}
-      pb={!isBasic ? '30px' : null}
+      pb='30px'
       background='mainBg'
     >
       <Flex width={[1, 1, 1, 1]} height='400px'>

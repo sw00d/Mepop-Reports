@@ -33,6 +33,7 @@ const customStyles = {
     position: 'static',
     width: 'null',
     height: 'null',
-    padding: '0px'
+    padding: '0px',
+    maxHeight: '97%'
   }
 }

@@ -37,6 +37,9 @@ const StyledButton = styled(Button)`
     letter-spacing: .5px;
     border: 2px solid ${({ borderColor, theme }) => borderColor ? theme.colors[borderColor] : 'transparent'} !important;
     &:hover {
-        opacity: .7;
+      opacity: .7;
+    }
+    &:active {
+      outline: none;
     }
 `

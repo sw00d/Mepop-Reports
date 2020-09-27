@@ -68,6 +68,7 @@ let colors = {
   greyDarkest: '#252629',
   greyDarker: '#585853',
   greyDark: '#787878',
+  grey: '#8c8c8c',
   greyLight: '#B2B2B2',
   greyLight2: 'rgb(198, 198, 198)',
   greyLighter: '#DADADA',

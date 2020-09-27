@@ -6,7 +6,7 @@ const HorzDivider = (props) => {
 }
 
 const Divider = styled(Box)`
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme, color }) => theme.colors[color || 'primary']};
 `
 
 export default HorzDivider

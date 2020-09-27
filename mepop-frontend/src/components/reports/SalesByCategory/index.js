@@ -6,7 +6,7 @@ import VertComposedChart from '../../../styles/reporting/VertBarChart'
 import Flex from '../../../styles/layout/Flex'
 import ValueBox from '../../../styles/reporting/ValueBox'
 
-const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
+const SalesByCategory = memo(({ data, hideBoxes, halfSize }) => {
   const [revenue, showRevenue] = useState(false)
   const chartData = useMemo(() => groupByCategory(data, revenue), [revenue, data])
   const max = { gross: chartData[0], sold: chartData[0] }
@@ -34,10 +34,6 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
         switchEvent={() => {
           showRevenue(!revenue)
         }}
-        proOnly={isBasic ? {
-          component: 'Sales by Category',
-          img: 'sales-by-category.png'
-        } : null}
       />
     )
   }
@@ -63,10 +59,7 @@ const SalesByCategory = memo(({ data, hideBoxes, halfSize, isBasic }) => {
         switchEvent={() => {
           showRevenue(!revenue)
         }}
-        proOnly={isBasic ? {
-          component: 'Sales by Category',
-          img: 'sales-by-category.png'
-        } : null}
+
       />
       {
         !hideBoxes ? (

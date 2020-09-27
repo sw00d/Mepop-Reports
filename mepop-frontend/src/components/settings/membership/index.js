@@ -214,14 +214,12 @@ const Table = styled(Flex)`
 `
 
 const options = [
-  { ref: 'reports', title: 'In Depth Reports', tooltip: 'The best available reporting for Depop Sellers.' },
-  { ref: 'saveCSV', title: "Saving of CSV's", tooltip: 'The ability to upload, save, and come back to your sales.' },
-  { ref: 'feeCalculator', title: 'Depop Fee Calculator', tooltip: 'Easily calculate where to price your items.' },
-  { ref: 'salesDashboard', title: 'Sales Dashboard', tooltip: 'A quick overview of all sales and revenue.' },
-  { ref: 'featureRich', title: 'Way more features!', html: <FeatureToolTip />, icon: 'fa-hand-pointer-o', cursor: 'pointer', tooltip: 'Click for more!' },
-  { ref: 'dateComparison', title: 'Date Comparison', tooltip: 'Ever wonder how last month compared to this month? Wonder no more.' },
-  { ref: 'exclusiveAccess', title: 'Exclusive Access', tooltip: 'Lots of features are in the works and will be released sporadically.' },
-  { ref: 'monthlyFeatures', title: 'Monthly Feature Releases', tooltip: 'Every month at least one new feature will be released.' }
+  { ref: 'salesDashboard', title: 'Sales Dashboard', tooltip: 'An in-depth overview of all sales and profits.' },
+  { ref: 'saveCSV', title: "Saving of CSV Files's", tooltip: 'The ability to upload, save, and come back to your sales.' },
+  { ref: 'feeCalculator', title: 'Depop Fee Calculator', tooltip: 'Easily calculate how to price your items.' },
+  { ref: 'reports', title: 'In Depth Reports', html: <FeatureToolTip />, icon: 'fa-hand-pointer-o', cursor: 'pointer', tooltip: 'The best reporting available for Depop sellers!' },
+  { ref: 'dateComparison', title: 'Date Comparison', tooltip: 'Compare custom date ranges using our robust reporting features.' },
+  { ref: 'exclusiveAccess', title: 'Exclusive Access', tooltip: 'Lots of features are in the works and will be released sporadically.' }
 ]
 const tiers = [
   {
@@ -232,11 +230,9 @@ const tiers = [
     saveCSV: true,
     feeCalculator: true,
     salesDashboard: true,
-    reports: true,
-    featureRich: false,
+    reports: false,
     dateComparison: false,
-    exclusiveAccess: false,
-    monthlyFeatures: false
+    exclusiveAccess: false
   },
   {
     title: 'Premium',
@@ -247,10 +243,7 @@ const tiers = [
     feeCalculator: true,
     salesDashboard: true,
     reports: true,
-    featureRich: true,
     dateComparison: true,
-    exclusiveAccess: true,
-    monthlyFeatures: true
-
+    exclusiveAccess: true
   }
 ]

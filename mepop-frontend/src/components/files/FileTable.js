@@ -10,7 +10,6 @@ import { withFirebase } from '../../firebase'
 import Spinner from '../../styles/elements/Loading/Spinner'
 import { rowStyle } from '../../styles/elements/Table'
 import { fetchFiles } from '../../store/actions/files'
-import { UPDATE_FILES } from '../../store/generalReducer'
 
 const FileTable = withFirebase(({ firebase }) => {
   const { files } = useSelector(state => state.generalReducer)
@@ -25,8 +24,6 @@ const FileTable = withFirebase(({ firebase }) => {
   const deleteFile = (filename) => {
     disableBtns(true)
     firebase.deleteFile(filename, (file) => {
-      // const newFiles = [...files].filter(item => item.filename !== filename)
-      // dispatch({ type: UPDATE_FILES, payload: newFiles })
       updateData()
     })
   }
