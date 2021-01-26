@@ -49,6 +49,7 @@ export const MyApp = (props) => {
           <title>Reports for Depop Sellers</title>
           <meta name='description' content='A comprehensive reporting tool for Depop sellers.' />
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+          <script data-ad-client="ca-pub-9864708751251132" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         </Head>
         <ReduxProvider store={store}>
           <FirebaseContext.Provider value={new Firebase()}>
