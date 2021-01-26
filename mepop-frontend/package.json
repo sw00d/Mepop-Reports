@@ -19,7 +19,7 @@
     "@testing-library/dom": "^7.22.2",
     "@testing-library/jest-dom": "^5.11.3",
     "@testing-library/react": "^10.4.8",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-jest": "^26.3.0",
     "currency.js": "^1.2.2",
     "firebase": "^7.15.5",
