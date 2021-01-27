@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { withFirebase } from '../../firebase'
 import Flex from '../../styles/layout/Flex'
+import Text from '../../styles/elements/Text'
 import Button from '../../styles/elements/Button'
 import Tooltip from '../../styles/elements/Tooltip'
 import InfoModal from './InfoModal'
@@ -63,7 +64,13 @@ const Dropzone = withFirebase(({ firebase }) => {
 
     <Container>
       <InfoModal modalIsOpen={modalIsOpen} toggleModal={toggleModal} />
+      <TextBox>
+            <Text>
+              We've had recently reported issues with the application. These issues stem from the CSV files being wrongly formatted, specifically with the dates provided with each sale. Please double check that all dates provided in your CSV files are in the format of day/month/year (i.e. 24/08/2020). If you're having issues with the application, this is the most likely culprit.
+            </Text>
+      </TextBox>
       <Flex justifyContent='flex-end' px='10px'>
+
         <Button
           bg='transparent'
           color='greyDarkest'
@@ -84,7 +91,9 @@ const Dropzone = withFirebase(({ firebase }) => {
         </H2>
         <p>or</p>
         <Button isLoading={loading} minWidth='115px' color='primary' bg='white' size='lg'>Select Files</Button>
-        <p>Files must be from Depop to be valid</p>
+        <Flex justifyContent='center' alignItems='center' my="20px">
+          Please ensure columns <SubText>Date of Sale</SubText> and <SubText>Date of Listing</SubText> are in the format of <SubText>day/month/year</SubText> (i.e. 24/08/2020)
+        </Flex>
       </DropZone>
 
     </Container>
@@ -126,4 +135,18 @@ const A = styled.a`
   &:hover {
     opacity: .7;
   }
+`
+
+const SubText = styled.i`
+  color: ${({ theme }) => theme.colors.greyDark};
+  margin: 0px 4px;
+`
+
+const TextBox = styled(Flex)`
+  margin: 40px;
+  margin-bottom: 0px;
+  background: white;
+  padding: 20px 30px;
+  border: 1px solid red;
+  border-radius: 4px;
 `

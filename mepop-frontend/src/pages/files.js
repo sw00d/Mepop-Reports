@@ -1,7 +1,9 @@
 import Files from '../components/files'
 
-export default () => {
+const FilePage = () => {
   return (
     <Files />
   )
 }
+
+export default FilePage
