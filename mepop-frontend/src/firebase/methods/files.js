@@ -1,6 +1,6 @@
 import { readString } from 'react-papaparse'
 import axios from 'axios'
-import { headers } from '../../assets/exampleBuyers'
+import { headers, headers_with_size } from '../../assets/exampleBuyers'
 import firebase from 'firebase/app'
 import 'firebase/storage'
 
@@ -62,6 +62,7 @@ export const deleteFileMethod = (auth, storage, filename, resolve) => {
 }
 
 export const uploadFilesMethod = (auth, storage, files, fetchFiles, err, db) => {
+
   const rejectedFiles = []
 
   // upload accepted files to firebase
@@ -78,11 +79,10 @@ export const uploadFilesMethod = (auth, storage, files, fetchFiles, err, db) => 
         counter++
       } else {
         const rows = readString(fileReader.result).data
-
-        if (rows[0].length !== 22) {
+        if (rows[0].length !== 22 && rows[0].length !== 23) {
           // checks row length for length of 22
           rejectedFiles.push(file.name)
-        } else if (JSON.stringify(rows[0]) !== JSON.stringify(headers)) {
+        } else if (JSON.stringify(rows[0]) !== JSON.stringify(headers) && JSON.stringify(rows[0]) !== JSON.stringify(headers_with_size)) {
           // Compares Depop headers to first row of file
           rejectedFiles.push(file.name)
         } else {

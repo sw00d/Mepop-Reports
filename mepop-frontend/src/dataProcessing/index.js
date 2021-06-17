@@ -8,7 +8,6 @@ import { headers } from '../assets/exampleBuyers'
 export const processFiles = (files, setState, err) => {
   if (!files.length) return
   let results = []
-
   // Parses CSV content into arrays using readCSVString
   files.forEach((file) => {
     readCSVString(
@@ -35,7 +34,10 @@ export const initState = (originalFiles, err) => {
   const cleanedFiles = [...originalFiles]
   for (let i = 0; i < cleanedFiles.length; i++) {
     const row = cleanedFiles[i]
-    if (row.length !== 22) {
+    if (row.length === 23){
+      row.splice(7, 1)
+      i--
+    } else if (row.length !== 22) {
       cleanedFiles.splice(i, 1)
       i--
     }

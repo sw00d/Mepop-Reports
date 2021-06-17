@@ -1,4 +1,5 @@
 export const headers = ['Date of sale', 'Time of sale', 'Date of listing', 'Bundle', 'Buyer', 'Brand', 'Description', 'Item price', 'Buyer shipping cost', 'Total', 'USPS Cost', 'Depop fee', 'Depop Payments fee', 'Payment type', 'Category', 'Name', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Post Code', 'Country']
+export const headers_with_size = ['Date of sale', 'Time of sale', 'Date of listing', 'Bundle', 'Buyer', 'Brand', 'Description', 'Size', 'Item price', 'Buyer shipping cost', 'Total', 'USPS Cost', 'Depop fee', 'Depop Payments fee', 'Payment type', 'Category', 'Name', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Post Code', 'Country']
 export const buyers = [
   'mirroie',
   'aidm',
